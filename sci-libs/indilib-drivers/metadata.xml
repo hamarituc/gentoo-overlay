@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ctibor@brancik.cz</email>
+		<name>Ctibor Brančík</name>
+	</maintainer>	
+	<longdescription>
+		Meta ebuild for installation of indilib.org's 3rd party drivers. Works like <pkg>x11-base/xorg-servers</pkg>.
+	</longdescription>
+	<use>
+		<flag name="aagcloudwatcher">Installs <pkg>sci-libs/indilib-driver-aagcloudwatcher</pkg></flag>
+		<flag name="aagcloudwatcherng">Installs <pkg>sci-libs/indilib-driver-aagcloudwatcherng</pkg></flag>
+        <flag name="ahpcorrelator">Installs <pkg>sci-libs/indilib-driver-ahp-correlator</pkg></flag>
+	    <flag name="aok">Installs <pkg>sci-libs/indilib-driver-aok</pkg></flag>
+		<flag name="apogee">Installs <pkg>sci-libs/indilib-driver-apogee</pkg></flag>
+		<flag name="armadillo">Installs <pkg>sci-libs/indilib-driver-armadillo</pkg></flag>
+		<flag name="asi">Installs <pkg>sci-libs/indilib-driver-asi</pkg></flag>
+		<flag name="astrolink4">Installs <pkg>sci-libs/indilib-driver-astrolink4</pkg></flag>
+		<flag name="astromechfoc">Installs <pkg>sci-libs/indilib-driver-astromechfoc</pkg></flag>
+		<flag name="atik">Installs <pkg>sci-libs/indilib-driver-atik</pkg></flag>
+		<flag name="avalon">Installs <pkg>sci-libs/indilib-driver-avalon</pkg></flag>
+		<flag name="beefocus">Installs <pkg>sci-libs/indilib-driver-beefocus</pkg></flag>
+		<flag name="celestronaux">Installs <pkg>sci-libs/indilib-driver-celestronauxr</pkg></flag>
+		<flag name="dreamfocuser">Installs <pkg>sci-libs/indilib-driver-dreamfocuser</pkg></flag>
+		<flag name="dsi">Installs <pkg>sci-libs/indilib-driver-dsi</pkg></flag>
+		<flag name="duino">Installs <pkg>sci-libs/indilib-driver-duino</pkg></flag>
+		<flag name="eqmod">Installs <pkg>sci-libs/indilib-driver-eqmod</pkg></flag>
+		<flag name="ffmv">Installs <pkg>sci-libs/indilib-driver-ffmv</pkg></flag>
+		<flag name="fishcamp">Installs <pkg>sci-libs/indilib-driver-fishcamp</pkg></flag>
+		<flag name="fli">Installs <pkg>sci-libs/indilib-driver-fli</pkg></flag>
+		<flag name="gige">Installs <pkg>sci-libs/indilib-driver-gige</pkg></flag>
+		<flag name="gphoto2">Installs <pkg>sci-libs/indilib-driver-gphoto</pkg></flag>
+		<flag name="gpsd">Installs <pkg>sci-libs/indilib-driver-gpsd</pkg></flag>
+		<flag name="gpsnmea">Installs <pkg>sci-libs/indilib-driver-gpsnmea</pkg></flag>
+		<flag name="limesdr">Installs <pkg>sci-libs/indilib-driver-limesdr</pkg></flag>
+		<flag name="inovaplx">Installs <pkg>sci-libs/indilib-driver-inovaplx</pkg></flag>
+		<flag name="maxdomeii">Installs <pkg>sci-libs/indilib-driver-maxdomeii</pkg></flag>
+		<flag name="mgen">Installs <pkg>sci-libs/indilib-driver-mgen</pkg></flag>
+		<flag name="mi">Installs <pkg>sci-libs/indilib-driver-mi</pkg></flag>
+		<flag name="nexdome">Installs <pkg>sci-libs/indilib-driver-nexdome</pkg></flag>
+		<flag name="nexstarevo">Installs <pkg>sci-libs/indilib-driver-nexstarevo</pkg></flag>
+		<flag name="nightscape">Installs <pkg>sci-libs/indilib-driver-nightscape</pkg></flag>
+		<flag name="pentax">Installs <pkg>sci-libs/indilib-driver-pentax</pkg></flag>
+		<flag name="qhy">Installs <pkg>sci-libs/indilib-driver-qhy</pkg></flag>
+		<flag name="qsi">Installs <pkg>sci-libs/indilib-driver-qsi</pkg></flag>
+		<flag name="rtklib">Installs <pkg>sci-libs/indilib-driver-rtklib</pkg></flag>
+		<flag name="rtlsdr">Installs <pkg>sci-libs/indilib-driver-rtlsdr</pkg></flag>
+		<flag name="sbig">Installs <pkg>sci-libs/indilib-driver-sbig</pkg></flag>
+		<flag name="shelyak">Installs <pkg>sci-libs/indilib-driver-shelyak</pkg></flag>
+		<flag name="spectracyber">Installs <pkg>sci-libs/indilib-driver-spectracyber</pkg></flag>
+		<flag name="starbook">Installs <pkg>sci-libs/indilib-driver-starbook</pkg></flag>
+		<flag name="sv305">Installs <pkg>sci-libs/indilib-driver-starbook</pkg></flag>
+		<flag name="sx">Installs <pkg>sci-libs/indilib-driver-sx</pkg></flag>
+		<flag name="talon6">Installs <pkg>sci-libs/indilib-driver-talon6</pkg></flag>
+		<flag name="toupbase">Installs <pkg>sci-libs/indilib-driver-toupbase</pkg></flag>
+		<flag name="webcam">Installs <pkg>sci-libs/indilib-driver-webcam</pkg></flag>
+	</use>
+ 	<upstream>
+		<doc lang="en">http://indilib.org/</doc>
+		<bugs-to>https://github.com/indilib/indi-3rdparty/issues</bugs-to>
+		<remote-id type="github">indi</remote-id>
+	</upstream>
+</pkgmetadata>

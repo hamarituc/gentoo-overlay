@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ctibor@brancik.cz</email>
+		<name>Ctibor Brančík</name>
+	</maintainer>	
+	<longdescription>
+		INDI is a protocol designed to support control, automation, data acquisition, and exchange among hardware devices and software frontends.
+		INDI stands for the Instrument-Neutral-Distributed-Interface, and was developed by Elwood C. Downey of ClearSky Institute.
+	</longdescription>
+	<use>
+		<flag name='drivers'>Installs <pkg>sci-libs/indilib-drivers</pkg> which is a metapackage for indilib 3rd party drivers.</flag>
+		<flag name='websocket'>Enable support for WebSocket protocol</flag>
+	</use>
+	<upstream>
+		<maintainer status="active">
+			<email>mutlaqja@ikarustech.com</email>
+			<name>Jasem Mutlaq</name>
+		</maintainer>
+		<maintainer status="active">
+			<email>info@cloudmakers.eu</email>
+			<name>Peter Polakovic</name>
+		</maintainer>
+		<maintainer status="active">
+			<email>info@ClearSkyInstitute.com</email>
+			<name>Elwood Downey</name>
+		</maintainer>
+		<maintainer status="active">
+			<email>zerjio@zerjio.com</email>
+			<name>Sergio Alonso</name>
+		</maintainer>
+		<maintainer status="active">
+			<email>mas.ignacio@gmail.com</email>
+			<name>Nacho Mas</name>
+		</maintainer>
+		<changelog>https://indilib.org/about/news.html</changelog>
+		<doc lang="en">http://indilib.org/about/discover-indi.html</doc>
+		<bugs-to>https://github.com/indilib/indi/issues</bugs-to>
+        	<remote-id type="github">indilib</remote-id>
+	</upstream>
+</pkgmetadata>
