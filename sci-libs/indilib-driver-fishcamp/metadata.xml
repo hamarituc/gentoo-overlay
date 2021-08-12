@@ -2,9 +2,9 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>ctibor@brancik.cz</email>
-		<name>Ctibor Brančík</name>
-	</maintainer>	
+		<email>mario@mariohaustein.de</email>
+		<name>Mario Haustein</name>
+	</maintainer>
 	<upstream>
 		<doc lang="en">http://indilib.org</doc>
 		<bugs-to>https://github.com/indilib/indi-3rdparty/issues</bugs-to>

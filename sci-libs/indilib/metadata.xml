@@ -2,9 +2,9 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>ctibor@brancik.cz</email>
-		<name>Ctibor Brančík</name>
-	</maintainer>	
+		<email>mario@mariohaustein.de</email>
+		<name>Mario Haustein</name>
+	</maintainer>
 	<longdescription>
 		INDI is a protocol designed to support control, automation, data acquisition, and exchange among hardware devices and software frontends.
 		INDI stands for the Instrument-Neutral-Distributed-Interface, and was developed by Elwood C. Downey of ClearSky Institute.
