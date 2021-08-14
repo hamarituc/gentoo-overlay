@@ -8,6 +8,14 @@ personal interests.
 Amateur Radio :radio:
 ---------------------
 
+### Fldigi Suite
+
+The Fldigi suite by Dave Freese, W1HKJ is a well known set of handy amateur
+radio utilities. Some of these programs are included in the gentoo standard
+repository. This repo provides the remaining utilities. The ebuilds from this
+repo provide the `xmlrpc` USE flag. But it seems support for this library is
+broken, since some tools require a more recent version than publicly available.
+
 ### QSSTV
 
 Although QSSTV is contained in the standard repo it mandatorily requires
