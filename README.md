@@ -8,6 +8,10 @@ personal interests.
 Amateur Radio :radio:
 ---------------------
 
+### CQRLOG
+
+A logging program.
+
 ### Fldigi Suite
 
 The Fldigi suite by Dave Freese, W1HKJ is a well known set of handy amateur
