@@ -54,6 +54,11 @@ Acknowledgement: These ebuild are based on the work of
  * Ctibor Brančík
  * [SFtech](https://github.com/SFTtech/gentoo-overlay)
 
+### STRF
+
+STRF is a satellite tracking and orbit determination program. Orbit
+determination is based on radio measurements.
+
 
 Computer Forensics, Reverse engineering :mag:
 ---------------------------------------------
