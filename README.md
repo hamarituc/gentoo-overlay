@@ -8,6 +8,18 @@ personal interests.
 Amateur Radio :radio:
 ---------------------
 
+### CHIRP
+
+CHIRP is a tool to program memory channels and configure settings of amateur
+radio devices. CHIRP was dropped from the Gentoo repository due to lacking
+Python 3 support. This repo represents the merge of the upstream Python 2
+branch as of 2021-08-12 into the upstreams Python 3 branch combined with
+patches from [atpage](https://github.com/atpage/chirp). In contains some
+further patches by myself. THIS SOFRWARE COMES WITH ABSOLUTELY NOT WARRANTY.
+
+Acknowledgements: The ebuild is on the work of the Pentoo project. Patches of
+  [atpage](https://github.com/atpage/chirp) are applied.
+
 ### CQRLOG
 
 A logging program.
