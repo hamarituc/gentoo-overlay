@@ -80,6 +80,13 @@ determination is based on radio measurements.
 Computer Forensics, Reverse engineering :mag:
 ---------------------------------------------
 
+### hyx
+
+hyx is a vim-like terminal hex editor.
+
+Acknowledgement: The ebuild is based on the [sft](https://github.com/SFTtech/gentoo-overlay)
+  overlay.
+
 ### iaito
 
 It's a graphical frontend for radare2, which is available in the main gentoo
