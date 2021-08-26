@@ -17,8 +17,8 @@ branch as of 2021-08-12 into the upstreams Python 3 branch combined with
 patches from [atpage](https://github.com/atpage/chirp). In contains some
 further patches by myself. THIS SOFRWARE COMES WITH ABSOLUTELY NOT WARRANTY.
 
-Acknowledgements: The ebuild is on the work of the Pentoo project. Patches of
-  [atpage](https://github.com/atpage/chirp) are applied.
+Acknowledgements: The ebuild is based on the work of the Pentoo project.
+  Patches of [atpage](https://github.com/atpage/chirp) are applied.
 
 ### CQRLOG
 
