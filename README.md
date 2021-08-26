@@ -36,6 +36,10 @@ repository. This repo provides the remaining utilities. The ebuilds from this
 repo provide the `xmlrpc` USE flag. But it seems support for this library is
 broken, since some tools require a more recent version than publicly available.
 
+### Pat
+
+Pat is a Winlink 2000 protocol client.
+
 ### SDRangel
 
 A very powerful signal analyzer and synthesizer supporting a wide range of
