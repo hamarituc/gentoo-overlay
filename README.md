@@ -99,3 +99,9 @@ Acknowledgement: The ebuild is based on the [sft](https://github.com/SFTtech/gen
 
 It's a graphical frontend for radare2, which is available in the main gentoo
 portage tree.
+
+### Volatility 3
+
+Volatility is a framework for volatile memory analysis.
+
+Acknowledgements: The ebuilds are based on the work of the Pentoo project.
