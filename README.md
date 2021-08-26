@@ -24,6 +24,10 @@ Acknowledgements: The ebuild is on the work of the Pentoo project. Patches of
 
 A logging program.
 
+### GPS SDR SIM
+
+Generates GPS baseband signals for various SDR transceivers.
+
 ### Fldigi Suite
 
 The Fldigi suite by Dave Freese, W1HKJ is a well known set of handy amateur
