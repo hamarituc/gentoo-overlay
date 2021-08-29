@@ -8,6 +8,12 @@ personal interests.
 Amateur Radio :radio:
 ---------------------
 
+### ARDOP
+
+The Amateur Radio Digital Open Protocol is an ARQ data transmission protocol
+used for the Winlink communication system. This ebuild provides different ARDOP
+software modems. Only `ardopc` is supported by Winlink.
+
 ### CHIRP
 
 CHIRP is a tool to program memory channels and configure settings of amateur
