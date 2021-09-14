@@ -16,8 +16,8 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}
-	sci-geosciences/gpsd"
+DEPEND="sci-geosciences/gpsd
+	~sci-libs/indilib-${PV}"
 
 RDEPEND="${DEPEND}"
 

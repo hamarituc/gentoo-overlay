@@ -16,8 +16,8 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}
-	media-libs/libdc1394"
+DEPEND="media-libs/libdc1394
+	~sci-libs/indilib-${PV}"
 
 RDEPEND="${DEPEND}"
 

@@ -5,7 +5,6 @@ sci-libs/indilib-driver-aok
 sci-libs/indilib-driver-apogee
 sci-libs/indilib-driver-armadillo-platypus
 sci-libs/indilib-driver-asi
-sci-libs/indilib-driver-asi-power
 sci-libs/indilib-driver-astrolink4
 sci-libs/indilib-driver-astromechfoc
 sci-libs/indilib-driver-atik
