@@ -17,7 +17,7 @@ KEYWORDS="~amd64 ~x86"
 SLOT="0/1"
 
 DEPEND="<sci-libs/indilib-9999
-	=media-video/aravis-0.6*"
+	>=media-video/aravis-0.6"
 
 RDEPEND="${DEPEND}"
 
