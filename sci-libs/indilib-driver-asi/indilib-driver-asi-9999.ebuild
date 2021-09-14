@@ -23,10 +23,6 @@ DEPEND="~sci-libs/indilib-9999
 
 RDEPEND="${DEPEND}"
 
-PATCHES=(
-	"${FILESDIR}"/indilib-driver-asi-1.9.1-udev.patch
-)
-
 INDI_GIT_DIR="${PN%%lib-driver-*}${PN##*-driver}"
 
 S="${EGIT_CHECKOUT_DIR}/${INDI_GIT_DIR}"

@@ -23,7 +23,7 @@ DEPEND="<sci-libs/indilib-9999
 RDEPEND="${DEPEND}"
 
 PATCHES=(
-	"${FILESDIR}"/indilib-driver-asi-1.9.1-udev.patch
+	"${FILESDIR}/${P}-udev.patch"
 )
 
 INDI_TARGET_DIRECTORY="${PN%%lib-driver-**}${PN##*-driver}"

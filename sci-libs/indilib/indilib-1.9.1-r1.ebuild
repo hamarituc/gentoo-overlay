@@ -44,7 +44,7 @@ PDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}"/indilib-1.9.1-fix-include.patch
+	"${FILESDIR}/${P}-fix-include.patch"
 )
 
 DOCS=( AUTHORS ChangeLog README )
