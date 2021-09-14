@@ -31,7 +31,9 @@
 =sci-libs/indilib-driver-mi-9999
 =sci-libs/indilib-driver-nexdome-9999
 =sci-libs/indilib-driver-nightscape-9999
+=sci-libs/indilib-driver-orion-ssg3-9999
 =sci-libs/indilib-driver-pentax-9999
+=sci-libs/indilib-driver-playerone-9999
 =sci-libs/indilib-driver-qhy-9999
 =sci-libs/indilib-driver-qsi-9999
 =sci-libs/indilib-driver-rtklib-9999

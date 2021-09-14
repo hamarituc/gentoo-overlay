@@ -1,0 +1,15 @@
+diff --git a/src/ArvGeneric.h b/src/ArvGeneric.h
+index da0b293e..14c6d6b3 100644
+--- a/src/ArvGeneric.h
++++ b/src/ArvGeneric.h
+@@ -22,9 +22,9 @@
+ extern "C" {
+ #include <stddef.h>
+ #include <stdio.h>
+-#include <arv.h>
+ }
+ 
++#include <arv.h>
+ #include "ArvInterface.h"
+ 
+ using namespace arv;

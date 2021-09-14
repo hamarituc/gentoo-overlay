@@ -42,7 +42,9 @@
 		<flag name="mi">Installs <pkg>sci-libs/indilib-driver-mi</pkg></flag>
 		<flag name="nexdome">Installs <pkg>sci-libs/indilib-driver-nexdome</pkg></flag>
 		<flag name="nightscape">Installs <pkg>sci-libs/indilib-driver-nightscape</pkg></flag>
+		<flag name="orion-ssg3">Installs <pkg>sci-libs/indilib-driver-orion-ssg3</pkg></flag>
 		<flag name="pentax">Installs <pkg>sci-libs/indilib-driver-pentax</pkg></flag>
+		<flag name="playerone">Installs <pkg>sci-libs/indilib-driver-playerone</pkg></flag>
 		<flag name="qhy">Installs <pkg>sci-libs/indilib-driver-qhy</pkg></flag>
 		<flag name="qsi">Installs <pkg>sci-libs/indilib-driver-qsi</pkg></flag>
 		<flag name="rtklib">Installs <pkg>sci-libs/indilib-driver-rtklib</pkg></flag>
