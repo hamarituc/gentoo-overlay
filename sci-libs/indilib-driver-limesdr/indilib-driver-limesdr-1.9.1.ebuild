@@ -16,8 +16,8 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="<sci-libs/indilib-9999
-	<net-wireless/limesuite-9999"
+DEPEND="net-wireless/limesuite
+	~sci-libs/indilib-${PV}"
 
 RDEPEND="${DEPEND}"
 

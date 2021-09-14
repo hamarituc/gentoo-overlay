@@ -16,11 +16,11 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="<sci-libs/indilib-9999
+DEPEND="dev-libs/npth
 	media-libs/libgphoto2[jpeg]
 	media-libs/libraw
-	dev-libs/npth
-	media-libs/tiff[cxx]"
+	media-libs/tiff[cxx]
+	~sci-libs/indilib-${PV}"
 
 RDEPEND="${DEPEND}"
 

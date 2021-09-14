@@ -16,8 +16,8 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="<sci-libs/indilib-9999
-	dev-embedded/libftdi:1"
+DEPEND="dev-embedded/libftdi:1
+	~sci-libs/indilib-${PV}"
 
 RDEPEND="${DEPEND}"
 

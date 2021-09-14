@@ -16,7 +16,7 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="<sci-libs/indilib-9999"
+DEPEND="~sci-libs/indilib-${PV}"
 
 RDEPEND="${DEPEND}"
 

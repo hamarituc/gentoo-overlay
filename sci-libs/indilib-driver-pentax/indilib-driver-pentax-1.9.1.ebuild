@@ -16,9 +16,9 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="<sci-libs/indilib-9999
-	<sci-libs/libpktriggercord-9999
-	<sci-libs/libricohcamerasdk-9999"
+DEPEND="~sci-libs/indilib-${PV}
+	~sci-libs/libpktriggercord-${PV}
+	~sci-libs/libricohcamerasdk-${PV}"
 
 RDEPEND="${DEPEND}"
 

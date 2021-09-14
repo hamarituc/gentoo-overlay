@@ -16,12 +16,12 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="<sci-libs/indilib-9999
-	<sci-libs/libtoupcam-9999
-	<sci-libs/libaltaircam-9999
-	<sci-libs/libstarshootg-9999
-	<sci-libs/libnncam-9999
-	<sci-libs/libmallincam-9999"
+DEPEND="~sci-libs/indilib-${PV}
+	~sci-libs/libtoupcam-${PV}
+	~sci-libs/libaltaircam-${PV}
+	~sci-libs/libstarshootg-${PV}
+	~sci-libs/libnncam-${PV}
+	~sci-libs/libmallincam-${PV}"
 
 RDEPEND="${DEPEND}"
 

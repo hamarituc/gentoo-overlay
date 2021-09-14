@@ -16,9 +16,9 @@ KEYWORDS="~amd64 ~x86"
 
 SLOT="0/1"
 
-DEPEND="virtual/libusb:1
-	net-misc/curl
-	<sci-libs/indilib-9999"
+DEPEND="net-misc/curl
+	~sci-libs/indilib-${PV}
+	virtual/libusb:1"
 
 RDEPEND="${DEPEND}
 	sys-apps/fxload"

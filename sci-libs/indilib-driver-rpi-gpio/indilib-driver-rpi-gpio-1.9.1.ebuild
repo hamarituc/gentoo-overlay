@@ -17,7 +17,7 @@ KEYWORDS="~arm"
 SLOT="0/1"
 
 DEPEND="dev-libs/pigpio
-	<sci-libs/indilib-9999"
+	~sci-libs/indilib-${PV}"
 
 RDEPEND="${DEPEND}"
 

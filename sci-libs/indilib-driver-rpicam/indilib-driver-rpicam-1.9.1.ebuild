@@ -16,8 +16,8 @@ KEYWORDS="~arm"
 
 SLOT="0/1"
 
-DEPEND="<sci-libs/indilib-9999
-	media-libs/raspberrypi-userland"
+DEPEND="media-libs/raspberrypi-userland
+	~sci-libs/indilib-${PV}"
 
 RDEPEND="${DEPEND}"
 

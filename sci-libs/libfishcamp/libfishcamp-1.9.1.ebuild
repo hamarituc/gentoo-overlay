@@ -17,8 +17,8 @@ KEYWORDS="~amd64 ~x86"
 SLOT="0/1"
 
 RDEPEND="${DEPEND}
-	sys-apps/fxload
-	<sci-libs/indilib-9999"
+	~sci-libs/indilib-${PV}
+	sys-apps/fxload"
 
 INDI_TARGET_DIRECTORY="${PN%%lib-driver-**}"
 
