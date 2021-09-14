@@ -21,6 +21,10 @@ DEPEND="<sci-libs/indilib-9999
 
 RDEPEND="${DEPEND}"
 
+PATCHES=(
+	"${FILESDIR}/${P}-aravis.patch"
+)
+
 INDI_TARGET_DIRECTORY="${PN%%lib-driver-**}${PN##*-driver}"
 
 S="${WORKDIR}/${MY_PN}-3rdparty-${PV}/${INDI_TARGET_DIRECTORY}"
