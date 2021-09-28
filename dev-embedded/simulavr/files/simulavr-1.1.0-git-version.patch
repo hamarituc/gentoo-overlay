@@ -1,0 +1,57 @@
+diff --git a/cmake/GetGitInfo.cmake b/cmake/GetGitInfo.cmake
+index e5710ec..220b1aa 100644
+--- a/cmake/GetGitInfo.cmake
++++ b/cmake/GetGitInfo.cmake
+@@ -5,28 +5,9 @@
+ 
+ function(get_git_info)
+ 
+-  execute_process(COMMAND /bin/sh ${CMAKE_SOURCE_DIR}/cmake/get_git_version.sh
+-                  OUTPUT_VARIABLE GIT_RELEASE_STRING
+-                  OUTPUT_STRIP_TRAILING_WHITESPACE
+-                  ERROR_QUIET)
+-  list(GET GIT_RELEASE_STRING 0 GIT_HASH)
+-  list(GET GIT_RELEASE_STRING 1 GIT_TAG)
+-  list(GET GIT_RELEASE_STRING 2 GIT_VERSION)
+-  list(GET GIT_RELEASE_STRING 3 GIT_BRANCH)
+-  
+-  string(REPLACE "." ";" GIT_VERSION_SPLIT ${GIT_VERSION})
+-  list(GET GIT_VERSION_SPLIT 0 _VERSION_MAJOR)
+-  list(GET GIT_VERSION_SPLIT 1 _VERSION_MINOR)
+-  list(LENGTH GIT_VERSION_SPLIT GIT_VERSION_LEN)
+-  if(GIT_VERSION_LEN GREATER 2)
+-    list(GET GIT_VERSION_SPLIT 2 _VERSION_PATCH)
+-  else()
+-    set(_VERSION_PATCH "0")
+-  endif()
+-
+-  set(VERSION_MAJOR ${_VERSION_MAJOR} PARENT_SCOPE)
+-  set(VERSION_MINOR ${_VERSION_MINOR} PARENT_SCOPE)
+-  set(VERSION_PATCH ${_VERSION_PATCH} PARENT_SCOPE)
++  set(VERSION_MAJOR "1" PARENT_SCOPE)
++  set(VERSION_MINOR "1" PARENT_SCOPE)
++  set(VERSION_PATCH "0" PARENT_SCOPE)
+   
+ endfunction(get_git_info)
+ 
+diff --git a/cmake/get_git_version.sh b/cmake/get_git_version.sh
+deleted file mode 100755
+index 50f3c75..0000000
+--- a/cmake/get_git_version.sh
++++ /dev/null
+@@ -1,15 +0,0 @@
+-#!/bin/sh
+-if which git > /dev/null 2> /dev/null; then
+-  H=$(git log --pretty=format:'%h' -n 1)
+-  D=$(git diff --quiet --exit-code || echo "+")
+-  T=$(git describe --abbrev=0)
+-  B=$(git rev-parse --abbrev-ref HEAD)
+-  V=$(echo "$T" | sed 's/[^0-9\.]//g')
+-else
+-  H="n/a"
+-  D=""
+-  T="n/a"
+-  V="0.0.0"
+-  B="n/a"
+-fi
+-echo "$H$D;$T;$V;$B"

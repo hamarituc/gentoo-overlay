@@ -1,0 +1,11 @@
+diff --git a/pysimulavr/CMakeLists.txt b/pysimulavr/CMakeLists.txt
+index f0b74c7..634bb2c 100644
+--- a/pysimulavr/CMakeLists.txt
++++ b/pysimulavr/CMakeLists.txt
+@@ -21,4 +21,6 @@ add_custom_target(pysimulavr DEPENDS ${pysimulavr_output})
+ 
+ add_custom_target(target ALL DEPENDS pysimulavr)
+ 
++install(CODE "execute_process(COMMAND ${PYTHON} ${CMAKE_CURRENT_BINARY_DIR}/pysimulavr/setup.py install)")
++
+ # EOF

@@ -1,0 +1,19 @@
+diff --git a/pysimulavr/setup.py.in b/pysimulavr/setup.py.in
+index 78db3e6..af4389c 100644
+--- a/pysimulavr/setup.py.in
++++ b/pysimulavr/setup.py.in
+@@ -7,11 +7,11 @@ from distutils.core import Extension
+ 
+ extension = Extension("_pysimulavr",
+                       ["pysimulavr.i"],
+-                      library_dirs = ["../libsim"],
+-                      include_dirs = ["../../include"],
++                      library_dirs = ["@CMAKE_CURRENT_BINARY_DIR@/../libsim"],
++                      include_dirs = ["@CMAKE_CURRENT_SOURCE_DIR@/../include"],
+                       libraries = ["sim_static"],
+                       extra_compile_args = ["-std=c++11"],
+-                      swig_opts = ["-c++", "-I../../include"])
++                      swig_opts = ["-c++", "-I@CMAKE_CURRENT_SOURCE_DIR@/../include"])
+ 
+ setup(name = "pysimulavr",
+       version = "@VERSION@",

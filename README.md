@@ -111,3 +111,11 @@ portage tree.
 Volatility is a framework for volatile memory analysis.
 
 Acknowledgements: The ebuilds are based on the work of the Pentoo project.
+
+
+Electronic Engineering :electric_plug:
+--------------------------------------
+
+### simulavr
+
+simulavr is an AVR microcontroller simulator.

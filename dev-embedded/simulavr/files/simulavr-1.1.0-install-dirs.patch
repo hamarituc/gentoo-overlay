@@ -1,0 +1,90 @@
+diff --git a/app/CMakeLists.txt b/app/CMakeLists.txt
+index 8c2f7c0..d3f531c 100644
+--- a/app/CMakeLists.txt
++++ b/app/CMakeLists.txt
+@@ -21,6 +21,6 @@ set(docSrcs ${docDir}/AUTHORS
+             ${docDir}/README.gdb
+             ${docDir}/SUPPORT
+             ${docDir}/TODO)
+-install(FILES ${docSrcs} DESTINATION "share/doc/common")
++install(FILES ${docSrcs} DESTINATION "share/doc/simulavr-1.1.0")
+ 
+ # EOF
+\ No newline at end of file
+diff --git a/doc/CMakeLists.txt b/doc/CMakeLists.txt
+index 5e8fa25..965002f 100644
+--- a/doc/CMakeLists.txt
++++ b/doc/CMakeLists.txt
+@@ -63,7 +63,7 @@ if(GZIP)
+   add_custom_target(doc-changelog DEPENDS ${DOC_CHANGELOG})
+   add_dependencies(progdoc doc-changelog)
+ 
+-  install(FILES ${DOC_CHANGELOG} DESTINATION "share/doc/common")
++  install(FILES ${DOC_CHANGELOG} DESTINATION "share/doc/simulavr-1.1.0")
+ endif()
+ 
+ add_custom_target(doc COMMENT "create simulavr documentation" DEPENDS progdoc)
+diff --git a/libsim/CMakeLists.txt b/libsim/CMakeLists.txt
+index c50f050..1788fd9 100644
+--- a/libsim/CMakeLists.txt
++++ b/libsim/CMakeLists.txt
+@@ -23,6 +23,8 @@ set(libSrcs at4433.cpp at8515.cpp atmega668base.cpp
+ include_directories(${CMAKE_SOURCE_DIR}/include)
+ include_directories(${CMAKE_SOURCE_DIR}/include/elfio)
+ 
++include(GNUInstallDirs)
++
+ configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_SOURCE_DIR}/include/config.h)
+ 
+ add_library(sim_objs OBJECT ${libSrcs})
+@@ -41,13 +43,13 @@ file(GLOB files_ui "${CMAKE_SOURCE_DIR}/include/ui/*.h")
+ file(GLOB files_cmd "${CMAKE_SOURCE_DIR}/include/cmd/*.h")
+ file(GLOB files_elfio "${CMAKE_SOURCE_DIR}/include/elfio/elfio/*.hpp")
+ 
+-install(TARGETS sim DESTINATION "lib")
+-install(FILES ${files_common} DESTINATION "include")
+-install(FILES ${files_hwtimer} DESTINATION "include/hwtimer")
+-install(FILES ${files_gdb} DESTINATION "include/gdb")
+-install(FILES ${files_ui} DESTINATION "include/ui")
+-install(FILES ${files_cmd} DESTINATION "include/cmd")
+-install(FILES ${files_elfio} DESTINATION "include/elfio/elfio")
++install(TARGETS sim DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
++install(FILES ${files_common} DESTINATION "include/simulavr")
++install(FILES ${files_hwtimer} DESTINATION "include/simulavr/hwtimer")
++install(FILES ${files_gdb} DESTINATION "include/simulavr/gdb")
++install(FILES ${files_ui} DESTINATION "include/simulavr/ui")
++install(FILES ${files_cmd} DESTINATION "include/simulavr/cmd")
++install(FILES ${files_elfio} DESTINATION "include/simulavr/elfio/elfio")
+ 
+ if(BUILD_VERILOG)
+ 
+@@ -65,7 +67,7 @@ if(BUILD_VERILOG)
+   #target_compile_options(avr_vpi PRIVATE -Wall -Wextra)
+   #target_compile_options(avr_vpi PRIVATE -Wall)
+ 
+-  install(TARGETS avr_vpi DESTINATION "lib/simulavr")
++  install(TARGETS avr_vpi DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}/simulavr")
+ 
+ endif(BUILD_VERILOG)
+ 
+diff --git a/libsimulavr/CMakeLists.txt b/libsimulavr/CMakeLists.txt
+index 30509fe..ae4c5b6 100644
+--- a/libsimulavr/CMakeLists.txt
++++ b/libsimulavr/CMakeLists.txt
+@@ -7,6 +7,8 @@ set(libSrcs ${swigSrc} keyboard.cpp lcd.cpp mysocket.cpp extpin.cpp scope.cpp
+ include_directories(${TCL_INCLUDE_PATH})
+ include_directories(${CMAKE_SOURCE_DIR}/include)
+ 
++include(GNUInstallDirs)
++
+ set_source_files_properties(${swigSrc} PROPERTIES CPLUSPLUS ON)
+ 
+ if(${CMAKE_VERSION} VERSION_LESS "3.8")
+@@ -28,6 +30,6 @@ else()
+   
+ endif()
+ 
+-install(TARGETS simtcl DESTINATION "lib")
++install(TARGETS simtcl DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
+ 
+ # EOF
