@@ -1,0 +1,34 @@
+diff --git a/simavr/Makefile b/simavr/Makefile
+index a754467..d9bc47c 100644
+--- a/simavr/Makefile
++++ b/simavr/Makefile
+@@ -75,23 +75,15 @@ clean: clean-${OBJ}
+ 	rm -f sim_core_*.h
+ 
+ install : all
+-	$(MKDIR) $(DESTDIR)/include/simavr/avr
+-	$(INSTALL) -m644 sim/*.h $(DESTDIR)/include/simavr/
+-	$(INSTALL) -m644 sim_core_*.h $(DESTDIR)/include/simavr/
+-	$(INSTALL) -m644 sim/avr/*.h $(DESTDIR)/include/simavr/avr/
+-	$(MKDIR) $(DESTDIR)/lib
+-	$(INSTALL) ${OBJ}/libsimavr.a $(DESTDIR)/lib/
++	$(MKDIR) $(DESTDIR)/avr/include/simavr/avr
++	$(INSTALL) -m644 sim/*.h $(DESTDIR)/avr/include/simavr/
++	$(INSTALL) -m644 sim_core_*.h $(DESTDIR)/avr/include/simavr/
++	$(INSTALL) -m644 sim/avr/*.h $(DESTDIR)/avr/include/simavr/avr/
+ 	$(MKDIR) $(DESTDIR)/lib/pkgconfig/
+-	sed -e "s|PREFIX|${PREFIX}|g" -e "s|VERSION|${SIMAVR_VERSION}|g" \
++	sed -e "s|PREFIX|/usr|g" -e "s|VERSION|${SIMAVR_VERSION}|g" \
+ 		simavr-avr.pc >$(DESTDIR)/lib/pkgconfig/simavr-avr.pc
+-	sed -e "s|PREFIX|${PREFIX}|g" -e "s|VERSION|${SIMAVR_VERSION}|g" \
++	sed -e "s|PREFIX|/usr|g" -e "s|VERSION|${SIMAVR_VERSION}|g" \
+ 		simavr.pc >$(DESTDIR)/lib/pkgconfig/simavr.pc
+-ifeq (${shell uname}, Linux)
+-	$(INSTALL) ${OBJ}/libsimavr.so.1 $(DESTDIR)/lib/
+-	ln -sf libsimavr.so.1 $(DESTDIR)/lib/libsimavr.so
+-endif
+-	$(MKDIR) $(DESTDIR)/bin
+-	$(INSTALL) ${OBJ}/${target}.elf $(DESTDIR)/bin/simavr
+ 
+ # Needs 'fpm', oneline package manager. Install with 'gem install fpm'
+ # This generates 'mock' debian files, without all the policy, scripts

@@ -116,6 +116,10 @@ Acknowledgements: The ebuilds are based on the work of the Pentoo project.
 Electronic Engineering :electric_plug:
 --------------------------------------
 
+### simavr
+
+simavr is an AVR microcontroller simulator. Don't confuse it with simulavr.
+
 ### simulavr
 
-simulavr is an AVR microcontroller simulator.
+simulavr is an AVR microcontroller simulator. Don't confuse it with simavr.
