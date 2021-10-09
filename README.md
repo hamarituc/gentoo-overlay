@@ -79,7 +79,8 @@ repo disappeared unfortunately.
 ### Siril
 
 Siril is an astronomical image processing software. This repo also contains
-needed dependencies which are not available from the standard repo.
+needed dependencies which are not available from the standard repo as well as a
+python library for scripting Siril.
 
 Acknowledgement: These ebuild are based on the work of
  * Ctibor Brančík
