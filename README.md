@@ -78,9 +78,12 @@ repo disappeared unfortunately.
 
 ### SiriL
 
-Siril is an astronomical image processing software. This repo also contains
-needed dependencies which are not available from the standard repo as well as a
-python library for scripting Siril.
+SiriL is an astronomical image processing software. This repo also contains
+needed dependencies which are not available from the standard repo as well as
+some additional utilities:
+
+ * pysiril: A python library for scripting SiriL
+ * sirilic: Preparing acquisition files for processing with the SiriL software
 
 Acknowledgement: These ebuild are based on the work of
  * Ctibor Brančík
