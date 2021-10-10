@@ -76,7 +76,7 @@ The repo contains a recent version of INDI including all 3rd-party drivers.
 Acknowledgement: These ebuilds are based on the work of Ctibor Brančík whose
 repo disappeared unfortunately.
 
-### Siril
+### SiriL
 
 Siril is an astronomical image processing software. This repo also contains
 needed dependencies which are not available from the standard repo as well as a
