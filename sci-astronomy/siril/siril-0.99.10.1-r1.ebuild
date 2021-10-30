@@ -24,7 +24,7 @@ DEPEND="
 	sci-libs/fftw:3.0=
 	sci-libs/gsl
 	>=x11-libs/gtk+-3.20.0:3
-	curl? ( net-libs/curl )
+	curl? ( net-misc/curl )
 	ffmpeg? ( media-video/ffmpeg:= )
 	gnuplot? ( sci-visualization/gnuplot )
 	heif? ( media-libs/libheif )
@@ -45,6 +45,7 @@ src_unpack() {
 src_configure() {
 	local emesonargs=(
 		$(meson_use openmp)
+		$(usex curl -Denable-libcurl=yes -Denable-libcurl=no)
 	)
 	meson_src_configure
 }
