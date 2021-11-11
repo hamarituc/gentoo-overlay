@@ -9,7 +9,6 @@
 		Meta ebuild for installation of indilib.org's 3rd party drivers. Works like <pkg>x11-base/xorg-servers</pkg>.
 	</longdescription>
 	<use>
-		<flag name="aagcloudwatcher">Installs <pkg>sci-libs/indilib-driver-aagcloudwatcher</pkg></flag>
 		<flag name="aagcloudwatcherng">Installs <pkg>sci-libs/indilib-driver-aagcloudwatcherng</pkg></flag>
 		<flag name="ahpxc">Installs <pkg>sci-libs/indilib-driver-ahp-xc</pkg></flag>
 		<flag name="aok">Installs <pkg>sci-libs/indilib-driver-aok</pkg></flag>

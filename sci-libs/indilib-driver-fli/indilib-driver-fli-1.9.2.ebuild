@@ -26,6 +26,6 @@ INDI_TARGET_DIRECTORY="${PN%%lib-driver-**}${PN##*-driver}"
 S="${WORKDIR}/${MY_PN}-3rdparty-${PV}/${INDI_TARGET_DIRECTORY}"
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 	rm -r "${D}"/lib/udev
 }

@@ -25,6 +25,6 @@ INDI_GIT_DIR="${PN%%lib-driver-*}${PN##*-driver}"
 S="${EGIT_CHECKOUT_DIR}/${INDI_GIT_DIR}"
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 	rm -r "${D}"/lib/udev
 }
