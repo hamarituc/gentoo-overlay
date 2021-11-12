@@ -55,11 +55,6 @@ Acknowledgement: These ebuild are based on the work of
  * [AlexandreFournier](https://github.com/AlexandreFournier/gentoo-overlay)
  * Pentoo
 
-### QSSTV
-
-Although QSSTV is contained in the standard repo it mandatorily requires
-pulseaudio. This package allows to substitute pulseaudio with apulse.
-
 ### Xnecview
 
 Xnecview is a software for visualizing the input and output files of the NEC
