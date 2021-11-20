@@ -64,6 +64,10 @@ antenna simulation software.
 Astronomy :telescope:
 ---------------------
 
+### Astropy
+
+A feature rich astronomical package for Python.
+
 ### INDI
 
 The repo contains a recent version of INDI including all 3rd-party drivers.
