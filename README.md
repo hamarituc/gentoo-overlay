@@ -84,6 +84,10 @@ Acknowledgement: These ebuild are based on the work of
  * Ctibor Brančík
  * [SFtech](https://github.com/SFTtech/gentoo-overlay)
 
+### Skyfield
+
+Skyfield is a python library for various astronomical calculation problems.
+
 ### STRF
 
 STRF is a satellite tracking and orbit determination program. Orbit
