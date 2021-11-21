@@ -139,3 +139,13 @@ simavr is an AVR microcontroller simulator. Don't confuse it with simulavr.
 ### simulavr
 
 simulavr is an AVR microcontroller simulator. Don't confuse it with simavr.
+
+
+Miscellaneous :toolbox:
+-----------------------
+
+### libfreefare
+
+A library on top of `libnfc` for accessing various Mifare NFC tags.
+
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
