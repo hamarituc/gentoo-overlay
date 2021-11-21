@@ -16,6 +16,7 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="https://github.com/nfc-tools/libfreefare/archive/${P}.tar.gz"
 	KEYWORDS="~amd64"
+	S="${WORKDIR}"/"${PN}-${P}"
 fi
 
 LICENSE="GPL-3"
@@ -27,8 +28,6 @@ DEPEND="dev-libs/libnfc
 		virtual/libusb:0"
 
 RDEPEND="${DEPEND}"
-
-S="${WORKDIR}"/"${PN}-${P}"
 
 src_prepare() {
 	eapply_user
