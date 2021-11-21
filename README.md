@@ -144,6 +144,10 @@ simulavr is an AVR microcontroller simulator. Don't confuse it with simavr.
 Miscellaneous :toolbox:
 -----------------------
 
+### Desfire Shell
+
+`desfsh` is an interactive untility for accessing Mifare DESFire NFC tags.
+
 ### libfreefare
 
 A library on top of `libnfc` for accessing various Mifare NFC tags.
