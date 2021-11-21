@@ -64,6 +64,15 @@ antenna simulation software.
 Astronomy :telescope:
 ---------------------
 
+### Astrometry.net
+
+Astrometry.net create astrometrical solutions of astronomical images by
+matching star patterns.
+
+Acknowledgement: The ebuild is based on the
+  [benzene-overlay](https://github.com/Universebenzene/benzene-overlay)
+  overlay.
+
 ### Astropy
 
 A feature rich astronomical package for Python.
