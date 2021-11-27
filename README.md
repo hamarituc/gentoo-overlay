@@ -84,6 +84,11 @@ The repo contains a recent version of INDI including all 3rd-party drivers.
 Acknowledgement: These ebuilds are based on the work of Ctibor Brančík whose
 repo disappeared unfortunately.
 
+### Open Astro Project
+
+This package containts a capture utility for astronomical cameras mainly used
+for planetary imaging.
+
 ### SiriL
 
 SiriL is an astronomical image processing software. This repo also contains
