@@ -3,13 +3,26 @@
 
 EAPI=8
 
-inherit cmake git-r3
+inherit cmake
 
 DESCRIPTION="Deep ghidra decompiler and sleigh disassembler integration for rizin"
 HOMEPAGE="https://github.com/rizinorg/rz-ghidra"
 
-EGIT_REPO_URI="https://github.com/rizinorg/rz-ghidra.git"
-EGIT_COMMIT="v${PV}"
+if [[ ${PV} == "9999" ]] ; then
+    inherit git-r3
+	EGIT_REPO_URI="https://github.com/rizinorg/rz-ghidra.git"
+	EGIT_SUBMODULES=( '*' '-third-party/pugixml' )
+    KEYWORDS=""
+else
+	EGIT_COMMIT="v${PV}"
+	GHIDRA_COMMIT="3eb45fdeb01a1404c2f92db9a33e04faf0c57800"
+
+	SRC_URI="
+		https://github.com/rizinorg/rz-ghidra/archive/v${PV}.tar.gz -> ${P}.tar.gz
+		https://github.com/rizinorg/ghidra/archive/${GHIDRA_COMMIT}.tar.gz -> ghidra-${PN}-${GHIDRA_COMMIT}.tar.gz
+	"
+	KEYWORDS="~amd64"
+fi
 
 LICENSE="LGPL-3"
 SLOT="0"
@@ -18,6 +31,7 @@ KEYWORDS="~amd64"
 IUSE="cutter"
 
 DEPEND="
+	dev-libs/pugixml
 	dev-util/rizin
 	cutter? (
 		dev-qt/qtwidgets:5
@@ -27,9 +41,19 @@ DEPEND="
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
+src_prepare() {
+	if [[ ${PV} != "9999" ]]; then
+		rmdir "${S}/ghidra/ghidra" || die
+		mv "${WORKDIR}/ghidra-${GHIDRA_COMMIT}" "${S}/ghidra/ghidra" || die
+	fi
+
+	cmake_src_prepare
+}
+
 src_configure() {
 	local mycmakeargs=(
 		-DBUILD_CUTTER_PLUGIN=$(usex cutter)
+		-DUSE_SYSTEM_PUGIXML=ON
 	)
 	cmake_src_configure
 }
