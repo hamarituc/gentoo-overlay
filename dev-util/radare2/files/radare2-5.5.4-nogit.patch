@@ -1,0 +1,49 @@
+diff --git a/libr/asm/arch/arm/v35arm64/Makefile b/libr/asm/arch/arm/v35arm64/Makefile
+index 2e9ae6a0f..4c9c692b1 100644
+--- a/libr/asm/arch/arm/v35arm64/Makefile
++++ b/libr/asm/arch/arm/v35arm64/Makefile
+@@ -1,6 +1,6 @@
+ EXT_AR?=a
+ 
+-all: arch-arm64 arch-armv7
++all:
+ 	$(MAKE) arm64dis.$(EXT_AR)
+ 	$(MAKE) armv7dis.$(EXT_AR)
+ 
+@@ -15,34 +15,20 @@ RANLIB?=ranlib
+ EXT_AR?=a
+ 
+ clean:
+-	rm -rf arch-arm64 arm64dis.$(EXT_AR)
+-	rm -rf arch-armv7 armv7dis.$(EXT_AR)
++	rm -rf arm64dis.$(EXT_AR)
++	rm -rf armv7dis.$(EXT_AR)
+ 
+ mrproper: clean
+-	rm -rf arch-arm64
+ 
+ .PHONY: all clean
+ 
+-ARCH_ARM64_COMMIT=3c5eaba46dab72ecb7d5f5b865a13fdeee95b464
+-ARCH_ARMV7_COMMIT=dde39f69ffea19fc37e681874b12cb4707bc4f30
+-
+-$(ALIBS): arch-arm64 arch-armv7
+-
+ ## ARM64
+-arch-arm64:
+-	git clone -q https://github.com/radareorg/vector35-arch-arm64 arch-arm64
+-	cd arch-arm64 && git checkout -q radare2 > /dev/null && git reset --hard $(ARCH_ARM64_COMMIT)
+-
+ $(V35ARM64_HOME)/arm64dis.a arm64dis.a: $(ALIBS)
+ 	rm -f arm64dis.$(EXT_AR)
+ 	$(AR) q arm64dis.$(EXT_AR) $(ALIBS)
+ 	$(RANLIB) arm64dis.$(EXT_AR)
+ 
+ ## ARMV7
+-arch-armv7:
+-	git clone -q https://github.com/radareorg/vector35-arch-armv7 arch-armv7
+-	cd arch-armv7 && git checkout -q radare2 > /dev/null && git reset --hard $(ARCH_ARMV7_COMMIT)
+-
+ $(V35ARMV7_HOME)/armv7dis.a armv7dis.a: $(ALIBS)
+ 	rm -f armv7dis.$(EXT_AR)
+ 	$(AR) q armv7dis.$(EXT_AR) $(ALIBS)

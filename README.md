@@ -127,6 +127,13 @@ Acknowledgement: The ebuild is based on the [sft](https://github.com/SFTtech/gen
 It's a graphical frontend for radare2, which is available in the main gentoo
 portage tree.
 
+### Radare2
+
+Radare2 is a UNIX-like reverse engineering framework and command-line toolset.
+This ebuild is based more recent version than found in the gentoo mainline
+repo. Current versions of Radare2 need to fetch 3rd-party Git repositories
+during build.
+
 ### Volatility 3
 
 Volatility is a framework for volatile memory analysis.
