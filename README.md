@@ -134,6 +134,10 @@ This ebuild is based more recent version than found in the gentoo mainline
 repo. Current versions of Radare2 need to fetch 3rd-party Git repositories
 during build.
 
+### rz-ghidra
+
+rz-ghidra is an integration of the Ghidra decompiler into rizin and cutter.
+
 ### Volatility 3
 
 Volatility is a framework for volatile memory analysis.
