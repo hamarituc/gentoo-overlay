@@ -3,21 +3,23 @@
 
 EAPI=7
 
-inherit bash-completion-r1 git-r3 toolchain-funcs
+inherit bash-completion-r1 toolchain-funcs
+
+# From libr/asm/arch/arm/v35arm64/Makefile
+VECTOR35_ARCH_ARM64_COMMIT="3c5eaba46dab72ecb7d5f5b865a13fdeee95b464"
+VECTOR35_ARCH_ARMV7_COMMIT="dde39f69ffea19fc37e681874b12cb4707bc4f30"
 
 DESCRIPTION="unix-like reverse engineering framework and commandline tools"
 HOMEPAGE="http://www.radare.org"
-
-if [[ ${PV} == *9999 ]]; then
-	EGIT_REPO_URI="https://github.com/radareorg/radare2"
-else
-	SRC_URI="https://github.com/radareorg/radare2/archive/${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-fi
-
+SRC_URI="
+	https://github.com/radareorg/radare2/archive/${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/radareorg/vector35-arch-arm64/archive/${VECTOR35_ARCH_ARM64_COMMIT}.tar.gz -> vector35-arch-arm64-${VECTOR35_ARCH_ARM64_COMMIT}.tar.gz
+	https://github.com/radareorg/vector35-arch-armv7/archive/${VECTOR35_ARCH_ARMV7_COMMIT}.tar.gz -> vector35-arch-armv7-${VECTOR35_ARCH_ARMV7_COMMIT}.tar.gz
+"
 
 LICENSE="GPL-2"
 SLOT="0"
+KEYWORDS="~amd64 ~x86"
 IUSE="ssl"
 
 RDEPEND="
@@ -38,21 +40,10 @@ PATCHES=(
 	"${FILESDIR}/${P}-nogit.patch"
 )
 
-src_unpack() {
-	if [[ ${PV} == *9999 ]]; then
-		git-r3_src_unpack
-	else
-		default
-	fi
-
-	# From libr/asm/arch/arm/v35arm64/Makefile
-	git-r3_fetch https://github.com/radareorg/vector35-arch-arm64 3c5eaba46dab72ecb7d5f5b865a13fdeee95b464
-	git-r3_fetch https://github.com/radareorg/vector35-arch-armv7 dde39f69ffea19fc37e681874b12cb4707bc4f30
-	git-r3_checkout https://github.com/radareorg/vector35-arch-arm64 "${WORKDIR}/${P}/libr/asm/arch/arm/v35arm64/arch-arm64"
-	git-r3_checkout https://github.com/radareorg/vector35-arch-armv7 "${WORKDIR}/${P}/libr/asm/arch/arm/v35arm64/arch-armv7"
-}
-
 src_prepare() {
+	mv "${WORKDIR}/vector35-arch-arm64-${VECTOR35_ARCH_ARM64_COMMIT}" "${S}/libr/asm/arch/arm/v35arm64/arch-arm64" || die
+	mv "${WORKDIR}/vector35-arch-armv7-${VECTOR35_ARCH_ARMV7_COMMIT}" "${S}/libr/asm/arch/arm/v35arm64/arch-armv7" || die
+
 	# Fix hardcoded docdir for fortunes
 	sed -i -e "/^#define R2_FORTUNES/s/radare2/$PF/" \
 		libr/include/r_userconf.h.acr

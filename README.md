@@ -131,8 +131,7 @@ portage tree.
 
 Radare2 is a UNIX-like reverse engineering framework and command-line toolset.
 This ebuild is based more recent version than found in the gentoo mainline
-repo. Current versions of Radare2 need to fetch 3rd-party Git repositories
-during build.
+repo.
 
 ### rz-ghidra
 
