@@ -19,7 +19,7 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="airspy bladerf cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1 faad fcd -debug -doc hackrf limesuite plutosdr +qt5 rtlsdr server soapy uhd"
+IUSE="airspy bladerf cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1 faad fcd -debug -doc hackrf limesuite plutosdr +qt5 rtlsdr server sgp4 soapy uhd"
 
 # TODO: perseus, xtrx, mirisdr
 
@@ -56,6 +56,7 @@ RDEPEND="
 	limesuite? ( net-wireless/limesuite )
 	plutosdr? ( net-libs/libiio )
 	rtlsdr? ( net-wireless/rtl-sdr )
+	sgp4? ( sci-libs/sgp4 )
 	soapy? ( net-wireless/soapysdr )
 	uhd? ( net-wireless/uhd )
 	"
