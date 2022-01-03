@@ -1,4 +1,4 @@
-# Copyright 2020-2021 Gentoo Authors
+# Copyright 2020-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -64,10 +64,6 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )
 	"
-
-PATCHES=(
-	"${FILESDIR}/${PN}-boost-barycentric.patch"
-)
 
 src_configure() {
 	# error: invalid conversion from ‘long int’ to ‘QDebug::Stream*’ [-fpermissive]
