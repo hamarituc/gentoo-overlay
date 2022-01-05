@@ -115,6 +115,12 @@ determination is based on radio measurements.
 Computer Forensics, Reverse engineering :mag:
 ---------------------------------------------
 
+### GEF
+
+GEF is an extension package to the GNU Debugger.
+
+Acknowledgements: The ebuilds are based on the work of the Pentoo project.
+
 ### hyx
 
 hyx is a vim-like terminal hex editor.
