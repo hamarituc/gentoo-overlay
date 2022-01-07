@@ -143,6 +143,18 @@ repo.
 
 rz-ghidra is an integration of the Ghidra decompiler into rizin and cutter.
 
+### Triton
+
+Citing from https://github.com/JonathanSalwan/Triton/:
+
+> Triton is a dynamic binary analysis (DBA) framework. It provides internal
+> components like a Dynamic Symbolic Execution (DSE) engine, a dynamic taint
+> engine, AST representations of the x86, x86-64, ARM32 and AArch64
+> Instructions Set Architecture (ISA), SMT simplification passes, an SMT solver
+> interface and, the last but not least, Python bindings. Based on these
+> components, you are able to build program analysis tools, automate reverse
+> engineering and perform software verification.
+
 ### Volatility 3
 
 Volatility is a framework for volatile memory analysis.
