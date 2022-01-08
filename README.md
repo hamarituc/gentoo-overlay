@@ -23,7 +23,7 @@ branch as of 2021-08-12 into the upstreams Python 3 branch combined with
 patches from [atpage](https://github.com/atpage/chirp). In contains some
 further patches by myself. THIS SOFRWARE COMES WITH ABSOLUTELY NOT WARRANTY.
 
-Acknowledgements: The ebuild is based on the work of the Pentoo project.
+Acknowledgements: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
   Patches of [atpage](https://github.com/atpage/chirp) are applied.
 
 ### CQRLOG
@@ -53,7 +53,7 @@ hardware devices.
 
 Acknowledgement: These ebuild are based on the work of
  * [AlexandreFournier](https://github.com/AlexandreFournier/gentoo-overlay)
- * Pentoo
+ * [Pentoo](https://www.pentoo.ch/).
 
 ### Xnecview
 
@@ -119,7 +119,7 @@ Computer Forensics, Reverse engineering :mag:
 
 GEF is an extension package to the GNU Debugger.
 
-Acknowledgements: The ebuilds are based on the work of the Pentoo project.
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
 
 ### hyx
 
@@ -165,7 +165,7 @@ Citing from https://github.com/JonathanSalwan/Triton/:
 
 Volatility is a framework for volatile memory analysis.
 
-Acknowledgements: The ebuilds are based on the work of the Pentoo project.
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
 
 
 Electronic Engineering :electric_plug:
