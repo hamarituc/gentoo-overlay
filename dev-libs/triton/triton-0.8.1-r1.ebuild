@@ -32,13 +32,20 @@ REQUIRED_USE="
 "
 
 DEPEND="
-	>=dev-libs/boost-1.68
+	>=dev-libs/boost-1.68:=
 	>=dev-libs/capstone-4.0
 	z3? ( >=sci-mathematics/z3-4.6.0 )
 "
 RDEPEND="
 	${DEPEND}
-	python? ( ${PYTHON_DEPS} )
+	python?
+	(
+		${PYTHON_DEPS}
+		$(python_gen_cond_dep '
+			dev-libs/boost[python,${PYTHON_USEDEP}]
+			dev-libs/capstone[python,${PYTHON_USEDEP}]
+		')
+	)
 "
 BDEPEND=""
 
