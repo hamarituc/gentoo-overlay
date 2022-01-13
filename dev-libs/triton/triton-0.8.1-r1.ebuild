@@ -50,7 +50,7 @@ RDEPEND="
 BDEPEND=""
 
 PATCHES=(
-	""${FILESDIR}/${P}-installdir.patch""
+	"${FILESDIR}/${P}-installdir.patch"
 )
 
 pkg_setup() {
