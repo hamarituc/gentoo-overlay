@@ -16,7 +16,7 @@ KEYWORDS=""
 
 DEPEND="
 	sci-libs/fftw:3.0=
-	sci-libs/gsl
+	sci-libs/gsl:=
 	sci-libs/pgplot
 "
 RDEPEND="${DEPEND}"

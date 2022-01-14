@@ -32,7 +32,7 @@ IUSE="cutter"
 
 DEPEND="
 	dev-libs/pugixml
-	dev-util/rizin
+	dev-util/rizin:=
 	cutter? (
 		dev-qt/qtwidgets:5
 		dev-util/cutter
