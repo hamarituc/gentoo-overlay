@@ -27,7 +27,7 @@ RESTRICT="test"
 RDEPEND="
 	sys-devel/gdb[python,${PYTHON_SINGLE_USEDEP}]
 	$(python_gen_cond_dep '
-	app-exploits/ropper[${PYTHON_MULTI_USEDEP}]
+	dev-util/ropper[${PYTHON_MULTI_USEDEP}]
 	dev-libs/capstone[python,${PYTHON_MULTI_USEDEP}]
 	dev-libs/keystone[python,${PYTHON_MULTI_USEDEP}]
 	dev-python/pylint[${PYTHON_MULTI_USEDEP}]
