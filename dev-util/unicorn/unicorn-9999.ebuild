@@ -7,7 +7,7 @@ MY_PV=${PV/_/-}
 
 DISTUTILS_OPTIONAL=1
 PYTHON_COMPAT=( python3_{9..10} )
-inherit cmake multilib distutils-r1
+inherit cmake distutils-r1
 
 DESCRIPTION="A lightweight multi-platform, multi-architecture CPU emulator framework"
 HOMEPAGE="http://www.unicorn-engine.org"

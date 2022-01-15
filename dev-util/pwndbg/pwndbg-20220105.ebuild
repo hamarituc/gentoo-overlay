@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{9..10} )
 
-inherit eutils linux-info python-single-r1
+inherit python-single-r1 wrapper
 
 DESCRIPTION="A GDB plug-in that makes debugging with GDB suck less"
 HOMEPAGE="https://github.com/pwndbg/pwndbg"
@@ -43,10 +43,7 @@ RDEPEND="${CDEPEND}
 DEPEND="${CDEPEND}"
 
 pkg_setup() {
-	local CONFIG_CHECK="~DEBUG_INFO"
-
 	python-single-r1_pkg_setup
-	check_extra_config
 }
 
 src_prepare() {

@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{9..10} )
 
-inherit eutils python-single-r1
+inherit python-single-r1 wrapper
 
 DESCRIPTION="A GDB Enhanced Features for exploit devs & reversers"
 HOMEPAGE="https://github.com/hugsy/gef"
@@ -23,7 +23,10 @@ SLOT="0"
 IUSE="doc"
 RESTRICT="test"
 
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
 RDEPEND="
+	${PYTHON_DEPS}
 	dev-util/ropper[${PYTHON_SINGLE_USEDEP}]
 	sys-devel/gdb[python,${PYTHON_SINGLE_USEDEP}]
 	$(python_gen_cond_dep '
