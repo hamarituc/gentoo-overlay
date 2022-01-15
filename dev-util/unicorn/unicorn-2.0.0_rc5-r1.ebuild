@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 MY_PV=${PV/_/-}
 
@@ -11,11 +11,17 @@ inherit cmake multilib distutils-r1
 
 DESCRIPTION="A lightweight multi-platform, multi-architecture CPU emulator framework"
 HOMEPAGE="http://www.unicorn-engine.org"
-SRC_URI="https://github.com/unicorn-engine/unicorn/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
+
+if [[ ${PV} == *9999 ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/unicorn-engine/unicorn"
+else
+	SRC_URI="https://github.com/unicorn-engine/unicorn/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="amd64 x86"
+fi
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~x86"
 
 IUSE_UNICORN_TARGETS="x86 arm aarch64 riscv mips sparc m68k ppc"
 
@@ -34,8 +40,8 @@ S="${WORKDIR}/${PN}-${MY_PV}"
 
 wrap_python() {
 	if use python; then
-		#src_prepare
-		#do not compile C extensions
+		# src_prepare
+		# do not compile C extensions
 		export LIBUNICORN_PATH=1
 
 		pushd bindings/python >/dev/null || die
@@ -45,7 +51,7 @@ wrap_python() {
 }
 
 src_prepare() {
-	#build from sources
+	# build from sources
 	rm -r bindings/python/prebuilt || die "failed to remove prebuild"
 	cmake_src_prepare
 	wrap_python ${FUNCNAME}
@@ -59,9 +65,6 @@ src_configure(){
 		fi
 	done
 
-	#the following variable is getting recreated using UNICORN_ARCHS below
-#	UNICORN_TARGETS=""
-
 	local mycmakeargs=(
 		-DBUILD_SHARED_LIBS=OFF
 		-DUNICORN_BUILD_SHARED="$(usex static-libs OFF ON)"
@@ -72,29 +75,11 @@ src_configure(){
 }
 
 src_compile() {
-#	export CC INSTALL_BIN PREFIX PKGCFGDIR LIBDIRARCH LIBARCHS CFLAGS LDFLAGS
-#	UNICORN_ARCHS="${unicorn_targets}" \
-#		UNICORN_STATIC="$(use static-libs && echo yes || echo no)" \
-#		UNICORN_DEBUG="$(use debug && echo yes || echo no)" \
-#		emake V=s
-
 	cmake_src_compile
 	wrap_python ${FUNCNAME}
 }
 
-#src_test() {
-#	default
-#	wrap_python ${FUNCNAME}
-#}
-
 src_install() {
-#	emake \
-#		UNICORN_ARCHS="${unicorn_targets}" \
-#		DESTDIR="${D}" \
-#		LIBDIR="/usr/$(get_libdir)" \
-#		UNICORN_STATIC="$(use static-libs && echo yes || echo no)" \
-#		install
-
 	cmake_src_install
 
 	wrap_python ${FUNCNAME}
