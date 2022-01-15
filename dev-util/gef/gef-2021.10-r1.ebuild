@@ -15,8 +15,7 @@ if [[ "${PV}" == *9999 ]]; then
 	EGIT_REPO_URI="https://github.com/hugsy/gef"
 else
 	SRC_URI="https://github.com/hugsy/gef/archive/${PV}.tar.gz -> ${P}.tar.gz"
-	#dev-libs/capstone is not stable yet
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="amd64 x86"
 fi
 
 LICENSE="MIT"
@@ -25,13 +24,13 @@ IUSE="doc"
 RESTRICT="test"
 
 RDEPEND="
+	dev-util/ropper[${PYTHON_SINGLE_USEDEP}]
 	sys-devel/gdb[python,${PYTHON_SINGLE_USEDEP}]
 	$(python_gen_cond_dep '
-	dev-util/ropper[${PYTHON_MULTI_USEDEP}]
-	dev-libs/capstone[python,${PYTHON_MULTI_USEDEP}]
-	dev-libs/keystone[python,${PYTHON_MULTI_USEDEP}]
-	dev-python/pylint[${PYTHON_MULTI_USEDEP}]
-	dev-util/unicorn[python,unicorn_targets_x86(+)]
+		dev-libs/capstone[python,${PYTHON_USEDEP}]
+		dev-libs/keystone[python,${PYTHON_USEDEP}]
+		dev-python/pylint[${PYTHON_USEDEP}]
+		dev-util/unicorn[python,${PYTHON_USEDEP},unicorn_targets_x86(+)]
 	')"
 
 BDEPEND="doc? ( dev-python/mkdocs )"
@@ -51,7 +50,7 @@ src_install() {
 	python_optimize "${D}/usr/share/${PN}"
 
 	make_wrapper "gdb-gef" \
-	"gdb -ex \"source /usr/share/${PN}/gef.py\""
+	"gdb -ex \"source /usr/share/${PN}/gef.py\"" || die
 
 	if use doc; then
 		mkdocs build -d html || die
