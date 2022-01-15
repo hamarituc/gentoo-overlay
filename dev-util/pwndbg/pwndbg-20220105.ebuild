@@ -16,41 +16,31 @@ if [[ ${PV} == *9999 ]]; then
 else
 	MY_PV="${PV:0:4}.${PV:4:2}.${PV:6:2}"
 	SRC_URI="https://github.com/pwndbg/pwndbg/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="amd64 x86"
 	S="${WORKDIR}/${PN}-${MY_PV}"
 fi
 
 LICENSE="MIT"
 SLOT="0"
 
-# TODO: Add tests and docs support
-# * tests is works fine outside portage sandbox
-# * in the current moment, docs are failing
-#IUSE="doc test"
-
 CDEPEND="${PYTHON_DEPS}"
-#sync with requirements.txt manually
 RDEPEND="${CDEPEND}
 	sys-devel/gdb[python,${PYTHON_SINGLE_USEDEP}]
 	$(python_gen_cond_dep '
+		dev-libs/capstone[python,${PYTHON_MULTI_USEDEP}]
 		dev-python/future[${PYTHON_MULTI_USEDEP}]
 		dev-python/isort[${PYTHON_MULTI_USEDEP}]
 		dev-python/psutil[${PYTHON_MULTI_USEDEP}]
 		dev-python/pycparser[${PYTHON_MULTI_USEDEP}]
 		dev-python/pyelftools[${PYTHON_MULTI_USEDEP}]
 		dev-python/python-ptrace[${PYTHON_MULTI_USEDEP}]
-		dev-util/ropgadget[${PYTHON_MULTI_USEDEP}]
 		dev-python/six[${PYTHON_MULTI_USEDEP}]
 		dev-python/pygments[${PYTHON_MULTI_USEDEP}]
-		dev-libs/capstone[python,${PYTHON_MULTI_USEDEP}]
+		dev-util/ropgadget[${PYTHON_MULTI_USEDEP}]
 		dev-util/unicorn[python,unicorn_targets_x86(+),${PYTHON_MULTI_USEDEP}]
 	')"
 
 DEPEND="${CDEPEND}"
-#	test? ( dev-python/pytest )
-#	doc? (
-#		dev-python/sphinx
-#		dev-python/sphinxcontrib-napoleon )"
 
 pkg_setup() {
 	local CONFIG_CHECK="~DEBUG_INFO"
@@ -76,24 +66,10 @@ src_install() {
 	python_optimize "${D}/usr/share/${PN}"
 
 	make_wrapper "pwndbg" \
-		"gdb -ex \"source /usr/share/${PN}/gdbinit.py\""
-
-	#if use doc; then
-	#	pushd docs/ >/dev/null || die
-	#	emake man html
-	#	popd >/dev/null || die
-	#fi
+		"gdb -ex \"source /usr/share/${PN}/gdbinit.py\"" || die
 
 	dodoc {README,DEVELOPING,FEATURES}.md
 }
-
-#src_test() {
-#	pushd tests/binaries >/dev/null || die
-#	emake clean && rm -vf *.out || die
-#	popd >/dev/null || die
-#
-#	./tests.sh || die
-#}
 
 pkg_postinst() {
 	einfo "\nUsage:"
