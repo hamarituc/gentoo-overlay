@@ -1,0 +1,4 @@
+USE_EXPAND="UNICORN_TARGETS"
+
+# dev-util/unicorn: emulation targets
+UNICORN_TARGETS="x86 arm aarch64"
