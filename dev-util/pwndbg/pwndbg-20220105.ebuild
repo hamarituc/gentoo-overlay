@@ -39,7 +39,7 @@ RDEPEND="${CDEPEND}
 		dev-python/pycparser[${PYTHON_MULTI_USEDEP}]
 		dev-python/pyelftools[${PYTHON_MULTI_USEDEP}]
 		dev-python/python-ptrace[${PYTHON_MULTI_USEDEP}]
-		app-exploits/ropgadget[${PYTHON_MULTI_USEDEP}]
+		dev-util/ropgadget[${PYTHON_MULTI_USEDEP}]
 		dev-python/six[${PYTHON_MULTI_USEDEP}]
 		dev-python/pygments[${PYTHON_MULTI_USEDEP}]
 		dev-libs/capstone[python,${PYTHON_MULTI_USEDEP}]
