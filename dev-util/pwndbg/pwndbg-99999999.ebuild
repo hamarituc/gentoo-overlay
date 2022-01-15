@@ -70,7 +70,6 @@ src_install() {
 
 pkg_postinst() {
 	einfo "\nUsage:"
-	einfo "    ~$ alias pwndbg='pwndbg -ex init-pwndbg'"
 	einfo "    ~$ pwndbg <program>"
 	ewarn "\nWARNING!!!"
 	ewarn "Some pwndbg commands only works with libc debug symbols.\n"
