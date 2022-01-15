@@ -1,10 +1,10 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-DISTUTILS_USE_SETUPTOOLS=rdepend
 PYTHON_COMPAT=( python3_{9..10} )
+DISTUTILS_SINGLE_IMPL=1
 
 inherit distutils-r1
 
@@ -15,20 +15,25 @@ if [[ ${PV} == *9999 ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/sashs/Ropper"
 else
-#	SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 	SRC_URI="https://github.com/sashs/Ropper/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/Ropper-${PV}"
 
-	# wait until dev-libs/keystone is stable
-	KEYWORDS="~amd64 ~arm64 ~mips ~x86"
+	KEYWORDS="~amd64 ~x86"
 fi
 
 LICENSE="BSD"
 SLOT="0"
+IUSE="z3"
+RESTRICT="test"
 
 RDEPEND="${PYTHON_DEPS}
-	dev-libs/capstone[python,${PYTHON_USEDEP}]
-	!dev-libs/capstone-bindings
-	dev-libs/keystone[python,${PYTHON_USEDEP}]
-	dev-python/filebytes[${PYTHON_USEDEP}]"
+	$(python_gen_cond_dep '
+		dev-libs/capstone[python,${PYTHON_USEDEP}]
+		dev-libs/keystone[python,${PYTHON_USEDEP}]
+		dev-python/filebytes[${PYTHON_USEDEP}]
+	')
+	z3? ( sci-mathematics/z3[python,${PYTHON_SINGLE_USEDEP}] )
+"
 DEPEND="${RDEPEND}"
+
+distutils_enable_tests setup.py
