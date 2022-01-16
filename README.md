@@ -169,6 +169,13 @@ Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
 
 rz-ghidra is an integration of the Ghidra decompiler into rizin and cutter.
 
+### Termshark
+
+Termshark is a terminal UI for tshark, inspired by Wireshark.
+
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
+
 ### Triton
 
 Citing from https://github.com/JonathanSalwan/Triton/:
