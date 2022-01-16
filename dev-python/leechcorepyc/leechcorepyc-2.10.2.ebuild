@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..10} )
+PYTHON_COMPAT=( python3_{8..10} )
 
 inherit distutils-r1
 
@@ -19,4 +19,5 @@ DEPEND=""
 RDEPEND="
 	${DEPEND}
 	${PYTHON_DEPS}
+	~dev-libs/LeechCore-$(ver_cut 1-2):=
 "
