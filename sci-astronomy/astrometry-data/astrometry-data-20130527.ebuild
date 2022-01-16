@@ -338,42 +338,12 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 
 IUSE_ASTROMETRY_INDEX="
-	astrometry_index_4107
-	astrometry_index_4108
-	astrometry_index_4109
-	astrometry_index_4110
-	astrometry_index_4111
-	astrometry_index_4112
-	astrometry_index_4113
-	astrometry_index_4114
-	astrometry_index_4115
-	astrometry_index_4116
-	astrometry_index_4117
-	astrometry_index_4118
-	astrometry_index_4119
-	astrometry_index_4200
-	astrometry_index_4201
-	astrometry_index_4202
-	astrometry_index_4203
-	astrometry_index_4204
-	astrometry_index_4205
-	astrometry_index_4206
-	astrometry_index_4207
-	astrometry_index_4208
-	astrometry_index_4209
-	+astrometry_index_4210
-	+astrometry_index_4211
-	+astrometry_index_4212
-	+astrometry_index_4213
-	+astrometry_index_4214
-	+astrometry_index_4215
-	+astrometry_index_4216
-	+astrometry_index_4217
-	+astrometry_index_4218
-	+astrometry_index_4219
+	4107 4108 4109 4110 4111 4112 4113 4114 4115 4116 4117 4118 4119
+	4200 4201 4202 4203 4204 4205 4206 4207 4208 4209 4210 4211 4212 4213 4214 4215 4216 4217 4218 4219
 "
 
-IUSE="${IUSE_ASTROMETRY_INDEX}"
+use_astrometry_index=$(printf ' astrometry_index_%s' ${IUSE_ASTROMETRY_INDEX})
+IUSE="${use_astrometry_index}"
 
 DEPEND="sci-astronomy/astrometry"
 RDEPEND="${DEPEND}"
