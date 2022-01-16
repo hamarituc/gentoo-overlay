@@ -7,9 +7,9 @@ DESCRIPTION="Direct Memory Access (DMA) Attack Software"
 HOMEPAGE="https://github.com/ufrisk/LeechCore"
 SRC_URI="https://github.com/ufrisk/LeechCore/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
-LICENSE="Apache-2.0"
+LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="amd64 ~arm64 x86"
+KEYWORDS="amd64 x86"
 
 DEPEND="virtual/libusb:*"
 RDEPEND="${DEPEND}"

@@ -29,5 +29,4 @@ RDEPEND="
 	snappy? ( >=dev-python/snappy-0.6.0[${PYTHON_USEDEP}] )
 	yara? ( >=dev-python/yara-python-3.8.0[${PYTHON_USEDEP}] )
 "
-# 
 DEPEND="${RDEPEND}"

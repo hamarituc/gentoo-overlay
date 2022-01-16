@@ -11,12 +11,12 @@ DESCRIPTION="Python binding for dev-libs/LeechCore"
 HOMEPAGE="https://github.com/ufrisk/LeechCore"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
-KEYWORDS="~amd64"
-LICENSE="BSD"
+KEYWORDS="amd64 x86"
+LICENSE="GPL-3"
 SLOT="0"
 
+DEPEND=""
 RDEPEND="
+	${DEPEND}
 	${PYTHON_DEPS}
-	~dev-libs/LeechCore-$(ver_cut 1-2)
 "
-DEPEND="${RDEPEND}"
