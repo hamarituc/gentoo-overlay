@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python3_{8..10} )
 
 inherit distutils-r1
 
-DESCRIPTION="Python binding for dev-libs/LeechCore"
+DESCRIPTION="Python binding for LeechCore Physical Memory Acquisition Library"
 HOMEPAGE="https://github.com/ufrisk/LeechCore"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
