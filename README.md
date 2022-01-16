@@ -208,6 +208,16 @@ simavr is an AVR microcontroller simulator. Don't confuse it with simulavr.
 simulavr is an AVR microcontroller simulator. Don't confuse it with simavr.
 
 
+Geographic Data Processing :globe_with_meridians:
+-------------------------------------------------
+
+### GDAL-GRASS
+
+GDAL-GRASS is a GDAL-plugin to access GRASS databases. It was part of the
+mainline Gentoo repository, but sometimes fell out due to the temporal removal
+of `sci-geosciences/grass`.
+
+
 Miscellaneous :toolbox:
 -----------------------
 
