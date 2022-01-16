@@ -23,8 +23,8 @@ branch as of 2021-08-12 into the upstreams Python 3 branch combined with
 patches from [atpage](https://github.com/atpage/chirp). In contains some
 further patches by myself. THIS SOFRWARE COMES WITH ABSOLUTELY NOT WARRANTY.
 
-Acknowledgements: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
-  Patches of [atpage](https://github.com/atpage/chirp) are applied.
+Acknowledgements: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project. Patches of [atpage](https://github.com/atpage/chirp) are applied.
 
 ### CQRLOG
 
@@ -119,7 +119,8 @@ Computer Forensics, Reverse engineering :mag:
 
 GEF is an extension package to the GNU Debugger.
 
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
 
 ### hyx
 
@@ -143,7 +144,8 @@ repo.
 
 pwndbg is a GDB frontend.
 
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
 
 ### rz-ghidra
 
@@ -165,7 +167,8 @@ Citing from https://github.com/JonathanSalwan/Triton/:
 
 Volatility is a framework for volatile memory analysis.
 
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
 
 
 Electronic Engineering :electric_plug:
@@ -191,4 +194,5 @@ Miscellaneous :toolbox:
 
 A library on top of `libnfc` for accessing various Mifare NFC tags.
 
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/).
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
