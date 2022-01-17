@@ -13,7 +13,9 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-IUSE="asi atik gphoto2 toupbase qhy v4l"
+IUSE_INDILIB_DRIVERS="asi atik qhy toupbase"
+use_indilib_drivers=$(printf ' indilib_drivers_%s' ${IUSE_INDILIB_DRIVERS})
+IUSE="gphoto2 v4l ${use_indilib_drivers}"
 
 DEPEND="
 	app-arch/bzip2
@@ -36,10 +38,10 @@ DEPEND="
 	virtual/jpeg
 	virtual/libudev
 	gphoto2? ( media-libs/libgphoto2 )
-	v4l? ( media-libs/libv4l )
-	asi? ( sci-libs/libasi )
-	atik? ( sci-libs/libatik )
-	toupbase?
+	indilib_drivers_asi? ( sci-libs/libasi )
+	indilib_drivers_atik? ( sci-libs/libatik )
+	indilib_drivers_qhy? ( sci-libs/libqhy )
+	indilib_drivers_toupbase?
 	(
 		sci-libs/libtoupcam
 		sci-libs/libaltaircam
@@ -47,7 +49,7 @@ DEPEND="
 		sci-libs/libnncam
 		sci-libs/libmallincam
 	)
-	qhy? ( sci-libs/libqhy )
+	v4l? ( media-libs/libv4l )
 "
 RDEPEND="${DEPEND}"
 BDEPEND=""
