@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit cmake git-r3 udev
 
@@ -15,6 +15,8 @@ KEYWORDS=""
 IUSE="drivers ogg qt5 rtlsdr test websocket"
 
 RDEPEND="
+	acct-group/indiserver
+	acct-user/indiserver
 	net-misc/curl
 	sci-libs/cfitsio:=
 	sci-libs/fftw:3.0=
@@ -23,22 +25,23 @@ RDEPEND="
 	sys-libs/zlib
 	virtual/jpeg:0
 	virtual/libusb:0
-	qt5? ( dev-qt/qtnetwork:5 )
 	ogg? (
 		media-libs/libogg
 		media-libs/libtheora
 	)
+	qt5? ( dev-qt/qtnetwork:5 )
 	rtlsdr? ( net-wireless/rtl-sdr )
 	websocket? ( dev-libs/boost:= )
 "
 DEPEND="${RDEPEND}
-	drivers? ( sci-libs/indilib-drivers )
 	kernel_linux? ( sys-kernel/linux-headers )
 	test? ( >=dev-cpp/gtest-1.8.0 )
 	websocket? ( dev-cpp/websocketpp )
 "
+PDEPEND="
+	drivers? ( sci-libs/indilib-drivers )
+"
 
-S="${WORKDIR}/${P}"
 DOCS=( AUTHORS ChangeLog README )
 
 src_configure() {
@@ -65,8 +68,6 @@ src_test() {
 }
 
 pkg_postinst() {
-	enewgroup indiserver
-	enewuser indiserver -1 -1 -1 "usb,uucp,video,indiserver"
 	elog "You can use init script in /etc/init.d/indiserver to start"
 	elog "indiserver automatically."
 	elog "Configuration is in /etc/conf.d/indiserver."
