@@ -8,6 +8,6 @@
 	<upstream>
 		<doc lang="en">https://indilib.org/raspberry-pi/raspberry-pi-camera.html</doc>
 		<bugs-to>https://github.com/indilib/indi-3rdparty/issues</bugs-to>
-		<remote-id type="github">indi-3rdparty</remote-id>
+		<remote-id type="github">indilib/indi-3rdparty</remote-id>
 	</upstream>
 </pkgmetadata>

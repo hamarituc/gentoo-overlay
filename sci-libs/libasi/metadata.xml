@@ -8,6 +8,6 @@
 	<upstream>
 		<doc lang="en">http://indilib.org/devices</doc>
 		<bugs-to>https://github.com/indilib/indi-3rdparty/issues</bugs-to>
-		<remote-id type="github">indilib</remote-id>
+		<remote-id type="github">indilib/indi-3rdparty</remote-id>
 	</upstream>
 </pkgmetadata>
