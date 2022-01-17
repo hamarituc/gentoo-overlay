@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-inherit cmake git-r3 eutils toolchain-funcs
+inherit cmake git-r3
 
 DESCRIPTION="INDI driver the for Pentax DSLR"
 HOMEPAGE="http://indilib.org"
@@ -21,6 +21,6 @@ DEPEND="~sci-libs/indilib-9999
 
 RDEPEND="${DEPEND}"
 
-INDI_GIT_DIR="${PN%%lib-driver-*}${PN##*-driver}"
+INDI_GIT_DIR="indi-${PN##*-driver-}"
 
 S="${EGIT_CHECKOUT_DIR}/${INDI_GIT_DIR}"

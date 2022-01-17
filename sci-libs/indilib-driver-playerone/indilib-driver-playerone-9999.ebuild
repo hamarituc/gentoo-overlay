@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-inherit cmake git-r3 eutils
+inherit cmake git-r3
 
 DESCRIPTION="the INDI driver for the Player One Astronomy's Camera"
 HOMEPAGE="http://indilib.org"
@@ -23,6 +23,6 @@ DEPEND="sci-libs/cfitsio
 
 RDEPEND="${DEPEND}"
 
-INDI_GIT_DIR="${PN%%lib-driver-*}${PN##*-driver}"
+INDI_GIT_DIR="indi-${PN##*-driver-}"
 
 S="${EGIT_CHECKOUT_DIR}/${INDI_GIT_DIR}"

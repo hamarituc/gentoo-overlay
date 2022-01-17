@@ -1,0 +1,12 @@
+diff --git a/auxproto.h b/auxproto.h
+index de0ab278..3593eee6 100644
+--- a/auxproto.h
++++ b/auxproto.h
+@@ -24,6 +24,7 @@
+ #pragma once
+ 
+ #include <vector>
++#include <stddef.h>
+ #include <stdint.h>
+ 
+ typedef std::vector<uint8_t> AUXBuffer;
