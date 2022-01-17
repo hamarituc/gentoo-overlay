@@ -12,15 +12,15 @@ SLOT="0/1"
 KEYWORDS="~amd64 ~x86"
 
 IUSE_INDILIB_DRIVERS="
-	aagcloudwatcherng
-	ahpxc
+	aagcloudwatcher-ng
+	ahp-xc
 	aok
 	apogee
 	armadillo
+	asi
+	asi-power
 	astrolink4
 	astromechfoc
-	asi
-	asipower
 	atik
 	avalon
 	beefocus
@@ -54,23 +54,24 @@ IUSE_INDILIB_DRIVERS="
 	shelyak
 	spectracyber
 	starbook
-	starbookten
+	starbook-ten
 	sv305
 	sx
 	talon6
 	toupbase
 	webcam
-	"
+"
 
 IUSE="${IUSE_INDILIB_DRIVERS}"
 
-RDEPEND="aagcloudwatcherng? ( sci-libs/indilib-driver-aagcloudwatcher-ng )
-	ahpxc? ( sci-libs/indilib-driver-ahp-xc )
+RDEPEND="
+	aagcloudwatcher-ng? ( sci-libs/indilib-driver-aagcloudwatcher-ng )
+	ahp-xc? ( sci-libs/indilib-driver-ahp-xc )
 	aok? ( sci-libs/indilib-driver-aok )
 	apogee? ( sci-libs/indilib-driver-apogee )
 	armadillo? ( sci-libs/indilib-driver-armadillo-platypus )
 	asi? ( sci-libs/indilib-driver-asi )
-	asipower? ( sci-libs/indilib-driver-asi-power )
+	asi-power? ( sci-libs/indilib-driver-asi-power )
 	astrolink4? ( sci-libs/indilib-driver-astrolink4 )
 	astromechfoc? ( sci-libs/indilib-driver-astromechfoc )
 	atik? ( sci-libs/indilib-driver-atik )
@@ -106,9 +107,10 @@ RDEPEND="aagcloudwatcherng? ( sci-libs/indilib-driver-aagcloudwatcher-ng )
 	shelyak? ( sci-libs/indilib-driver-shelyak )
 	spectracyber? ( sci-libs/indilib-driver-spectracyber )
 	starbook? ( sci-libs/indilib-driver-starbook )
-	starbookten? ( sci-libs/indilib-driver-starbook-ten )
+	starbook-ten? ( sci-libs/indilib-driver-starbook-ten )
 	sv305? ( sci-libs/indilib-driver-sv305 )
 	sx? ( sci-libs/indilib-driver-sx )
 	talon6? ( sci-libs/indilib-driver-talon6 )
 	toupbase? ( sci-libs/indilib-driver-toupbase )
-	webcam? ( sci-libs/indilib-driver-webcam )"
+	webcam? ( sci-libs/indilib-driver-webcam )
+"

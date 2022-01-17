@@ -9,13 +9,13 @@
 		Meta ebuild for installation of indilib.org's 3rd party drivers. Works like <pkg>x11-base/xorg-servers</pkg>.
 	</longdescription>
 	<use>
-		<flag name="aagcloudwatcherng">Installs <pkg>sci-libs/indilib-driver-aagcloudwatcherng</pkg></flag>
-		<flag name="ahpxc">Installs <pkg>sci-libs/indilib-driver-ahp-xc</pkg></flag>
+		<flag name="aagcloudwatcher-ng">Installs <pkg>sci-libs/indilib-driver-aagcloudwatcher-ng</pkg></flag>
+		<flag name="ahp-xc">Installs <pkg>sci-libs/indilib-driver-ahp-xc</pkg></flag>
 		<flag name="aok">Installs <pkg>sci-libs/indilib-driver-aok</pkg></flag>
 		<flag name="apogee">Installs <pkg>sci-libs/indilib-driver-apogee</pkg></flag>
 		<flag name="armadillo">Installs <pkg>sci-libs/indilib-driver-armadillo-platypus</pkg></flag>
 		<flag name="asi">Installs <pkg>sci-libs/indilib-driver-asi</pkg></flag>
-		<flag name="asipower">Installs <pkg>sci-libs/indilib-driver-asi-power</pkg></flag>
+		<flag name="asi-power">Installs <pkg>sci-libs/indilib-driver-asi-power</pkg></flag>
 		<flag name="astrolink4">Installs <pkg>sci-libs/indilib-driver-astrolink4</pkg></flag>
 		<flag name="astromechfoc">Installs <pkg>sci-libs/indilib-driver-astromechfoc</pkg></flag>
 		<flag name="atik">Installs <pkg>sci-libs/indilib-driver-atik</pkg></flag>
@@ -51,7 +51,7 @@
 		<flag name="shelyak">Installs <pkg>sci-libs/indilib-driver-shelyak</pkg></flag>
 		<flag name="spectracyber">Installs <pkg>sci-libs/indilib-driver-spectracyber</pkg></flag>
 		<flag name="starbook">Installs <pkg>sci-libs/indilib-driver-starbook</pkg></flag>
-		<flag name="starbookten">Installs <pkg>sci-libs/indilib-driver-starbook-ten</pkg></flag>
+		<flag name="starbook-ten">Installs <pkg>sci-libs/indilib-driver-starbook-ten</pkg></flag>
 		<flag name="sv305">Installs <pkg>sci-libs/indilib-driver-starbook</pkg></flag>
 		<flag name="sx">Installs <pkg>sci-libs/indilib-driver-sx</pkg></flag>
 		<flag name="talon6">Installs <pkg>sci-libs/indilib-driver-talon6</pkg></flag>

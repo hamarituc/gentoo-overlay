@@ -12,18 +12,19 @@ SLOT="0/1"
 KEYWORDS="-amd64 -arm -x86"
 
 IUSE_INDILIB_DRIVERS="
-	aagcloudwatcher
-	aagcloudwatcherng
-	ahpcorrelator
+	aagcloudwatcher-ng
+	ahp-xc
 	aok
 	apogee
 	armadillo
+	asi
+	asi-power
 	astrolink4
 	astromechfoc
-	asi
 	atik
 	avalon
 	beefocus
+	bresserexos2
 	celestronaux
 	dreamfocuser
 	dsi
@@ -42,38 +43,41 @@ IUSE_INDILIB_DRIVERS="
 	mgen
 	mi
 	nexdome
-	nexstarevo
 	nightscape
+	orion-ssg3
 	pentax
+	playerone
 	qhy
 	qsi
 	rtklib
-	rtlsdr
 	sbig
 	shelyak
 	spectracyber
 	starbook
-    sv305
+	starbook-ten
+	sv305
 	sx
 	talon6
 	toupbase
 	webcam
-	"
+"
 
 IUSE="${IUSE_INDILIB_DRIVERS}"
 
-RDEPEND="aagcloudwatcher? ( sci-libs/indilib-driver-aagcloudwatcher )
-	aagcloudwatcherng? ( sci-libs/indilib-driver-aagcloudwatcher-ng )
-	ahpcorrelator? ( sci-libs/indilib-driver-ahp-correlator )
+RDEPEND="
+	aagcloudwatcher-ng? ( sci-libs/indilib-driver-aagcloudwatcher-ng )
+	ahp-xc? ( sci-libs/indilib-driver-ahp-xc )
 	aok? ( sci-libs/indilib-driver-aok )
 	apogee? ( sci-libs/indilib-driver-apogee )
 	armadillo? ( sci-libs/indilib-driver-armadillo-platypus )
+	asi? ( sci-libs/indilib-driver-asi )
+	asi-power? ( sci-libs/indilib-driver-asi-power )
 	astrolink4? ( sci-libs/indilib-driver-astrolink4 )
 	astromechfoc? ( sci-libs/indilib-driver-astromechfoc )
-	asi? ( sci-libs/indilib-driver-asi )
 	atik? ( sci-libs/indilib-driver-atik )
 	avalon? ( sci-libs/indilib-driver-avalon )
 	beefocus? ( sci-libs/indilib-driver-beefocus )
+	bresserexos2? ( sci-libs/indilib-driver-bresserexos2 )
 	celestronaux? ( sci-libs/indilib-driver-celestronaux )
 	dreamfocuser? ( sci-libs/indilib-driver-dreamfocuser )
 	dsi? ( sci-libs/indilib-driver-dsi )
@@ -92,19 +96,21 @@ RDEPEND="aagcloudwatcher? ( sci-libs/indilib-driver-aagcloudwatcher )
 	mgen? ( sci-libs/indilib-driver-mgen )
 	mi? ( sci-libs/indilib-driver-mi )
 	nexdome? ( sci-libs/indilib-driver-nexdome )
-	nexstarevo? ( sci-libs/indilib-driver-nexstarevo )
 	nightscape? ( sci-libs/indilib-driver-nightscape )
+	orion-ssg3? ( sci-libs/indilib-driver-orion-ssg3 )
 	pentax? ( sci-libs/indilib-driver-pentax )
+	playerone? ( sci-libs/indilib-driver-playerone )
 	qhy? ( sci-libs/indilib-driver-qhy )
 	qsi? ( sci-libs/indilib-driver-qsi )
-    rtklib? ( sci-libs/indilib-driver-rtklib )
-	rtlsdr? ( sci-libs/indilib-driver-rtlsdr )
+	rtklib? ( sci-libs/indilib-driver-rtklib )
 	sbig? ( sci-libs/indilib-driver-sbig )
 	shelyak? ( sci-libs/indilib-driver-shelyak )
 	spectracyber? ( sci-libs/indilib-driver-spectracyber )
 	starbook? ( sci-libs/indilib-driver-starbook )
+	starbook-ten? ( sci-libs/indilib-driver-starbook-ten )
 	sv305? ( sci-libs/indilib-driver-sv305 )
 	sx? ( sci-libs/indilib-driver-sx )
 	talon6? ( sci-libs/indilib-driver-talon6 )
 	toupbase? ( sci-libs/indilib-driver-toupbase )
-	webcam? ( sci-libs/indilib-driver-webcam )"
+	webcam? ( sci-libs/indilib-driver-webcam )
+"
