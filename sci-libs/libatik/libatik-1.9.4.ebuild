@@ -7,14 +7,23 @@ inherit cmake
 
 DESCRIPTION="Driver for the for the ATIK cameras and filter wheels"
 HOMEPAGE="http://indilib.org"
-SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
+	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+	S="${EGIT_CHECKOUT_DIR}/${PN}"
+else
+	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+	KEYWORDS="~amd64 ~arm ~x86"
+	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+fi
 
 LICENSE="LGPL-2.1"
-KEYWORDS="~amd64 ~arm ~x86"
-
 SLOT="0/1"
 
-RDEPEND="${DEPEND}
-	virtual/libudev"
-
-S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+DEPEND=""
+RDEPEND="
+	${DEPEND}
+	virtual/libudev
+"

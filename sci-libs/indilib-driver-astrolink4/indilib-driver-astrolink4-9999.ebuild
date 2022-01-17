@@ -3,22 +3,26 @@
 
 EAPI=8
 
-inherit cmake git-r3
+inherit cmake
 
 DESCRIPTION="INDI driver to control the Astrolink4 mini device"
 HOMEPAGE="http://indilib.org"
-EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
-EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
 
-LICENSE="LGPL-3"
-KEYWORDS=""
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
+	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+	MY_S="${EGIT_CHECKOUT_DIR}"
+else
+	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
+fi
 
+LICENSE="GPL-3"
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-9999"
-
+DEPEND="~sci-libs/indilib-${PV}"
 RDEPEND="${DEPEND}"
 
-INDI_GIT_DIR="indi-${PN##*-driver-}"
-
-S="${EGIT_CHECKOUT_DIR}/${INDI_GIT_DIR}"
+S="${MY_S}/indi-${PN##*-driver-}"

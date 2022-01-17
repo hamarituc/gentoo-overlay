@@ -7,12 +7,18 @@ inherit cmake udev
 
 DESCRIPTION="INDI Astronomical Control Protocol library"
 HOMEPAGE="https://www.indilib.org/"
-SRC_URI="https://github.com/indilib/indi/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-S="${WORKDIR}/indi-${PV}"
+
+if [[ ${PV} == "9999" ]]; then
+	EGIT_REPO_URI="https://github.com/indilib/indi.git"
+	inherit git-r3
+else
+	SRC_URI="https://github.com/indilib/indi/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+	S="${WORKDIR}/indi-${PV}"
+fi
 
 LICENSE="BSD GPL-2+ LGPL-2+ LGPL-2.1+"
 SLOT="0/1"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
 IUSE="drivers ogg qt5 rtlsdr test websocket"
 
 RDEPEND="

@@ -3,20 +3,27 @@
 
 EAPI=8
 
-inherit cmake git-r3
+inherit cmake
 
 DESCRIPTION="Firmware for the Fishcamp Engineering's Starfish CMOS autoguider"
 HOMEPAGE="http://indilib.org"
-EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
-EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
+	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+	S="${EGIT_CHECKOUT_DIR}/${PN}"
+else
+	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+fi
 
 LICENSE="fishcamp"
-KEYWORDS=""
-
-RDEPEND="${DEPEND}
-	sys-apps/fxload
-	~sci-libs/indilib-9999"
-
 SLOT="0/1"
 
-S="${EGIT_CHECKOUT_DIR}/${PN}"
+DEPEND="~sci-libs/indilib-${PV}"
+RDEPEND="
+	${DEPEND}
+	sys-apps/fxload
+"

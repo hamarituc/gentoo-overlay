@@ -9,7 +9,6 @@ SRC_URI=""
 
 LICENSE="metapackage"
 SLOT="0/1"
-KEYWORDS="-amd64 -arm -x86"
 
 IUSE_INDILIB_DRIVERS="
 	aagcloudwatcher-ng

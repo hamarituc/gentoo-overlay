@@ -3,26 +3,32 @@
 
 EAPI=8
 
-inherit cmake git-r3
+inherit cmake
 
 DESCRIPTION="INDI driver for the gphoto2 compatible cameras"
 HOMEPAGE="http://indilib.org"
-EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
-EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
+	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+	MY_S="${EGIT_CHECKOUT_DIR}"
+else
+	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
+fi
 
 LICENSE="LGPL-2"
-KEYWORDS=""
-
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-9999
+DEPEND="
+	dev-libs/npth
 	media-libs/libgphoto2[jpeg]
 	media-libs/libraw
-	dev-libs/npth
-	media-libs/tiff[cxx]"
-
+	media-libs/tiff[cxx]
+	~sci-libs/indilib-${PV}
+"
 RDEPEND="${DEPEND}"
 
-INDI_GIT_DIR="indi-${PN##*-driver-}"
-
-S="${EGIT_CHECKOUT_DIR}/${INDI_GIT_DIR}"
+S="${MY_S}/indi-${PN##*-driver-}"

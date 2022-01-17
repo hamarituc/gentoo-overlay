@@ -7,18 +7,27 @@ inherit cmake
 
 DESCRIPTION="Driver for the Apogee ALTA device drivers"
 HOMEPAGE="http://indilib.org"
-SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
+	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+	S="${EGIT_CHECKOUT_DIR}/${PN}"
+else
+	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+fi
 
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~x86"
-
 SLOT="0/1"
 
-DEPEND="net-misc/curl
+DEPEND="
+	net-misc/curl
 	~sci-libs/indilib-${PV}
-	virtual/libusb:1"
-
-RDEPEND="${DEPEND}
-	sys-apps/fxload"
-
-S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+	virtual/libusb:1
+"
+RDEPEND="
+	${DEPEND}
+	sys-apps/fxload
+"

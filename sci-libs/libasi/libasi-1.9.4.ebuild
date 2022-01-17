@@ -7,15 +7,24 @@ inherit cmake
 
 DESCRIPTION="Udev rules and firmware for ZWO Optics ASI cameras."
 HOMEPAGE="http://indilib.org"
-SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
+	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+	S="${EGIT_CHECKOUT_DIR}/${PN}"
+else
+	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+fi
 
 LICENSE="zwo-asi"
-KEYWORDS="~amd64 ~x86"
-
 SLOT="0/1"
 
-RDEPEND="${DEPEND}
+DEPEND=""
+RDEPEND="
+	${DEPEND}
 	sys-apps/fxload
-	virtual/libudev"
-
-S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+	virtual/libudev
+"

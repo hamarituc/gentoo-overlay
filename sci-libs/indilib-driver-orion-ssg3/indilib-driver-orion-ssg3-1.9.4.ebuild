@@ -7,20 +7,27 @@ inherit cmake
 
 DESCRIPTION="the INDI driver for the Orion StarShoot G3 and G4 cameras"
 HOMEPAGE="http://indilib.org"
-SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
+	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+	MY_S="${EGIT_CHECKOUT_DIR}"
+else
+	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
+fi
 
 LICENSE="GPL-3"
-KEYWORDS="~amd64 ~x86"
-
 SLOT="0/1"
 
-DEPEND="sci-libs/cfitsio
+DEPEND="
+	sci-libs/cfitsio
 	~sci-libs/indilib-${PV}
 	sys-libs/zlib
-	virtual/libusb:1"
-
+	virtual/libusb:1
+"
 RDEPEND="${DEPEND}"
 
-INDI_TARGET_DIRECTORY="indi-${PN##*-driver-}"
-
-S="${WORKDIR}/indi-3rdparty-${PV}/${INDI_TARGET_DIRECTORY}"
+S="${MY_S}/indi-${PN##*-driver-}"

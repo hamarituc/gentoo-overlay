@@ -3,21 +3,27 @@
 
 EAPI=8
 
-inherit cmake git-r3
+inherit cmake
 
 DESCRIPTION="SDK and firmware for the QHY CCD cameras"
 HOMEPAGE="http://indilib.org"
-EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
-EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
+	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
+	S="${EGIT_CHECKOUT_DIR}/${PN}"
+else
+	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+fi
 
 LICENSE="qhyccd"
-KEYWORDS=""
-
 SLOT="0/1"
 
 DEPEND=""
-
-RDEPEND="${DEPEND}
-	sys-apps/fxload"
-
-S="${EGIT_CHECKOUT_DIR}/${PN}"
+RDEPEND="
+	${DEPEND}
+	sys-apps/fxload
+"
