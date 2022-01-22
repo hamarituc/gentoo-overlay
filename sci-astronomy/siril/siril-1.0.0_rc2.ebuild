@@ -40,10 +40,6 @@ DOCS=( README.md NEWS ChangeLog )
 
 S="${WORKDIR}/${PN}-${PV/_/-}"
 
-src_unpack() {
-	unpack ${A}
-}
-
 src_configure() {
 	local emesonargs=(
 		$(meson_use openmp)

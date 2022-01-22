@@ -38,10 +38,6 @@ RDEPEND="${DEPEND}"
 
 DOCS=( README.md NEWS ChangeLog )
 
-src_unpack() {
-	unpack ${A}
-}
-
 src_configure() {
 	local emesonargs=(
 		$(meson_use openmp)
