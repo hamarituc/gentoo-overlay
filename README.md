@@ -158,6 +158,13 @@ Radare2 is a UNIX-like reverse engineering framework and command-line toolset.
 This ebuild is based more recent version than found in the gentoo mainline
 repo.
 
+### peda
+
+peda is an extension package to the GNU Debugger.
+
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
+
 ### pwndbg
 
 pwndbg is a GDB frontend.
