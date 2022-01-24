@@ -10,7 +10,7 @@ inherit python-single-r1 wrapper
 DESCRIPTION="A GDB plug-in that makes debugging with GDB suck less"
 HOMEPAGE="https://github.com/pwndbg/pwndbg"
 
-if [[ ${PV} == *9999 ]]; then
+if [[ ${PV} == "99999999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/pwndbg/pwndbg"
 else
@@ -63,7 +63,7 @@ src_install() {
 	python_optimize "${D}/usr/share/${PN}"
 
 	make_wrapper "pwndbg" \
-		"gdb -ex \"source /usr/share/${PN}/gdbinit.py\"" || die
+		"gdb -x \"/usr/share/${PN}/gdbinit.py\"" || die
 
 	dodoc {README,DEVELOPING,FEATURES}.md
 }

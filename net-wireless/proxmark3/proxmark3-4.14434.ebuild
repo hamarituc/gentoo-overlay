@@ -5,7 +5,7 @@ EAPI=7
 
 inherit udev
 
-if [ "${PV}" = "9999" ]; then
+if [[ ${PV} = "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/RfidResearchGroup/proxmark3.git"
 else

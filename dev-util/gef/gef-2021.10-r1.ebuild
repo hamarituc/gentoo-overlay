@@ -10,7 +10,7 @@ inherit python-single-r1 wrapper
 DESCRIPTION="A GDB Enhanced Features for exploit devs & reversers"
 HOMEPAGE="https://github.com/hugsy/gef"
 
-if [[ "${PV}" == *9999 ]]; then
+if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/hugsy/gef"
 else
@@ -53,7 +53,7 @@ src_install() {
 	python_optimize "${D}/usr/share/${PN}"
 
 	make_wrapper "gdb-gef" \
-	"gdb -ex \"source /usr/share/${PN}/gef.py\"" || die
+		"gdb -x \"/usr/share/${PN}/gef.py\"" || die
 
 	if use doc; then
 		mkdocs build -d html || die

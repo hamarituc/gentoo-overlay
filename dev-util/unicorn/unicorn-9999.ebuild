@@ -12,7 +12,7 @@ inherit cmake distutils-r1
 DESCRIPTION="A lightweight multi-platform, multi-architecture CPU emulator framework"
 HOMEPAGE="http://www.unicorn-engine.org"
 
-if [[ ${PV} == *9999 ]]; then
+if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/unicorn-engine/unicorn"
 else

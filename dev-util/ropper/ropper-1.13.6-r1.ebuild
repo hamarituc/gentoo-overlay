@@ -11,7 +11,7 @@ inherit distutils-r1
 DESCRIPTION="Use to display information about binary files in different file formats"
 HOMEPAGE="https://scoding.de/ropper https://github.com/sashs/Ropper"
 
-if [[ ${PV} == *9999 ]]; then
+if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/sashs/Ropper"
 else

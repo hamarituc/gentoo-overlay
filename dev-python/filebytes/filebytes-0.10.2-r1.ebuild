@@ -10,7 +10,7 @@ inherit distutils-r1
 DESCRIPTION="Classes/Types to read and edit executable files"
 HOMEPAGE="https://github.com/sashs/filebytes"
 
-if [[ ${PV} == *9999 ]]; then
+if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/sashs/filebytes"
 else
