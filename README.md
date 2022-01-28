@@ -115,13 +115,6 @@ determination is based on radio measurements.
 Computer Forensics, Reverse engineering :mag:
 ---------------------------------------------
 
-### GEF
-
-GEF is an extension package to the GNU Debugger.
-
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
-  Project.
-
 ### Ghidra
 
 Citing from https://github.com/NationalSecurityAgency/ghidra:
@@ -245,3 +238,16 @@ Proxmark3 is a RFID/NFC reader, writer, sniffer and emulator.
 
 Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
   Project.
+
+
+Ebuilds made it into `::gentoo` :tada:
+======================================
+
+The following ebuilds are now in the Gentoo mainline repository.
+
+ * `app-forensics/yara`
+ * `dev-python/filebytes`
+ * `dev-python/yara-python`
+ * `dev-util/gef`
+ * `dev-util/ropper`
+ * `dev-util/unicorn`
