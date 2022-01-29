@@ -23,8 +23,8 @@ fi
 LICENSE="MIT"
 SLOT="0"
 
-CDEPEND="${PYTHON_DEPS}"
-RDEPEND="${CDEPEND}
+RDEPEND="
+	${PYTHON_DEPS}
 	sys-devel/gdb[python,${PYTHON_SINGLE_USEDEP}]
 	$(python_gen_cond_dep '
 		dev-libs/capstone[python,${PYTHON_USEDEP}]
@@ -39,8 +39,6 @@ RDEPEND="${CDEPEND}
 		dev-util/ROPgadget[${PYTHON_USEDEP}]
 		dev-util/unicorn[python,${PYTHON_USEDEP}]
 	')"
-
-DEPEND="${CDEPEND}"
 
 pkg_setup() {
 	python-single-r1_pkg_setup

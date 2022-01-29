@@ -22,9 +22,10 @@ fi
 LICENSE="GPL-2"
 SLOT="0"
 
-DEPEND="${PYTHON_DEPS}"
-RDEPEND="${DEPEND}
-	dev-libs/capstone[python,${PYTHON_USEDEP}]"
+RDEPEND="
+	${PYTHON_DEPS}
+	dev-libs/capstone[python,${PYTHON_USEDEP}]
+"
 
 S="${WORKDIR}"/ROPgadget-${PV}
 
