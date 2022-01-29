@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 PYTHON_COMPAT=( python3_{9..10} )
 
@@ -27,17 +27,17 @@ CDEPEND="${PYTHON_DEPS}"
 RDEPEND="${CDEPEND}
 	sys-devel/gdb[python,${PYTHON_SINGLE_USEDEP}]
 	$(python_gen_cond_dep '
-		dev-libs/capstone[python,${PYTHON_MULTI_USEDEP}]
-		dev-python/future[${PYTHON_MULTI_USEDEP}]
-		dev-python/isort[${PYTHON_MULTI_USEDEP}]
-		dev-python/psutil[${PYTHON_MULTI_USEDEP}]
-		dev-python/pycparser[${PYTHON_MULTI_USEDEP}]
-		dev-python/pyelftools[${PYTHON_MULTI_USEDEP}]
-		dev-python/python-ptrace[${PYTHON_MULTI_USEDEP}]
-		dev-python/six[${PYTHON_MULTI_USEDEP}]
-		dev-python/pygments[${PYTHON_MULTI_USEDEP}]
-		dev-util/ropgadget[${PYTHON_MULTI_USEDEP}]
-		dev-util/unicorn[python,unicorn_targets_x86(+),${PYTHON_MULTI_USEDEP}]
+		dev-libs/capstone[python,${PYTHON_USEDEP}]
+		dev-python/future[${PYTHON_USEDEP}]
+		dev-python/isort[${PYTHON_USEDEP}]
+		dev-python/psutil[${PYTHON_USEDEP}]
+		dev-python/pycparser[${PYTHON_USEDEP}]
+		dev-python/pyelftools[${PYTHON_USEDEP}]
+		dev-python/python-ptrace[${PYTHON_USEDEP}]
+		dev-python/six[${PYTHON_USEDEP}]
+		dev-python/pygments[${PYTHON_USEDEP}]
+		dev-util/ROPgadget[${PYTHON_USEDEP}]
+		dev-util/unicorn[python,${PYTHON_USEDEP}]
 	')"
 
 DEPEND="${CDEPEND}"
@@ -57,13 +57,13 @@ src_prepare() {
 }
 
 src_install() {
-	insinto "/usr/share/${PN}"
+	insinto /usr/share/${PN}
 	doins -r pwndbg/ gdbinit.py # ida_script.py
 
-	python_optimize "${D}/usr/share/${PN}"
+	python_optimize "${ED}"/usr/share/${PN}
 
 	make_wrapper "pwndbg" \
-		"gdb -x \"/usr/share/${PN}/gdbinit.py\"" || die
+		"gdb -x \"${EPREFIX}/usr/share/${PN}/gdbinit.py\"" || die
 
 	dodoc {README,DEVELOPING,FEATURES}.md
 }

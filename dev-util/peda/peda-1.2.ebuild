@@ -34,13 +34,13 @@ pkg_setup() {
 }
 
 src_install() {
-	insinto "/usr/share/${PN}"
+	insinto /usr/share/${PN}
 	doins -r lib/ *.py
 
-	python_optimize "${D}/usr/share/${PN}"
+	python_optimize "${ED}"/usr/share/${PN}
 
 	make_wrapper "gdb-peda" \
-		"gdb -x \"/usr/share/${PN}/peda.py\"" || die
+		"gdb -x \"${EPREFIX}/usr/share/${PN}/peda.py\"" || die
 
 	dodoc README{,.md}
 }
