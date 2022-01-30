@@ -165,6 +165,17 @@ pwndbg is a GDB frontend.
 Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
   Project.
 
+### pwntools
+
+Citing from https://github.com/Gallopsled/pwntools:
+
+> Pwntools is a CTF framework and exploit development library. Written in
+> Python, it is designed for rapid prototyping and development, and intended to
+> make exploit writing as simple as possible.
+
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
+
 ### rz-ghidra
 
 rz-ghidra is an integration of the Ghidra decompiler into rizin and cutter.
