@@ -1,4 +1,4 @@
-# Copyright 2021 Gentoo Authors
+# Copyright 2021-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -24,12 +24,12 @@ SLOT="0"
 
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 DEPEND="${LUA_DEPS}
-	dev-libs/libnfc
+	dev-libs/libnfc:=
 	dev-libs/openssl:=
-	net-wireless/libfreefare
-	sys-libs/ncurses
-	sys-libs/readline
-	sys-libs/zlib
+	net-wireless/libfreefare:=
+	sys-libs/ncurses:=
+	sys-libs/readline:=
+	sys-libs/zlib:=
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
