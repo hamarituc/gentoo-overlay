@@ -1,0 +1,15 @@
+diff --git a/src/libtriton/CMakeLists.txt b/src/libtriton/CMakeLists.txt
+index 7a62a926..1d5aff55 100644
+--- a/src/libtriton/CMakeLists.txt
++++ b/src/libtriton/CMakeLists.txt
+@@ -291,8 +291,8 @@ install(
+     EXPORT tritonTargets
+     PUBLIC_HEADER DESTINATION include/triton
+     INCLUDES DESTINATION include
+-    ARCHIVE DESTINATION lib
+-    LIBRARY DESTINATION lib
++    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ )
+ 
+ # Configure tritonConfig.cmake and tritonConfigVersion.cmake
