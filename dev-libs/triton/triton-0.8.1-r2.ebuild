@@ -24,11 +24,11 @@ fi
 LICENSE="Apache-2.0"
 SLOT="0"
 
-IUSE="python static z3"
+IUSE="python static-libs z3"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	python? ( !static )
+	python? ( !static-libs )
 "
 
 DEPEND="
@@ -60,7 +60,7 @@ pkg_setup() {
 src_configure() {
 	local mycmakeargs=(
 		-DPYTHON_BINDINGS="$(usex python)"
-		-DSTATICLIB="$(usex static)"
+		-DSTATICLIB="$(usex static-libs)"
 		-DZ3_INTERFACE="$(usex z3)"
 	)
 	cmake_src_configure
