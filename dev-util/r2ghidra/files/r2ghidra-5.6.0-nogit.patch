@@ -1,0 +1,35 @@
+diff --git a/Makefile b/Makefile
+index c66ceda..640d149 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,8 +1,6 @@
+ -include config.mk
+ DESTDIR?=
+ 
+-GHIDRA_NATIVE_COMMIT=0.1.5
+-
+ ifeq ($(shell test -f config.mk && echo $$?),0)
+ all: ghidra-native ghidra-processors.txt
+ 	$(MAKE) -C src
+@@ -48,8 +46,6 @@ install uninstall user-install user-uninstall:
+ 	$(MAKE) -C ghidra $@
+ 
+ ghidra-native:
+-	git clone https://github.com/radareorg/ghidra-native
+-	cd ghidra-native && git checkout $(GHIDRA_NATIVE_COMMIT)
+ 	$(MAKE) -C ghidra-native patch
+ 
+ mrproper: clean
+diff --git a/ghidra/Makefile b/ghidra/Makefile
+index 652ba23..44f3848 100644
+--- a/ghidra/Makefile
++++ b/ghidra/Makefile
+@@ -23,8 +23,6 @@ uninstall:
+ 	$(MAKE) sleigh-uninstall D="$(DD)"
+ 
+ ghidra-native:
+-	git clone https://github.com/radareorg/ghidra-native
+-	cd ghidra-native && git checkout $(GHIDRA_NATIVE_COMMIT)
+ 	$(MAKE) -C ghidra-native patch
+ 
+ .PHONY: install uninstall user-install user-uninstall all

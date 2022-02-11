@@ -1,0 +1,14 @@
+diff --git a/iaito-plugin/CMakeLists.txt b/iaito-plugin/CMakeLists.txt
+index 3e09f0c..f1da03b 100644
+--- a/iaito-plugin/CMakeLists.txt
++++ b/iaito-plugin/CMakeLists.txt
+@@ -15,7 +15,7 @@ add_library(r2ghidra_iaito SHARED ${SOURCE})
+ target_link_libraries(r2ghidra_iaito Qt5::Widgets)
+ target_link_libraries(r2ghidra_iaito Radare2::libr)
+ 
+-find_package(Iaito REQUIRED)
+-target_link_libraries(r2ghidra_iaito Iaito::Iaito)
++find_package(iaito REQUIRED)
++target_link_libraries(r2ghidra_iaito iaito::iaito)
+ target_link_libraries(r2ghidra_iaito core_ghidra)
+ 
