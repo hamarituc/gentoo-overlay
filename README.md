@@ -180,6 +180,17 @@ Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
 
 rz-ghidra is an integration of the Ghidra decompiler into rizin and cutter.
 
+### sqlmap
+
+Citing from https://github.com/sqlmapproject/sqlmap:
+
+> sqlmap is an open source penetration testing tool that automates the process
+> of detecting and exploiting SQL injection flaws and taking over of database
+> servers.
+
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
+
 ### Termshark
 
 Termshark is a terminal UI for tshark, inspired by Wireshark.
