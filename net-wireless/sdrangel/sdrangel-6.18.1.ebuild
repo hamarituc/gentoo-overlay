@@ -9,7 +9,7 @@ DESCRIPTION="SDR Rx/Tx software"
 HOMEPAGE="https://github.com/f4exb/sdrangel"
 SRC_URI=""
 
-if [[ ${PV} =~ "9999" ]]; then
+if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/f4exb/sdrangel.git"
 else
