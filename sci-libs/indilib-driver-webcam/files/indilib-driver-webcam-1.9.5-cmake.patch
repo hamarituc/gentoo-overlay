@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 60a2c9a4..3794571c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -44,6 +44,8 @@ if (CFITSIO_FOUND)
+   include_directories(${CFITSIO_INCLUDE_DIR})
+ endif (CFITSIO_FOUND)
+ 
++include(CMakeCommon)
++
+ ########### OpenCV ###############
+ set(webcam_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/indi_webcam.cpp )

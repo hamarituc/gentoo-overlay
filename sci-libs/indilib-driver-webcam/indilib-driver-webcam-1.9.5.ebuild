@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake
 
-DESCRIPTION="INDI driver for the NexStar and other Celestron AUX-protocol mounts"
+DESCRIPTION="INDI driver for various types of webcameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -22,11 +22,14 @@ fi
 LICENSE="LGPL-2.1"
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}"
+DEPEND="
+	media-video/ffmpeg
+	~sci-libs/indilib-${PV}
+"
 RDEPEND="${DEPEND}"
 
 PATCHES=(
-	"${FILESDIR}/${P}-size_t.patch"
+	"${FILESDIR}/${P}-cmake.patch"
 )
 
 S="${MY_S}/indi-${PN##*-driver-}"
