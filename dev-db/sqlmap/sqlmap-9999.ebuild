@@ -38,12 +38,12 @@ src_install () {
 		README.md \
 		$(use doc && echo "${T}/doc/*")
 
-	dodir "/usr/share/${PN}/"
-	cp -R * "${ED}/usr/share/${PN}/" || die
+	insinto "/usr/share/${PN}/"
+	doins -r *
 	python_optimize "${ED}/usr/share/${PN}"
 
 	make_wrapper "${PN}" \
-		"python3 /usr/share/${PN}/sqlmap.py"
+		"${EPYTHON} /usr/share/${PN}/sqlmap.py"
 
 	newbashcomp "${FILESDIR}"/sqlmap.bash-completion sqlmap
 }
