@@ -43,7 +43,11 @@ DEPEND="
 	"
 RDEPEND="${DEPEND}"
 
-DOCS=( README.md NEWS ChangeLog )
+PATCHES=(
+	"${FILESDIR}/${PN}-docfiles.patch"
+)
+
+DOCS=( README.md NEWS ChangeLog LICENSE.md LICENSE_sleef.txt AUTHORS )
 
 src_configure() {
 	local emesonargs=(
