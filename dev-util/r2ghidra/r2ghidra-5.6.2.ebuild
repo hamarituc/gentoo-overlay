@@ -1,4 +1,4 @@
-# Copyright 2021 Gentoo Authors
+# Copyright 2021-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -12,15 +12,15 @@ if [[ ${PV} == "9999" ]] ; then
     inherit git-r3
 	EGIT_REPO_URI="https://github.com/radareorg/r2ghidra.git"
 	EGIT_SUBMODULES=( '*' '-third-party/pugixml' )
-	GHIDRA_COMMIT="0.1.4"
+	GHIDRA_COMMIT="0.1.5"
 
     KEYWORDS=""
 else
 	EGIT_COMMIT="v${PV}"
-	GHIDRA_COMMIT="0.1.4"
+	GHIDRA_COMMIT="0.1.8"
 
 	SRC_URI="
-		https://github.com/radareorg/r2ghidra/archive/v${PV}.tar.gz -> ${P}.tar.gz
+		https://github.com/radareorg/r2ghidra/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
 		https://github.com/radareorg/ghidra-native/archive/${GHIDRA_COMMIT}.tar.gz -> ghidra-${PN}-${GHIDRA_COMMIT}.tar.gz
 	"
 	KEYWORDS="~amd64"
@@ -33,7 +33,7 @@ IUSE="iaito"
 
 DEPEND="
 	dev-libs/pugixml
-	dev-util/radare2
+	dev-util/radare2:=
 	iaito? (
 		dev-qt/qtwidgets:5
 		dev-util/iaito
