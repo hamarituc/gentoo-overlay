@@ -158,13 +158,6 @@ peda is an extension package to the GNU Debugger.
 Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
   Project.
 
-### pwndbg
-
-pwndbg is a GDB frontend.
-
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
-  Project.
-
 ### pwntools
 
 Citing from https://github.com/Gallopsled/pwntools:
@@ -261,5 +254,6 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `dev-python/filebytes`
  * `dev-python/yara-python`
  * `dev-util/gef`
+ * `dev-util/pwndbg`
  * `dev-util/ropper`
  * `dev-util/unicorn`
