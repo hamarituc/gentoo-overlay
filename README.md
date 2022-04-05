@@ -192,13 +192,6 @@ Citing from https://github.com/JonathanSalwan/Triton/:
 > components, you are able to build program analysis tools, automate reverse
 > engineering and perform software verification.
 
-### Volatility 3
-
-Volatility is a framework for volatile memory analysis.
-
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
-  Project.
-
 
 Electronic Engineering :electric_plug:
 --------------------------------------
@@ -249,6 +242,7 @@ Ebuilds made it into `::gentoo` :tada:
 
 The following ebuilds are now in the Gentoo mainline repository.
 
+ * `app-forensics/volatility3`
  * `app-forensics/yara`
  * `dev-db/sqlmap`
  * `dev-python/filebytes`
