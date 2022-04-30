@@ -19,7 +19,7 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="airspy bladerf cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1 faad fcd -debug -doc hackrf limesuite plutosdr +qt5 rtlsdr server sgp4 soapy uhd"
+IUSE="airspy bladerf cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1 cpu_flags_x86_sse4_2 faad fcd -debug -doc hackrf limesuite plutosdr +qt5 rtlsdr server sgp4 soapy uhd"
 
 # TODO: perseus, xtrx, mirisdr
 
@@ -78,12 +78,9 @@ src_configure() {
 		-DRX_SAMPLE_24BIT=ON \
 		-DBUILD_SERVER="$(usex server)" \
 		-DBUILD_GUI="$(usex qt5)" \
-		-DBUILD_FORCE_SSSE3="$(usex cpu_flags_x86_ssse3)" \
-		-DBUILD_FORCE_SSE41="$(usex cpu_flags_x86_sse4_1)" \
 		-DENABLE_AIRSPY="$(usex airspy)" \
 		-DENABLE_AIRSPYHF="$(usex airspy)" \
 		-DENABLE_BLADERF="$(usex bladerf)" \
-		-DENABLE_DOXYGEN="$(usex doc)" \
 		-DENABLE_FUNCUBE="$(usex fcd)" \
 		-DENABLE_HACKRF="$(usex hackrf)" \
 		-DENABLE_IIO="$(usex plutosdr)" \
@@ -93,6 +90,29 @@ src_configure() {
 		-DENABLE_SOAPYSDR="$(usex soapy)" \
 		-DENABLE_USRP="$(usex uhd)" \
 		-DENABLE_XTRX=OFF \
+		-DWITH_DOC="$(usex doc)" \
 	)
+
+	if use cpu_flags_x86_sse4_2; then
+		 arrVar+=(-DARCH_OPT="SSE4_2")
+	elif use cpu_flags_x86_sse4_1; then
+		 arrVar+=(-DARCH_OPT="SSE4_1")
+	elif use cpu_flags_x86_ssse3; then
+		 arrVar+=(-DARCH_OPT="SSSE3")
+	elif use cpu_flags_x86_sse3; then
+		 arrVar+=(-DARCH_OPT="SSE3")
+	elif use cpu_flags_x86_sse2; then
+		 arrVar+=(-DARCH_OPT="SSE2")
+	fi
+
 	cmake_src_configure
+}
+
+src_compile() {
+	cmake_src_compile
+
+	if use doc; then
+		cmake_src_compile dev_docs
+		HTML_DOCS=( "${BUILD_DIR}"/dev_docs/. )
+	fi
 }
