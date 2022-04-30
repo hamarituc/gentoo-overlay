@@ -39,6 +39,7 @@ BDEPEND="virtual/pkgconfig"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-nogit.patch"
+	"${FILESDIR}/${PN}-5.6.8-capstone.patch"
 )
 
 src_prepare() {

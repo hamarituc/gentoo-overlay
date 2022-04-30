@@ -1,0 +1,269 @@
+diff --git a/libr/anal/p/anal_6502_cs.c b/libr/anal/p/anal_6502_cs.c
+index 05239f6a2..4ab7a30d3 100644
+--- a/libr/anal/p/anal_6502_cs.c
++++ b/libr/anal/p/anal_6502_cs.c
+@@ -5,7 +5,7 @@
+ #include <r_lib.h>
+ #include <r_asm.h>
+ #include <r_anal.h>
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ 
+ #if CS_API_MAJOR >= 5 || (CS_API_MAJOR >= 4 && CS_API_MINOR >= 1)
+ #define CAPSTONE_HAS_MOS65XX 1
+@@ -14,7 +14,7 @@
+ #endif
+ 
+ #if CAPSTONE_HAS_MOS65XX
+-#include <mos65xx.h>
++#include <capstone/mos65xx.h>
+ 
+ static csh handle = 0;
+ 
+diff --git a/libr/anal/p/anal_arm_cs.c b/libr/anal/p/anal_arm_cs.c
+index 9e683e0b6..dd9b5acb4 100644
+--- a/libr/anal/p/anal_arm_cs.c
++++ b/libr/anal/p/anal_arm_cs.c
+@@ -3,9 +3,8 @@
+ #include <r_anal.h>
+ #include <r_lib.h>
+ #include <ht_uu.h>
+-#include <arm.h>
+-#include <capstone.h>
+-#include <arm.h>
++#include <capstone/capstone.h>
++#include <capstone/arm.h>
+ #include <r_util/r_assert.h>
+ #include "./anal_arm_hacks.inc"
+ 
+diff --git a/libr/anal/p/anal_evm_cs.c b/libr/anal/p/anal_evm_cs.c
+index 1b96e258b..76f40a2c4 100644
+--- a/libr/anal/p/anal_evm_cs.c
++++ b/libr/anal/p/anal_evm_cs.c
+@@ -3,9 +3,9 @@
+ #include <r_asm.h>
+ #include <r_lib.h>
+ 
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ #if CS_API_MAJOR >= 5
+-#include <evm.h>
++#include <capstone/evm.h>
+ 
+ static void set_opdir(RAnalOp *op) {
+ 	switch (op->type & R_ANAL_OP_TYPE_MASK) {
+diff --git a/libr/anal/p/anal_m680x_cs.c b/libr/anal/p/anal_m680x_cs.c
+index d5ef94946..897b1d4f2 100644
+--- a/libr/anal/p/anal_m680x_cs.c
++++ b/libr/anal/p/anal_m680x_cs.c
+@@ -2,7 +2,7 @@
+ 
+ #include <r_asm.h>
+ #include <r_lib.h>
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ 
+ #if CS_API_MAJOR >= 4 && CS_API_MINOR >= 0
+ #define CAPSTONE_HAS_M680X 1
+@@ -19,7 +19,7 @@
+ #endif
+ 
+ #if CAPSTONE_HAS_M680X
+-#include <m680x.h>
++#include <capstone/m680x.h>
+ 
+ static int m680xmode(const char *str) {
+ 	if (!str) {
+diff --git a/libr/anal/p/anal_m68k_cs.c b/libr/anal/p/anal_m68k_cs.c
+index f5568fed8..f9e664825 100644
+--- a/libr/anal/p/anal_m68k_cs.c
++++ b/libr/anal/p/anal_m68k_cs.c
+@@ -2,7 +2,7 @@
+ 
+ #include <r_asm.h>
+ #include <r_lib.h>
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ 
+ #ifdef CAPSTONE_M68K_H
+ #define CAPSTONE_HAS_M68K 1
+@@ -16,7 +16,7 @@
+ #endif
+ 
+ #if CAPSTONE_HAS_M68K
+-#include <m68k.h>
++#include <capstone/m68k.h>
+ // http://www.mrc.uidaho.edu/mrc/people/jff/digital/M68Kir.html
+ 
+ #define OPERAND(x) insn->detail->m68k.operands[x]
+diff --git a/libr/anal/p/anal_mips_cs.c b/libr/anal/p/anal_mips_cs.c
+index 98b4a6bcb..b33aed581 100644
+--- a/libr/anal/p/anal_mips_cs.c
++++ b/libr/anal/p/anal_mips_cs.c
+@@ -2,8 +2,8 @@
+ 
+ #include <r_asm.h>
+ #include <r_lib.h>
+-#include <capstone.h>
+-#include <mips.h>
++#include <capstone/capstone.h>
++#include <capstone/mips.h>
+ 
+ static ut64 t9_pre = UT64_MAX;
+ // http://www.mrc.uidaho.edu/mrc/people/jff/digital/MIPSir.html
+diff --git a/libr/anal/p/anal_ppc_cs.c b/libr/anal/p/anal_ppc_cs.c
+index 207cdf877..0c675eeb7 100644
+--- a/libr/anal/p/anal_ppc_cs.c
++++ b/libr/anal/p/anal_ppc_cs.c
+@@ -2,8 +2,8 @@
+ 
+ #include <r_anal.h>
+ #include <r_lib.h>
+-#include <capstone.h>
+-#include <ppc.h>
++#include <capstone/capstone.h>
++#include <capstone/ppc.h>
+ #include "../../asm/arch/ppc/libvle/vle.h"
+ 
+ #define SPR_HID0 0x3f0 /* Hardware Implementation Register 0 */
+diff --git a/libr/anal/p/anal_riscv_cs.c b/libr/anal/p/anal_riscv_cs.c
+index 5e356c15f..c1890ab8e 100644
+--- a/libr/anal/p/anal_riscv_cs.c
++++ b/libr/anal/p/anal_riscv_cs.c
+@@ -3,9 +3,9 @@
+ #include <r_asm.h>
+ #include <r_lib.h>
+ 
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ #if CS_API_MAJOR >= 5
+-#include <riscv.h>
++#include <capstone/riscv.h>
+ 
+ // http://www.mrc.uidaho.edu/mrc/people/jff/digital/RISCVir.html
+ 
+diff --git a/libr/anal/p/anal_s390_cs.c b/libr/anal/p/anal_s390_cs.c
+index 9ac90ade4..70cd9ca78 100644
+--- a/libr/anal/p/anal_s390_cs.c
++++ b/libr/anal/p/anal_s390_cs.c
+@@ -2,8 +2,8 @@
+ 
+ #include <r_anal.h>
+ #include <r_lib.h>
+-#include <capstone.h>
+-#include <systemz.h>
++#include <capstone/capstone.h>
++#include <capstone/systemz.h>
+ // instruction set: http://www.tachyonsoft.com/inst390m.htm
+ 
+ #if CS_API_MAJOR < 2
+diff --git a/libr/anal/p/anal_sparc_cs.c b/libr/anal/p/anal_sparc_cs.c
+index c552f79e0..f6f14a0bc 100644
+--- a/libr/anal/p/anal_sparc_cs.c
++++ b/libr/anal/p/anal_sparc_cs.c
+@@ -2,8 +2,8 @@
+ 
+ #include <r_anal.h>
+ #include <r_lib.h>
+-#include <capstone.h>
+-#include <sparc.h>
++#include <capstone/capstone.h>
++#include <capstone/sparc.h>
+ 
+ #if CS_API_MAJOR < 2
+ #error Old Capstone not supported
+diff --git a/libr/anal/p/anal_tms320c64x.c b/libr/anal/p/anal_tms320c64x.c
+index 91379a2d9..a6d49f047 100644
+--- a/libr/anal/p/anal_tms320c64x.c
++++ b/libr/anal/p/anal_tms320c64x.c
+@@ -2,7 +2,7 @@
+ 
+ #include <r_anal.h>
+ #include <r_lib.h>
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ 
+ #ifdef CAPSTONE_TMS320C64X_H
+ #define CAPSTONE_HAS_TMS320C64X 1
+diff --git a/libr/anal/p/anal_x86_cs.c b/libr/anal/p/anal_x86_cs.c
+index 55dc560c1..a3bc39354 100644
+--- a/libr/anal/p/anal_x86_cs.c
++++ b/libr/anal/p/anal_x86_cs.c
+@@ -2,8 +2,8 @@
+ 
+ #include <r_anal.h>
+ #include <r_lib.h>
+-#include <capstone.h>
+-#include <x86.h>
++#include <capstone/capstone.h>
++#include <capstone/x86.h>
+ 
+ #if 0
+ CYCLES:
+diff --git a/libr/anal/p/anal_xcore_cs.c b/libr/anal/p/anal_xcore_cs.c
+index d574a6eee..cae483884 100644
+--- a/libr/anal/p/anal_xcore_cs.c
++++ b/libr/anal/p/anal_xcore_cs.c
+@@ -2,8 +2,8 @@
+ 
+ #include <r_anal.h>
+ #include <r_lib.h>
+-#include <capstone.h>
+-#include <xcore.h>
++#include <capstone/capstone.h>
++#include <capstone/xcore.h>
+ 
+ #if CS_API_MAJOR < 2
+ #error Old Capstone not supported
+diff --git a/libr/asm/p/asm_s390_cs.c b/libr/asm/p/asm_s390_cs.c
+index 6fe7ea20e..e53bd4f52 100644
+--- a/libr/asm/p/asm_s390_cs.c
++++ b/libr/asm/p/asm_s390_cs.c
+@@ -4,7 +4,7 @@
+ 
+ #include <r_asm.h>
+ #include <r_lib.h>
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ 
+ static csh cd = 0;
+ 
+diff --git a/libr/asm/p/asm_tms320.c b/libr/asm/p/asm_tms320.c
+index 12b3824cc..fa4c9c641 100644
+--- a/libr/asm/p/asm_tms320.c
++++ b/libr/asm/p/asm_tms320.c
+@@ -11,7 +11,7 @@
+ #include <r_lib.h>
+ #include <r_asm.h>
+ #if WANT_CAPSTONE
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ #endif
+ 
+ #ifdef CAPSTONE_TMS320C64X_H
+diff --git a/libr/asm/p/asm_tms320c64x.c b/libr/asm/p/asm_tms320c64x.c
+index 8ec311220..d45715236 100644
+--- a/libr/asm/p/asm_tms320c64x.c
++++ b/libr/asm/p/asm_tms320c64x.c
+@@ -2,7 +2,7 @@
+ 
+ #include <r_asm.h>
+ #include <r_lib.h>
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ static csh cd = 0;
+ #include "cs_mnemonics.c"
+ 
+diff --git a/libr/asm/p/cs_version.h b/libr/asm/p/cs_version.h
+index 58a951a65..f9f14cded 100644
+--- a/libr/asm/p/cs_version.h
++++ b/libr/asm/p/cs_version.h
+@@ -1,7 +1,7 @@
+ #ifndef CS_VERSION_H
+ #define CS_VERSION_H
+ 
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ 
+ #if CS_API_MAJOR == 5
+ #define CAPSTONE_VERSION_STRING "v5"
