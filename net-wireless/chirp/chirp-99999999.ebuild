@@ -23,10 +23,10 @@ DEPEND="${PYTHON_DEPS}
 	dev-python/pygobject[${PYTHON_USEDEP}]
 	dev-python/pyserial[${PYTHON_USEDEP}]
 	dev-libs/libxml2[python]
-	dev-python/suds[${PYTHON_USEDEP}]
+	dev-python/suds-community[${PYTHON_USEDEP}]
 	dev-python/future[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}
-	radioreference? ( dev-python/suds[${PYTHON_USEDEP}] )"
+	radioreference? ( dev-python/suds-community[${PYTHON_USEDEP}] )"
 
 PATCHES=(
 	"${FILESDIR}/${P}-no-tests.patch"
