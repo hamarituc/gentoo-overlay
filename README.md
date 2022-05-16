@@ -89,19 +89,6 @@ repo disappeared unfortunately.
 This package containts a capture utility for astronomical cameras mainly used
 for planetary imaging.
 
-### SiriL
-
-SiriL is an astronomical image processing software. This repo also contains
-needed dependencies which are not available from the standard repo as well as
-some additional utilities:
-
- * pysiril: A python library for scripting SiriL
- * sirilic: Preparing acquisition files for processing with the SiriL software
-
-Acknowledgement: These ebuild are based on the work of
- * Ctibor Brančík
- * [SFtech](https://github.com/SFTtech/gentoo-overlay)
-
 ### Skyfield
 
 Skyfield is a python library for various astronomical calculation problems.
@@ -172,13 +159,6 @@ Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
 ### rz-ghidra
 
 rz-ghidra is an integration of the Ghidra decompiler into rizin and cutter.
-
-### Termshark
-
-Termshark is a terminal UI for tshark, inspired by Wireshark.
-
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
-  Project.
 
 ### Triton
 
@@ -251,3 +231,8 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `dev-util/pwndbg`
  * `dev-util/ropper`
  * `dev-util/unicorn`
+ * `media-libs/librtprocess`
+ * `net-analyzer/termshark`
+ * `sci-astronomy/pysiril`
+ * `sci-astronomy/siril`
+ * `sci-astronomy/sirilic`
