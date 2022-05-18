@@ -13,8 +13,7 @@ if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/f4exb/sdrangel.git"
 else
-	SRC_URI="https://github.com/f4exb/sdrangel/archive/v${PV/_beta/-beta.}.tar.gz -> ${P}.tar.gz"
-	S="${WORKDIR}/${PN}-${PV/_beta/-beta.}"
+	SRC_URI="https://github.com/f4exb/sdrangel/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
