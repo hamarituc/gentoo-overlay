@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake
 
-DESCRIPTION="INDI driver for the Meade Deep Sky Imager"
+DESCRIPTION="INDI driver for the ZWO Optics ASI cameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -22,7 +22,11 @@ fi
 LICENSE="LGPL-2.1"
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}"
+DEPEND="
+	~sci-libs/indilib-${PV}
+	~sci-libs/libasi-${PV}
+	virtual/libudev
+"
 RDEPEND="${DEPEND}"
 
 S="${MY_S}/indi-${PN##*-driver-}"

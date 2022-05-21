@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
 DESCRIPTION="Driver for the for the ATIK cameras and filter wheels"
 HOMEPAGE="http://indilib.org"
@@ -27,3 +27,7 @@ RDEPEND="
 	${DEPEND}
 	virtual/libudev
 "
+
+pkg_postinst() {
+	udev_reload
+}

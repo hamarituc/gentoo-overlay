@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="SDK and firmware for the Moravian MI CCD cameras"
+DESCRIPTION="Driver for the Santa Barbara Instruments Group line of CCDs & Filter Wheels"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -19,8 +19,16 @@ else
 	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
 fi
 
-LICENSE="LGPL-2.1"
+LICENSE="sbig"
 SLOT="0/1"
 
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="
+	${DEPEND}
+	sys-apps/fxload
+	virtual/libudev
+"
+
+pkg_postinst() {
+	udev_reload
+}

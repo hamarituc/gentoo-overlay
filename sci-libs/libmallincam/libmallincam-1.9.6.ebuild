@@ -3,34 +3,28 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="INDI driver for the ZWO Optics ASI cameras"
+DESCRIPTION="This is the Mallincam Library SDK"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
 	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
-	MY_S="${EGIT_CHECKOUT_DIR}"
+	S="${EGIT_CHECKOUT_DIR}/${PN}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
+	KEYWORDS="~amd64 ~arm ~x86"
+	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
 fi
 
 LICENSE="LGPL-2.1"
 SLOT="0/1"
 
-DEPEND="
-	~sci-libs/indilib-${PV}
-	~sci-libs/libasi-${PV}
-	virtual/libudev
-"
+DEPEND=""
 RDEPEND="${DEPEND}"
 
-PATCHES=(
-	"${FILESDIR}/${P}-udev.patch"
-)
-
-S="${MY_S}/indi-${PN##*-driver-}"
+pkg_postinst() {
+	udev_reload
+}

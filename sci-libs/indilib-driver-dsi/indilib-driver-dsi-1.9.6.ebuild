@@ -3,27 +3,30 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="SDK and firmware for the i.Nova PLx series CCD/CMOS cameras"
+DESCRIPTION="INDI driver for the Meade Deep Sky Imager"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
 	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
-	S="${EGIT_CHECKOUT_DIR}/${PN}"
+	MY_S="${EGIT_CHECKOUT_DIR}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~x86"
-	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+	KEYWORDS="~amd64 ~x86"
+	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
 fi
 
-LICENSE="inova"
+LICENSE="LGPL-2.1"
 SLOT="0/1"
 
-DEPEND=""
-RDEPEND="
-	${DEPEND}
-	virtual/libudev
-"
+DEPEND="~sci-libs/indilib-${PV}"
+RDEPEND="${DEPEND}"
+
+S="${MY_S}/indi-${PN##*-driver-}"
+
+pkg_postinst() {
+	udev_reload
+}

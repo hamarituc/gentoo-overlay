@@ -92,6 +92,8 @@ src_test() {
 }
 
 pkg_postinst() {
+	udev_reload
+
 	elog "You can use init script in /etc/init.d/indiserver to start"
 	elog "indiserver automatically."
 	elog "Configuration is in /etc/conf.d/indiserver."

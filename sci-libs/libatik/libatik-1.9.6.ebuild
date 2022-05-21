@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="This is the Toupcam Library SDK"
+DESCRIPTION="Driver for the for the ATIK cameras and filter wheels"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -23,4 +23,11 @@ LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="
+	${DEPEND}
+	virtual/libudev
+"
+
+pkg_postinst() {
+	udev_reload
+}

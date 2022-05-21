@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="This is the Levenhuk Library SDK for Linux & MacOS"
+DESCRIPTION="SDK and firmware for the QHY CCD cameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -15,12 +15,19 @@ if [[ ${PV} == "9999" ]]; then
 	S="${EGIT_CHECKOUT_DIR}/${PN}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~x86"
+	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
 fi
 
-LICENSE="LGPL-2"
+LICENSE="qhyccd"
 SLOT="0/1"
 
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="
+	${DEPEND}
+	sys-apps/fxload
+"
+
+pkg_postinst() {
+	udev_reload
+}

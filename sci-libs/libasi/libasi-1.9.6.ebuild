@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="Driver for the for the ATIK cameras and filter wheels"
+DESCRIPTION="Udev rules and firmware for ZWO Optics ASI cameras."
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -15,15 +15,20 @@ if [[ ${PV} == "9999" ]]; then
 	S="${EGIT_CHECKOUT_DIR}/${PN}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~x86"
+	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
 fi
 
-LICENSE="LGPL-2.1"
+LICENSE="zwo-asi"
 SLOT="0/1"
 
 DEPEND=""
 RDEPEND="
 	${DEPEND}
+	sys-apps/fxload
 	virtual/libudev
 "
+
+pkg_postinst() {
+	udev_reload
+}

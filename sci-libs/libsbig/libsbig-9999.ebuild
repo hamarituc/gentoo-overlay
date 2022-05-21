@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
 DESCRIPTION="Driver for the Santa Barbara Instruments Group line of CCDs & Filter Wheels"
 HOMEPAGE="http://indilib.org"
@@ -28,3 +28,7 @@ RDEPEND="
 	sys-apps/fxload
 	virtual/libudev
 "
+
+pkg_postinst() {
+	udev_reload
+}

@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
 DESCRIPTION="SDK and firmware for the QHY CCD cameras"
 HOMEPAGE="http://indilib.org"
@@ -27,3 +27,7 @@ RDEPEND="
 	${DEPEND}
 	sys-apps/fxload
 "
+
+pkg_postinst() {
+	udev_reload
+}

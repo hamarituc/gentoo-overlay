@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="SDK and firmware for the QHY CCD cameras"
+DESCRIPTION="This is the Orion Starshoot G Library SDK for Linux & MacOS"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -15,15 +15,16 @@ if [[ ${PV} == "9999" ]]; then
 	S="${EGIT_CHECKOUT_DIR}/${PN}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64 ~arm ~x86"
 	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
 fi
 
-LICENSE="qhyccd"
+LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND=""
-RDEPEND="
-	${DEPEND}
-	sys-apps/fxload
-"
+RDEPEND="${DEPEND}"
+
+pkg_postinst() {
+	udev_reload
+}

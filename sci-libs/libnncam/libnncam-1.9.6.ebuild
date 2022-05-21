@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="This is the Orion Starshoot G Library SDK for Linux & MacOS"
+DESCRIPTION="This is the Levenhuk Library SDK for Linux & MacOS"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -19,8 +19,12 @@ else
 	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
 fi
 
-LICENSE="LGPL-2.1"
+LICENSE="LGPL-2"
 SLOT="0/1"
 
 DEPEND=""
 RDEPEND="${DEPEND}"
+
+pkg_postinst() {
+	udev_reload
+}

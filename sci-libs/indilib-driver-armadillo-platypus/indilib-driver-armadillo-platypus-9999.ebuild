@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
 DESCRIPTION="INDI driver for Lunatico Astronomia Armadillo & Platypus controllers."
 HOMEPAGE="http://indilib.org"
@@ -26,3 +26,7 @@ DEPEND="~sci-libs/indilib-${PV}"
 RDEPEND="${DEPEND}"
 
 S="${MY_S}/indi-${PN##*-driver-}"
+
+pkg_postinst() {
+	udev_reload
+}

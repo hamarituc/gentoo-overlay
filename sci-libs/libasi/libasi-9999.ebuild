@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
 DESCRIPTION="Udev rules and firmware for ZWO Optics ASI cameras."
 HOMEPAGE="http://indilib.org"
@@ -28,3 +28,7 @@ RDEPEND="
 	sys-apps/fxload
 	virtual/libudev
 "
+
+pkg_postinst() {
+	udev_reload
+}

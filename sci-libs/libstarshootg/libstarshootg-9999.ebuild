@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
 DESCRIPTION="This is the Orion Starshoot G Library SDK for Linux & MacOS"
 HOMEPAGE="http://indilib.org"
@@ -24,3 +24,7 @@ SLOT="0/1"
 
 DEPEND=""
 RDEPEND="${DEPEND}"
+
+pkg_postinst() {
+	udev_reload
+}

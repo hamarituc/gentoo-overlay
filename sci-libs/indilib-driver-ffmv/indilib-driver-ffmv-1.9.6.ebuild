@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="INDI driver for Lunatico Astronomia Armadillo & Platypus controllers."
+DESCRIPTION="INDI driver for the Point Grey FireFly MV camera"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -22,7 +22,14 @@ fi
 LICENSE="LGPL-2.1"
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}"
+DEPEND="
+	media-libs/libdc1394
+	~sci-libs/indilib-${PV}
+"
 RDEPEND="${DEPEND}"
 
 S="${MY_S}/indi-${PN##*-driver-}"
+
+pkg_postinst() {
+	udev_reload
+}

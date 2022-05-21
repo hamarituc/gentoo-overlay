@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="This is the Mallincam Library SDK"
+DESCRIPTION="SDK and firmware for the i.Nova PLx series CCD/CMOS cameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -19,8 +19,15 @@ else
 	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
 fi
 
-LICENSE="LGPL-2.1"
+LICENSE="inova"
 SLOT="0/1"
 
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="
+	${DEPEND}
+	virtual/libudev
+"
+
+pkg_postinst() {
+	udev_reload
+}

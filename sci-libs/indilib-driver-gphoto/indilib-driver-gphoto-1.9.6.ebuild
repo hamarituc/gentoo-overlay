@@ -3,28 +3,36 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="Udev rules and firmware for ZWO Optics ASI cameras."
+DESCRIPTION="INDI driver for the gphoto2 compatible cameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/indilib/indi-3rdparty.git"
 	EGIT_CHECKOUT_DIR="${WORKDIR}/${P}"
-	S="${EGIT_CHECKOUT_DIR}/${PN}"
+	MY_S="${EGIT_CHECKOUT_DIR}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
+	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
 fi
 
-LICENSE="zwo-asi"
+LICENSE="LGPL-2"
 SLOT="0/1"
 
-DEPEND=""
-RDEPEND="
-	${DEPEND}
-	sys-apps/fxload
-	virtual/libudev
+DEPEND="
+	dev-libs/npth
+	media-libs/libgphoto2[jpeg]
+	media-libs/libraw
+	media-libs/tiff[cxx]
+	~sci-libs/indilib-${PV}
 "
+RDEPEND="${DEPEND}"
+
+S="${MY_S}/indi-${PN##*-driver-}"
+
+pkg_postinst() {
+	udev_reload
+}
