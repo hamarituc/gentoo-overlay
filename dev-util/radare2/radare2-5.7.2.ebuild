@@ -9,7 +9,7 @@ DESCRIPTION="unix-like reverse engineering framework and commandline tools"
 HOMEPAGE="https://www.radare.org"
 
 # From libr/asm/arch/arm/v35arm64/Makefile
-ARM64_COMMIT=fddb6d0fb0489c4e797a61b1553ac0d771fbf657
+ARM64_COMMIT=9ab2b0bedde459dc86e079718333de4a63bbbacb
 ARMV7_COMMIT=dde39f69ffea19fc37e681874b12cb4707bc4f30
 BINS_COMMIT=a6d1a0331605b4a5db9aa9260386c850d484dc70
 
