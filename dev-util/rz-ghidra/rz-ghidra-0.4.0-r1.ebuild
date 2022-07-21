@@ -54,6 +54,7 @@ src_prepare() {
 src_configure() {
 	local mycmakeargs=(
 		-DBUILD_CUTTER_PLUGIN=$(usex cutter)
+		-DCUTTER_INSTALL_PLUGDIR="${EPREFIX}/usr/share/rizin/cutter/plugins/native/"
 		-DUSE_SYSTEM_PUGIXML=ON
 	)
 	cmake_src_configure
