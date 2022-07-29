@@ -7,9 +7,12 @@ DESCRIPTION="Metapackage containing all 3rdparty drivers for INDI library"
 HOMEPAGE="http://www.indilib.org/"
 SRC_URI=""
 
+if [[ ${PV} != "9999" ]]; then
+	KEYWORDS="~amd64 ~x86"
+fi
+
 LICENSE="metapackage"
 SLOT="0/1"
-KEYWORDS="~amd64 ~x86"
 
 IUSE_INDILIB_DRIVERS="
 	aagcloudwatcher-ng
