@@ -43,11 +43,14 @@ IUSE_INDILIB_DRIVERS="
 	mi
 	nexdome
 	nightscape
+	nut
 	orion-ssg3
 	pentax
 	playerone
 	qhy
 	qsi
+	rpi-gpio
+	rpicam
 	rtklib
 	sbig
 	shelyak
@@ -59,6 +62,7 @@ IUSE_INDILIB_DRIVERS="
 	talon6
 	toupbase
 	webcam
+	weewx-json
 "
 
 use_indilib_drivers=$(printf ' indilib_drivers_%s' ${IUSE_INDILIB_DRIVERS})
@@ -97,11 +101,14 @@ RDEPEND="
 	indilib_drivers_mi? ( sci-libs/indilib-driver-mi )
 	indilib_drivers_nexdome? ( sci-libs/indilib-driver-nexdome )
 	indilib_drivers_nightscape? ( sci-libs/indilib-driver-nightscape )
+	indilib_drivers_nut? ( sci-libs/indilib-driver-nut )
 	indilib_drivers_orion-ssg3? ( sci-libs/indilib-driver-orion-ssg3 )
 	indilib_drivers_pentax? ( sci-libs/indilib-driver-pentax )
 	indilib_drivers_playerone? ( sci-libs/indilib-driver-playerone )
 	indilib_drivers_qhy? ( sci-libs/indilib-driver-qhy )
 	indilib_drivers_qsi? ( sci-libs/indilib-driver-qsi )
+	indilib_drivers_rpi-gpio? ( sci-libs/indilib-driver-rpi-gpio )
+	indilib_drivers_rpicam? ( sci-libs/indilib-driver-rpicam )
 	indilib_drivers_rtklib? ( sci-libs/indilib-driver-rtklib )
 	indilib_drivers_sbig? ( sci-libs/indilib-driver-sbig )
 	indilib_drivers_shelyak? ( sci-libs/indilib-driver-shelyak )
@@ -113,4 +120,5 @@ RDEPEND="
 	indilib_drivers_talon6? ( sci-libs/indilib-driver-talon6 )
 	indilib_drivers_toupbase? ( sci-libs/indilib-driver-toupbase )
 	indilib_drivers_webcam? ( sci-libs/indilib-driver-webcam )
+	indilib_drivers_weewx-json? ( sci-libs/indilib-driver-weewx-json )
 "
