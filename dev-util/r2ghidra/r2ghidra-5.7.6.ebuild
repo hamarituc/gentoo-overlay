@@ -3,21 +3,21 @@
 
 EAPI=8
 
-inherit cmake
+inherit meson
 
 DESCRIPTION="Integration of the Ghidra decompiler for radare2"
 HOMEPAGE="https://github.com/radareorg/r2ghidra"
+
+GHIDRA_COMMIT="0.2.5"
 
 if [[ ${PV} == "9999" ]] ; then
     inherit git-r3
 	EGIT_REPO_URI="https://github.com/radareorg/r2ghidra.git"
 	EGIT_SUBMODULES=( '*' '-third-party/pugixml' )
-	GHIDRA_COMMIT="0.1.5"
 
     KEYWORDS=""
 else
 	EGIT_COMMIT="v${PV}"
-	GHIDRA_COMMIT="0.1.8"
 
 	SRC_URI="
 		https://github.com/radareorg/r2ghidra/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
@@ -29,34 +29,19 @@ fi
 LICENSE="LGPL-3"
 SLOT="0"
 
-IUSE="iaito"
-
 DEPEND="
 	dev-libs/pugixml
 	dev-util/radare2:=
-	iaito? (
-		dev-qt/qtwidgets:5
-		dev-util/iaito
-	)
 "
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
 PATCHES=(
 	"${FILESDIR}/${P}-nogit.patch"
-	"${FILESDIR}/${P}-iaito_cmake.patch"
+	"${FILESDIR}/${P}-system_pugixml.patch"
 )
 
 src_prepare() {
+	default
 	mv "${WORKDIR}/ghidra-native-${GHIDRA_COMMIT}" "${S}/ghidra-native" || die
-
-	cmake_src_prepare
-}
-
-src_configure() {
-	local mycmakeargs=(
-		-DBUILD_IAITO_PLUGIN=$(usex iaito)
-		-DUSE_SYSTEM_PUGIXML=ON
-	)
-	cmake_src_configure
 }
