@@ -1,0 +1,11 @@
+diff --git a/setup.py b/setup.py
+index 89d08ae..d22c1d2 100755
+--- a/setup.py
++++ b/setup.py
+@@ -15,6 +15,5 @@ setup(name='python-registry',
+                      "Programming Language :: Python :: 3",
+                      "Operating System :: OS Independent",
+                      "License :: OSI Approved :: Apache Software License"],
+-     install_requires=['enum-compat']
+      )
+ 
