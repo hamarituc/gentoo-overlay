@@ -132,6 +132,10 @@ Acknowledgement: The ebuild is based on the [sft](https://github.com/SFTtech/gen
 It's a graphical frontend for radare2, which is available in the main gentoo
 portage tree.
 
+### Qiling
+
+Qiling is an advanced binary emulation framework.
+
 ### Radare2
 
 Radare2 is a UNIX-like reverse engineering framework and command-line toolset.
