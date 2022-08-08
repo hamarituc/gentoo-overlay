@@ -33,7 +33,7 @@ RDEPEND="
 	>=dev-qt/qtwebsockets-5.6.0
 	>=dev-qt/qtmultimedia-5.6.0[widgets]
 	dev-qt/qtserialport
-	>=media-libs/codec2-0.9.1
+	=media-libs/codec2-1.0.3
 	media-libs/opus
 	net-wireless/dsdcc
 	sci-libs/fftw:3.0
