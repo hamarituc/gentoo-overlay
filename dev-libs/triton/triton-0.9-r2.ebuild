@@ -34,7 +34,7 @@ REQUIRED_USE="
 DEPEND="
 	>=dev-libs/boost-1.68:=
 	>=dev-libs/capstone-4.0:=
-	z3? ( >=sci-mathematics/z3-4.6.0 )
+	z3? ( >=sci-mathematics/z3-4.6.0:= )
 "
 RDEPEND="
 	${DEPEND}
