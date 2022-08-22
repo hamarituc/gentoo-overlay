@@ -42,6 +42,10 @@ repository. This repo provides the remaining utilities. The ebuilds from this
 repo provide the `xmlrpc` USE flag. But it seems support for this library is
 broken, since some tools require a more recent version than publicly available.
 
+### lbgpsdo
+
+This is a small tool I wrote to configure the Leo Bodnar GPSDO.
+
 ### Pat
 
 Pat is a Winlink 2000 protocol client.
