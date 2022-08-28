@@ -13,8 +13,8 @@ KEYWORDS="~amd64 ~x86"
 IUSE="xmlrpc"
 
 RDEPEND="
-	x11-libs/fltk:1
-	x11-libs/libX11
+	x11-libs/fltk:=
+	x11-libs/libX11:=
 	x11-misc/xdg-utils
 	xmlrpc? ( media-radio/flxmlrpc )
 "
