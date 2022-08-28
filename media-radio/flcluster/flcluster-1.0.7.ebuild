@@ -3,9 +3,12 @@
 
 EAPI=8
 
+inherit autotools
+
 DESCRIPTION="Amateur Radio DX Cluster Viewer"
 HOMEPAGE="http://www.w1hkj.com/flcluster-help/index.html"
-SRC_URI="mirror://sourceforge/fldigi/${P}.tar.gz"
+#SRC_URI="mirror://sourceforge/fldigi/${P}.tar.gz"
+SRC_URI="https://github.com/w1hkj/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -21,3 +24,10 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
 DOCS=( AUTHORS ChangeLog INSTALL README )
+
+src_prepare() {
+	default
+
+	# GitHub Tarball comes without build scripts.
+	eautoreconf
+}
