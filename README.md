@@ -86,6 +86,10 @@ The repo contains a recent version of INDI including all 3rd-party drivers.
 Acknowledgement: These ebuilds are based on the work of Ctibor Brančík whose
 repo disappeared unfortunately.
 
+### Nextinspace
+
+A command-line tool for seeing the latest in space.
+
 ### Open Astro Project
 
 This package containts a capture utility for astronomical cameras mainly used
