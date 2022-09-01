@@ -126,13 +126,6 @@ Citing from https://github.com/NationalSecurityAgency/ghidra:
 Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
   Project.
 
-### hyx
-
-hyx is a vim-like terminal hex editor.
-
-Acknowledgement: The ebuild is based on the [sft](https://github.com/SFTtech/gentoo-overlay)
-  overlay.
-
 ### iaito
 
 It's a graphical frontend for radare2, which is available in the main gentoo
@@ -225,6 +218,7 @@ Ebuilds made it into `::gentoo` :tada:
 
 The following ebuilds are now in the Gentoo mainline repository.
 
+ * `app-editors/hyx`
  * `app-forensics/volatility3`
  * `app-forensics/yara`
  * `dev-db/sqlmap`
