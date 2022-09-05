@@ -40,6 +40,13 @@ The Fldigi suite by Dave Freese, W1HKJ is a well known set of handy amateur
 radio utilities. Some of these programs are included in the gentoo standard
 repository. This repo provides the remaining utilities.
 
+### gr-satellites
+
+Citing from https://github.com/daniestevez/gr-satellites:
+
+> gr-satellites is a GNU Radio out-of-tree module encompassing a collection of
+> telemetry decoders that supports many different Amateur satellites.
+
 ### lbgpsdo
 
 This is a small tool I wrote to configure the Leo Bodnar GPSDO.
