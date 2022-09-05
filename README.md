@@ -30,15 +30,15 @@ Acknowledgements: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
 
 A logging program.
 
-### GPS SDR SIM
-
-Generates GPS baseband signals for various SDR transceivers.
-
 ### Fldigi Suite
 
 The Fldigi suite by Dave Freese, W1HKJ is a well known set of handy amateur
 radio utilities. Some of these programs are included in the gentoo standard
 repository. This repo provides the remaining utilities.
+
+### GPS SDR SIM
+
+Generates GPS baseband signals for various SDR transceivers.
 
 ### gr-satellites
 
