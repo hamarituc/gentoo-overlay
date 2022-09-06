@@ -1,0 +1,18 @@
+diff --git a/Makefile b/Makefile
+index 0fdbb58..dea66a7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -50,12 +50,11 @@ install: $(TARGET)
+ 	cp $< $(DESTDIR)$(PREFIX)/bin/$(TARGET)
+ 	
+ 	install -m 0644 man/heaptrace.1 $(DESTDIR)$(PREFIX)/share/man/man1/
+-	gzip -f $(DESTDIR)$(PREFIX)/share/man/man1/heaptrace.1
+ 
+ 
+ .PHONY: uninstall
+ uninstall:
+-	rm -f $(DESTDIR)$(PREFIX)/bin/$(TARGET) $(DESTDIR)$(PREFIX)/share/man/man1/heaptrace.1.gz
++	rm -f $(DESTDIR)$(PREFIX)/bin/$(TARGET) $(DESTDIR)$(PREFIX)/share/man/man1/heaptrace.1
+ 
+ # These vars probably need no change
+ PKG_DEB=${PKG_NAME}_${PKG_VERSION}-${PKG_RELEASE}_${PKG_ARCH}.deb

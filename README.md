@@ -140,6 +140,14 @@ Citing from https://github.com/NationalSecurityAgency/ghidra:
 Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
   Project.
 
+### heaptrace
+
+Citing from https://github.com/Arinerron/heaptrace:
+
+> heaptrace is a heap debugger for tracking glibc heap operations in ELF64
+> (x86_64) binaries. Its purpose is to help visualize heap operations when
+> debugging binaries or doing heap pwn.
+
 ### iaito
 
 It's a graphical frontend for radare2, which is available in the main gentoo
