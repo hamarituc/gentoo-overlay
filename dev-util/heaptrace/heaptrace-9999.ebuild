@@ -20,7 +20,7 @@ LICENSE="BSD-3"
 SLOT="0"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-no-zip.patch"
+	"${FILESDIR}/${P}-no-zip.patch"
 )
 
 src_compile() {
