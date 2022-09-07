@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..10} )
+PYTHON_COMPAT=( python3_{8..11} )
 
 inherit distutils-r1 git-r3
 
@@ -18,12 +18,12 @@ EGIT_OVERRIDE_COMMIT_LIBERFA_ERFA="v$(ver_cut 1-3)"
 KEYWORDS="amd64 x86"
 LICENSE="BSD"
 SLOT="0"
-IUSE=""
 
-RDEPEND="${PYTHON_DEPS}
-	dev-python/numpy[${PYTHON_USEDEP}]
-	=sci-astronomy/erfa-$(ver_cut 1-3)*"
-
+RDEPEND="
+	${PYTHON_DEPS}
+	>=dev-python/numpy-1.17[${PYTHON_USEDEP}]
+	=sci-astronomy/erfa-$(ver_cut 1-3)*
+"
 
 python_compile()
 {
