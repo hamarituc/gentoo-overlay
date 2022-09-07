@@ -157,6 +157,11 @@ portage tree.
 
 Qiling is an advanced binary emulation framework.
 
+### Raccoon
+
+Raccon is a high performance offensive security tool for reconnaissance and
+vulnerability scanning.
+
 ### Radare2
 
 Radare2 is a UNIX-like reverse engineering framework and command-line toolset.
