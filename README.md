@@ -122,6 +122,15 @@ determination is based on radio measurements.
 Computer Forensics, Reverse engineering :mag:
 ---------------------------------------------
 
+### Commix
+
+Citing from https://github.com/commixproject/commix:
+
+> Commix (short for [comm]and [i]njection e[x]ploiter) is an open source
+> penetration testing tool, written by Anastasios Stasinopoulos (@ancst), that
+> automates the detection and exploitation of command injection
+> vulnerabilities.
+
 ### Ghidra
 
 Citing from https://github.com/NationalSecurityAgency/ghidra:
