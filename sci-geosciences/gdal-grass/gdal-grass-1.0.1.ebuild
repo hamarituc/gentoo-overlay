@@ -5,7 +5,7 @@ EAPI=8
 
 DESCRIPTION="GDAL plugin to access GRASS data"
 HOMEPAGE="https://www.gdal.org/"
-SRC_URI="https://download.osgeo.org/gdal/${PV}/${P}.tar.gz"
+SRC_URI="https://github.com/OSGeo/gdal-grass/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
 
 SLOT="0"
 LICENSE="MIT"
@@ -16,8 +16,10 @@ RDEPEND="
 	>=sci-libs/gdal-3.0.0:=
 	sci-geosciences/grass:=
 "
-DEPEND="${RDEPEND}
-	postgres? ( dev-db/postgresql )"
+DEPEND="
+	${RDEPEND}
+	postgres? ( dev-db/postgresql )
+"
 
 # these drivers are copied at install from the already installed GRASS
 QA_PREBUILT="/usr/share/gdal/grass/driver/db/*"
@@ -37,6 +39,6 @@ src_configure() {
 src_install() {
 	#pass the right variables to 'make install' to prevent a sandbox access violation
 	emake DESTDIR="${D}" \
-		AUTOLOAD_DIR="${D}/usr/$(get_libdir)/gdalplugins" \
+		AUTOLOAD_DIR="/usr/$(get_libdir)/gdalplugins" \
 		install
 }
