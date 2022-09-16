@@ -24,19 +24,20 @@ IUSE="airspy bladerf cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 c
 # TODO: perseus, xtrx, mirisdr
 
 RDEPEND="
-	dev-libs/boost
-	dev-libs/cm256cc
-	dev-libs/hidapi
-	dev-libs/serialDV
-	>=dev-qt/qtcore-5.6.0
-	>=dev-qt/qtwidgets-5.6.0
-	>=dev-qt/qtwebsockets-5.6.0
-	>=dev-qt/qtmultimedia-5.6.0[widgets]
-	dev-qt/qtserialport
-	>=media-libs/codec2-1.0.3
-	!!=media-libs/codec2-1.0.4
-	media-libs/opus
-	net-wireless/dsdcc
+	dev-libs/boost:=
+	dev-libs/cm256cc:=
+	dev-libs/hidapi:=
+	dev-libs/serialDV:=
+	>=dev-qt/qtcore-5.6.0:5
+	>=dev-qt/qtwidgets-5.6.0:5
+	>=dev-qt/qtwebsockets-5.6.0:5
+	>=dev-qt/qtmultimedia-5.6.0:5[widgets]
+	dev-qt/qtserialport:5
+	>=media-libs/codec2-1.0.5:=
+	media-libs/opus:=
+	media-libs/opencv:=
+	media-video/ffmpeg:=
+	net-wireless/dsdcc:=
 	sci-libs/fftw:3.0
 	virtual/libusb:1
 	qt5? (
@@ -48,25 +49,24 @@ RDEPEND="
 		dev-qt/qtpositioning:5
 		dev-qt/qtspeech:5
 		dev-qt/qtwebengine:5
-		>=dev-qt/qtopengl-5.6.0
+		>=dev-qt/qtopengl-5.6.0:5
 	)
-	media-libs/opencv
-	media-video/ffmpeg
-	airspy? ( net-wireless/airspy )
-	bladerf? ( net-wireless/bladerf )
-	faad? ( media-libs/faad2 )
-	hackrf? ( net-libs/libhackrf )
-	limesuite? ( net-wireless/limesuite )
-	plutosdr? ( net-libs/libiio )
-	rtlsdr? ( net-wireless/rtl-sdr )
-	sgp4? ( sci-libs/sgp4 )
-	soapy? ( net-wireless/soapysdr )
-	uhd? ( net-wireless/uhd )
-	"
+	airspy? ( net-wireless/airspy:= )
+	bladerf? ( net-wireless/bladerf:= )
+	faad? ( media-libs/faad2:= )
+	hackrf? ( net-libs/libhackrf:= )
+	limesuite? ( net-wireless/limesuite:= )
+	plutosdr? ( net-libs/libiio:= )
+	rtlsdr? ( net-wireless/rtl-sdr:= )
+	sgp4? ( sci-libs/sgp4:= )
+	soapy? ( net-wireless/soapysdr:= )
+	uhd? ( net-wireless/uhd:= )
+"
 
-DEPEND="${RDEPEND}
+DEPEND="
+	${RDEPEND}
 	doc? ( app-doc/doxygen )
-	"
+"
 
 src_configure() {
 	# error: invalid conversion from ‘long int’ to ‘QDebug::Stream*’ [-fpermissive]
