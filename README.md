@@ -113,6 +113,10 @@ for planetary imaging.
 
 Skyfield is a python library for various astronomical calculation problems.
 
+### Space Command
+
+Space command is a command line satellite tracking tool.
+
 ### STRF
 
 STRF is a satellite tracking and orbit determination program. Orbit
