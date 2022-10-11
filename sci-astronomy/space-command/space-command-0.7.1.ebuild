@@ -37,6 +37,7 @@ RESTRICT="test"
 
 PATCHES=(
 	"${FILESDIR}/${P}-celestrak.patch"
+	"${FILESDIR}/${P}-sqlite.patch"
 )
 
 src_prepare() {

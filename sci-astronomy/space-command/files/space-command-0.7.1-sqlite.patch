@@ -1,0 +1,58 @@
+From f6c5f8f3449f3d615c53f55ab4750c93bfc9fa45 Mon Sep 17 00:00:00 2001
+From: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date: Tue, 11 Oct 2022 17:11:23 +0200
+Subject: [PATCH 1/2] fix tle : split database update in chunks
+
+This fix prevents an `sqlite3.OperationalError: too many SQL variables`
+error, because SQlite allows only a limited number of inserts per
+statement.
+---
+ space/tle/db.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/space/tle/db.py b/space/tle/db.py
+index 57517c4..a45555d 100644
+--- a/space/tle/db.py
++++ b/space/tle/db.py
+@@ -194,7 +194,10 @@ class TleDb:
+                     entities.append(entity)
+ 
+             if entities:
+-                TleModel.insert_many(entities).execute()
++                # Split up the list into chunks of at most 999 items, as SQlite
++                # can only handle a limited number of elements per operation.
++                for i in range(0, len(entities), 999):
++                    TleModel.insert_many(entities[i:i + 999]).execute()
+             elif i is None:
+                 raise ValueError("{} contains no TLE".format(src))
+ 
+From 459f431caaa814988d671eb8f8decba5ae64ff7e Mon Sep 17 00:00:00 2001
+From: jules <jules@onada.fr>
+Date: Tue, 11 Oct 2022 21:43:30 +0000
+Subject: [PATCH 2/2] fix tle : change index to a non used one
+
+the i variable is already used, and store the number of tle contained in
+the string. It is later used for displaying the total number of tle
+in a log.info line
+---
+ space/tle/db.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/space/tle/db.py b/space/tle/db.py
+index a45555d..4d60867 100644
+--- a/space/tle/db.py
++++ b/space/tle/db.py
+@@ -196,8 +196,8 @@ class TleDb:
+             if entities:
+                 # Split up the list into chunks of at most 999 items, as SQlite
+                 # can only handle a limited number of elements per operation.
+-                for i in range(0, len(entities), 999):
+-                    TleModel.insert_many(entities[i:i + 999]).execute()
++                for idx in range(0, len(entities), 999):
++                    TleModel.insert_many(entities[idx:idx + 999]).execute()
+             elif i is None:
+                 raise ValueError("{} contains no TLE".format(src))
+ 
+-- 
+2.35.1
+
