@@ -93,6 +93,10 @@ Acknowledgement: The ebuild is based on the
 
 A feature rich astronomical package for Python.
 
+### Beyond
+
+A Flight Dynamic Library.
+
 ### INDI
 
 The repo contains a recent version of INDI including all 3rd-party drivers.
