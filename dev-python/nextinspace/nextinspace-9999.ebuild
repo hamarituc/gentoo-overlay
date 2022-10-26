@@ -18,7 +18,7 @@ else
 	KEYWORDS="~amd64 ~x86"
 fi
 
-LICENSE="GPL-3.0+"
+LICENSE="GPL-3+"
 SLOT="0"
 
 RDEPEND="
