@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=hatchling
-PYTHON_COMPAT=( python3_{8..11} )
+PYTHON_COMPAT=( python3_{8..10} )
 inherit distutils-r1
 
 DESCRIPTION="Passive hostname, domain and IP lookup tool for non-robots"
@@ -26,7 +26,7 @@ RDEPEND="
 	>=dev-python/python-dotenv-0.20.0[${PYTHON_USEDEP}]
 	>=dev-python/requests-2.28.1[${PYTHON_USEDEP}]
 	>=dev-python/rich-12.5.1[${PYTHON_USEDEP}]
-	>=dev-python/shodan-1.28.0[${PYTHON_USEDEP}]
+	>=net-analyzer/shodan-1.28.0[${PYTHON_USEDEP}]
 "
 BDEPEND="
 	test? (
