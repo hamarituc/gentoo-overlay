@@ -235,16 +235,6 @@ mainline Gentoo repository, but sometimes fell out due to the temporal removal
 of `sci-geosciences/grass`.
 
 
-IT Security :lock:
-------------------
-
-### shodan
-
-Citing from https://github.com/achillean/shodan-python:
-
-> Shodan is a search engine for Internet-connected devices.
-
-
 Miscellaneous :toolbox:
 -----------------------
 
@@ -284,6 +274,7 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `dev-util/ropper`
  * `dev-util/unicorn`
  * `media-libs/librtprocess`
+ * `net-analyzer/shodan`
  * `net-analyzer/termshark`
  * `net-analyzer/wtfis`
  * `sci-astronomy/pysiril`
