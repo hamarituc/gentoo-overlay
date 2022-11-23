@@ -244,13 +244,6 @@ Citing from https://github.com/achillean/shodan-python:
 
 > Shodan is a search engine for Internet-connected devices.
 
-### wtfis
-
-Citing from https://github.com/pirxthepilot/wtfis:
-
-> wtfis is a commandline tool that gathers information about a domain, FQDN or
-> IP address using various OSINT services.
-
 
 Miscellaneous :toolbox:
 -----------------------
@@ -292,6 +285,7 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `dev-util/unicorn`
  * `media-libs/librtprocess`
  * `net-analyzer/termshark`
+ * `net-analyzer/wtfis`
  * `sci-astronomy/pysiril`
  * `sci-astronomy/siril`
  * `sci-astronomy/sirilic`
