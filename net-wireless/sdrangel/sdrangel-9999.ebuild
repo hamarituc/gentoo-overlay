@@ -47,7 +47,7 @@ RDEPEND="
 		>=dev-qt/qtwidgets-5.15.0:5
 		gui? (
 			>=dev-qt/qtlocation-5.15.0:5
-			>=dev-qt/qtspeech-5.15.0:5[flite]
+			>=dev-qt/qtspeech-5.15.0:5
 			>=dev-qt/qtwebengine-5.15.0:5[widgets]
 			>=dev-qt/qtopengl-5.15.0:5
 		)
