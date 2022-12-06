@@ -26,7 +26,7 @@ DEPEND="
 	dev-libs/libyaml:=
 	dev-python/jinja
 	dev-python/ply
-	dev-python/yaml
+	dev-python/pyyaml
 	|| (
 		net-libs/gnutls:=
 		dev-libs/openssl:=
