@@ -10,7 +10,7 @@ HOMEPAGE="https://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
 SRC_URI="https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/${P}.tar.gz"
 
 LICENSE="ISC"
-SLOT="0/9"
+SLOT="0/10"
 KEYWORDS="~alpha ~amd64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~sparc-solaris ~sparc64-solaris"
 IUSE="bzip2 curl threads tools cpu_flags_x86_sse2 cpu_flags_x86_ssse3"
 
