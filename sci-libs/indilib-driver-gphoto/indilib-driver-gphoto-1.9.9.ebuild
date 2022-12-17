@@ -24,9 +24,9 @@ SLOT="0/1"
 
 DEPEND="
 	dev-libs/npth:=
-	media-libs/libgphoto2[jpeg]:=
+	media-libs/libgphoto2:=[jpeg]
 	media-libs/libraw:=
-	media-libs/tiff[cxx]:=
+	media-libs/tiff:=[cxx]
 	sci-libs/cfitsio:0=
 	~sci-libs/indilib-${PV}
 	virtual/jpeg:0
