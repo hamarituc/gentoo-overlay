@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,7 +6,7 @@ EAPI=8
 # this could be a multiple python package
 # but the way it is packaged makes it very time consuming.
 
-PYTHON_COMPAT=( python3_{7..10} )
+PYTHON_COMPAT=( python3_{8..11} )
 
 inherit toolchain-funcs python-single-r1
 
@@ -14,11 +14,17 @@ MYP=${PN}.net-${PV}
 
 DESCRIPTION="Automated astrometric calibration programs and service"
 HOMEPAGE="http://astrometry.net"
-SRC_URI="https://github.com/dstndstn/astrometry.net/releases/download/${PV}/${MYP}.tar.gz"
+
+if [[ ${PV} = "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/dstndstn/astrometry.net.git"
+else
+	SRC_URI="https://github.com/dstndstn/astrometry.net/releases/download/${PV}/${MYP}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+fi
 
 LICENSE="BSD GPL-2 GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 IUSE="examples +netpbm"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
