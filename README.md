@@ -62,6 +62,13 @@ This is a small tool I wrote to configure the Leo Bodnar GPSDO.
 
 Pat is a Winlink 2000 protocol client.
 
+### SDR++
+
+SDR++ is Software Defined Radio Receiver.
+
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
+
 ### SDRangel
 
 A very powerful signal analyzer and synthesizer supporting a wide range of
