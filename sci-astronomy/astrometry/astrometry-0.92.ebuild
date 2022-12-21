@@ -99,17 +99,17 @@ src_test() {
 
 ap_make() {
 	emake \
-		INSTALL_DIR="${ED%/}/usr" \
-		DATA_INSTALL_DIR="${ED%/}/usr/share/astrometry" \
-		LIB_INSTALL_DIR="${ED%/}/usr/$(get_libdir)" \
-		ETC_INSTALL_DIR="${ED%/}/etc" \
-		MAN1_INSTALL_DIR="${ED%/}/usr/share/man/man1" \
-		DOC_INSTALL_DIR="${ED%/}/usr/share/doc/${PF}" \
-		EXAMPLE_INSTALL_DIR="${ED%/}/usr/share/doc/${PF}/examples" \
+		INSTALL_DIR="${ED}/usr" \
+		DATA_INSTALL_DIR="${ED}/usr/share/astrometry" \
+		LIB_INSTALL_DIR="${ED}/usr/$(get_libdir)" \
+		ETC_INSTALL_DIR="${ED}/etc" \
+		MAN1_INSTALL_DIR="${ED}/usr/share/man/man1" \
+		DOC_INSTALL_DIR="${ED}/usr/share/doc/${PF}" \
+		EXAMPLE_INSTALL_DIR="${ED}/usr/share/doc/${PF}/examples" \
 		PY_BASE_INSTALL_DIR="${D}/$(python_get_sitedir)/astrometry" \
 		PY_BASE_LINK_DIR="../$(python_get_sitedir | sed -e 's|/usr/||')/astrometry" \
-		FINAL_DIR="${EPREFIX%/}/usr" \
-		DATA_FINAL_DIR="${EPREFIX%/}/usr/share/astrometry" \
+		FINAL_DIR="${EPREFIX}/usr" \
+		DATA_FINAL_DIR="${EPREFIX}/usr/share/astrometry" \
 		$@
 }
 
