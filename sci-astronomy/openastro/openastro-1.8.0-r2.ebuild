@@ -19,7 +19,7 @@ fi
 LICENSE="GPL-3"
 SLOT="0"
 
-IUSE_INDILIB_DRIVERS="asi atik gige qhy toupbase"
+IUSE_INDILIB_DRIVERS="asi atik qhy toupbase"
 use_indilib_drivers=$(printf ' indilib_drivers_%s' ${IUSE_INDILIB_DRIVERS})
 IUSE="gphoto2 v4l ${use_indilib_drivers}"
 
@@ -46,7 +46,6 @@ DEPEND="
 	gphoto2? ( media-libs/libgphoto2:= )
 	indilib_drivers_asi? ( sci-libs/libasi:= )
 	indilib_drivers_atik? ( sci-libs/libatik:= )
-	indilib_drivers_gige? ( =media-video/aravis-0.6*:= )
 	indilib_drivers_qhy? ( sci-libs/libqhy:= )
 	indilib_drivers_toupbase?
 	(
