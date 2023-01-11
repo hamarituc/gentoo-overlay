@@ -6,9 +6,9 @@
 		<name>Mario Haustein</name>
 	</maintainer>
 	<longdescription>
-		Meta ebuild for installation of indilib.org's 3rd party drivers. Works like <pkg>x11-base/xorg-servers</pkg>.
+		Meta ebuild for installation of indilib.org's 3rd party drivers. Works like <pkg>x11-base/xorg-server</pkg>.
 	</longdescription>
- 	<upstream>
+	<upstream>
 		<doc lang="en">http://indilib.org/</doc>
 		<bugs-to>https://github.com/indilib/indi-3rdparty/issues</bugs-to>
 		<remote-id type="github">indilib/indi-3rdparty</remote-id>

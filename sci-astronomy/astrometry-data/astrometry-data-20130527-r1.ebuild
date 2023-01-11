@@ -357,7 +357,6 @@ src_unpack()
 
 src_install()
 {
-	dodir /usr/share/astrometry
 	insinto /usr/share/astrometry
 	cd "${DISTDIR}" || die
 	doins index-*.fits

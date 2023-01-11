@@ -28,8 +28,8 @@ DEPEND="
 	dev-python/ply
 	dev-python/pyyaml
 	|| (
-		net-libs/gnutls:=
-		dev-libs/openssl:=
+		net-libs/gnutls
+		dev-libs/openssl
 	)
 	debug? ( dev-libs/elfutils:= )
 	gstreamer? ( media-libs/gstreamer:= )

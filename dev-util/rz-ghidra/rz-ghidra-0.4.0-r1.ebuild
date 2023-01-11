@@ -9,10 +9,9 @@ DESCRIPTION="Deep ghidra decompiler and sleigh disassembler integration for rizi
 HOMEPAGE="https://github.com/rizinorg/rz-ghidra"
 
 if [[ ${PV} == "9999" ]] ; then
-    inherit git-r3
+	inherit git-r3
 	EGIT_REPO_URI="https://github.com/rizinorg/rz-ghidra.git"
 	EGIT_SUBMODULES=( '*' '-third-party/pugixml' )
-    KEYWORDS=""
 else
 	EGIT_COMMIT="v${PV}"
 	# From git submodule

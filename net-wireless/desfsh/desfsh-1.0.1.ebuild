@@ -11,9 +11,8 @@ DESCRIPTION="An interactive application for accessing Mifare DESFire NFC tags"
 HOMEPAGE="https://github.com/hamarituc/desfsh"
 
 if [[ ${PV} == "9999" ]] ; then
-    EGIT_REPO_URI="https://github.com/hamarituc/desfsh.git"
-    KEYWORDS=""
-    inherit git-r3
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/hamarituc/desfsh.git"
 else
 	SRC_URI="https://github.com/hamarituc/desfsh/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64"

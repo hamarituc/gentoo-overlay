@@ -11,10 +11,10 @@ DESCRIPTION="a cross-platform SDR software with the aim of being bloat free and 
 HOMEPAGE="https://github.com/AlexandreRouma/SDRPlusPlus"
 
 if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/AlexandreRouma/SDRPlusPlus.git"
 	inherit git-r3
+	EGIT_REPO_URI="https://github.com/AlexandreRouma/SDRPlusPlus.git"
 else
-	SRC_URI="https://github.com/AlexandreRouma/SDRPlusPlus/archive/${PV}.tar.gz"
+	SRC_URI="https://github.com/AlexandreRouma/SDRPlusPlus/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/SDRPlusPlus-${PV}"
 	KEYWORDS="~amd64 ~arm ~x86"
 fi

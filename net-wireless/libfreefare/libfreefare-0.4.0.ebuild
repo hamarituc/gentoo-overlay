@@ -9,9 +9,8 @@ DESCRIPTION="a library for high level manipulation of MIFARE tags"
 HOMEPAGE="https://github.com/nfc-tools/libfreefare"
 
 if [[ ${PV} == "9999" ]] ; then
-    EGIT_REPO_URI="https://github.com/nfc-tools/libfreefare.git"
-    KEYWORDS=""
-    inherit git-r3
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/nfc-tools/libfreefare.git"
 else
 	SRC_URI="https://github.com/nfc-tools/libfreefare/archive/${P}.tar.gz"
 	KEYWORDS="~amd64"
@@ -20,11 +19,12 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE=""
 
-DEPEND="dev-libs/libnfc
-		dev-libs/openssl:=
-		virtual/libusb:0"
+DEPEND="
+	dev-libs/libnfc:=
+	dev-libs/openssl:=
+	virtual/libusb:0
+"
 
 RDEPEND="${DEPEND}"
 

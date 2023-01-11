@@ -11,14 +11,13 @@ DESCRIPTION="Triton is a Dynamic Binary Analysis (DBA) framework"
 HOMEPAGE="https://triton.quarkslab.com/"
 
 if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/JonathanSalwan/Triton.git"
-	KEYWORDS=""
-	S="${WORKDIR}/Triton"
 	inherit git-r3
+	EGIT_REPO_URI="https://github.com/JonathanSalwan/Triton.git"
+	S="${WORKDIR}/Triton"
 else
 	SRC_URI="https://github.com/JonathanSalwan/Triton/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64"
 	S="${WORKDIR}/Triton-${PV}"
+	KEYWORDS="~amd64"
 fi
 
 LICENSE="Apache-2.0"

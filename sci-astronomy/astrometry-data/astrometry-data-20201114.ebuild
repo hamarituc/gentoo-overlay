@@ -715,7 +715,6 @@ src_unpack()
 
 src_install()
 {
-	dodir /usr/share/astrometry
 	insinto /usr/share/astrometry
 	cd "${DISTDIR}" || die
 	for i in astrometry-data-index-*.fits; do

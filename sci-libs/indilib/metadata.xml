@@ -37,6 +37,6 @@
 		<changelog>https://indilib.org/about/news.html</changelog>
 		<doc lang="en">http://indilib.org/about/discover-indi.html</doc>
 		<bugs-to>https://github.com/indilib/indi/issues</bugs-to>
-        <remote-id type="github">indilib/indi</remote-id>
+		<remote-id type="github">indilib/indi</remote-id>
 	</upstream>
 </pkgmetadata>

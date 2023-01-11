@@ -70,7 +70,7 @@ src_install() {
 	# binaries and it's folder in /usr/share. Things then end up like
 	# `arv-tool-0.6`. We use this little hack to find out the version of the
 	# current build in a way that works even for a -9999 ebuild.
-	local install_pv="$(ls ${ED}/usr/share | grep aravis- | cut -f 2 -d '-')"
+	local install_pv="$(ls "${ED}/usr/share" | grep aravis- | cut -f 2 -d '-')"
 	local install_p="${PN}-${install_pv}"
 
 	# Properly place icons
