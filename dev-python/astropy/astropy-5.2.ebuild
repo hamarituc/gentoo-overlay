@@ -11,7 +11,7 @@ DESCRIPTION="Python astronomy package"
 HOMEPAGE="https://www.astropy.org/"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 LICENSE="BSD"
 SLOT="0"
 IUSE="hdf5"

@@ -8,7 +8,7 @@ HOMEPAGE="http://www.indilib.org/"
 SRC_URI=""
 
 if [[ ${PV} != "9999" ]]; then
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64 ~ppc ~ppc64 ~riscv ~x86"
 fi
 
 LICENSE="metapackage"
