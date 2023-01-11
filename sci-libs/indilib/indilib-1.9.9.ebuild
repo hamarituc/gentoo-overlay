@@ -27,13 +27,13 @@ RDEPEND="
 	acct-group/indiserver
 	acct-user/indiserver
 	dev-libs/libev:=
+	media-libs/libjpeg-turbo:=
 	net-misc/curl
 	sci-libs/cfitsio:=
 	sci-libs/fftw:3.0=
 	sci-libs/gsl:=
 	sci-libs/libnova:=
 	sys-libs/zlib
-	virtual/jpeg:0
 	virtual/libusb:0
 	ogg? (
 		media-libs/libogg

@@ -37,7 +37,7 @@ DEPEND="
 	(
 		dev-libs/libevent:=
 		drm? ( x11-libs/libdrm:= )
-		jpeg? ( virtual/jpeg:= )
+		jpeg? ( media-libs/libjpeg-turbo:= )
 		sdl? ( media-libs/libsdl2:= )
 	)
 	qt5?

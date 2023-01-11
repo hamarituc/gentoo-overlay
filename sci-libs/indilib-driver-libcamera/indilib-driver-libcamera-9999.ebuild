@@ -25,11 +25,11 @@ SLOT="0/1"
 DEPEND="
 	dev-libs/boost:=
 	media-libs/libcamera:=
+	media-libs/libjpeg-turbo:=
 	media-libs/libraw:=
 	sci-libs/cfitsio:=
 	~sci-libs/indilib-${PV}
 	sys-libs/zlib:=
-	virtual/jpeg:0
 	virtual/libusb:1
 "
 RDEPEND="
