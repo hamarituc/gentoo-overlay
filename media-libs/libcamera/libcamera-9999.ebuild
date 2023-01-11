@@ -19,7 +19,7 @@ fi
 LICENSE="LGPL-2.1+"
 SLOT="0"
 
-IUSE="debug doc drm gnutls gstreamer jpeg libevent openssl qt5 sdl tiff trace udev unwind v4l2"
+IUSE="debug doc drm gnutls gstreamer jpeg libevent qt5 sdl tiff trace udev unwind v4l2"
 REQUIRED_USE="qt5? ( tiff )"
 
 DEPEND="
