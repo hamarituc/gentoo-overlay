@@ -192,17 +192,6 @@ Radare2 is a UNIX-like reverse engineering framework and command-line toolset.
 This ebuild is based more recent version than found in the gentoo mainline
 repo.
 
-### pwntools
-
-Citing from https://github.com/Gallopsled/pwntools:
-
-> Pwntools is a CTF framework and exploit development library. Written in
-> Python, it is designed for rapid prototyping and development, and intended to
-> make exploit writing as simple as possible.
-
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
-  Project.
-
 ### rz-ghidra
 
 rz-ghidra is an integration of the Ghidra decompiler into rizin and cutter.
@@ -278,6 +267,7 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `dev-util/gef`
  * `dev-util/peda`
  * `dev-util/pwndbg`
+ * `dev-util/pwntools`
  * `dev-util/ropper`
  * `dev-util/unicorn`
  * `media-libs/librtprocess`
