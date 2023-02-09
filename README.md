@@ -128,6 +128,11 @@ Skyfield is a python library for various astronomical calculation problems.
 
 Space command is a command line satellite tracking tool.
 
+### StarCharter
+
+StarCharter is a command-line tool for producing vector-graphics charts of the
+night sky in SVG, PDF and PNG formats.
+
 ### STRF
 
 STRF is a satellite tracking and orbit determination program. Orbit
