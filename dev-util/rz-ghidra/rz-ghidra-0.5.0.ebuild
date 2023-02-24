@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake flag-o-matic
 
 DESCRIPTION="Deep ghidra decompiler and sleigh disassembler integration for rizin"
 HOMEPAGE="https://github.com/rizinorg/rz-ghidra"
@@ -14,7 +14,7 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_SUBMODULES=( '*' '-third-party/pugixml' )
 else
 	# From git submodule
-	GHIDRA_COMMIT="d87905747fe38d2dcd7492ed2e83bbf438b156d3"
+	GHIDRA_COMMIT="d89dd09b18645ba62fc202f962fdb73fb60145a7"
 
 	SRC_URI="
 		https://github.com/rizinorg/rz-ghidra/archive/v${PV}.tar.gz -> ${P}.tar.gz
@@ -30,7 +30,7 @@ IUSE="cutter"
 
 DEPEND="
 	dev-libs/pugixml
-	dev-util/rizin:=
+	=dev-util/rizin-0.5*:=
 	cutter? (
 		dev-qt/qtwidgets:5
 		dev-util/cutter
@@ -48,10 +48,18 @@ src_prepare() {
 }
 
 src_configure() {
+	append-flags "-mno-crc32"
+
 	local mycmakeargs=(
 		-DBUILD_CUTTER_PLUGIN=$(usex cutter)
-		-DCUTTER_INSTALL_PLUGDIR="${EPREFIX}/usr/share/rizin/cutter/plugins/native/"
 		-DUSE_SYSTEM_PUGIXML=ON
 	)
+
+	if use cutter; then
+		mycmakeargs+=(
+			-DCUTTER_INSTALL_PLUGDIR="${EPREFIX}/usr/share/rizin/cutter/plugins/native/"
+		)
+	fi
+
 	cmake_src_configure
 }
