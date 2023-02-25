@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..10} )
+PYTHON_COMPAT=( python3_{9..11} )
 
 inherit cmake python-single-r1
 
@@ -13,7 +13,6 @@ HOMEPAGE="https://triton.quarkslab.com/"
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/JonathanSalwan/Triton.git"
-	S="${WORKDIR}/Triton"
 else
 	SRC_URI="https://github.com/JonathanSalwan/Triton/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/Triton-${PV}"
