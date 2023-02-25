@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..10} )
+PYTHON_COMPAT=( python3_{9..11} )
 DISTUTILS_USE_SETUPTOOLS=no
 
 inherit distutils-r1
@@ -21,8 +21,4 @@ fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE=""
 RESTRICT="test"
-
-DEPEND=""
-RDEPEND="${PYTHON_DEPS}"
