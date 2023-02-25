@@ -12,7 +12,7 @@ HOMEPAGE="https://github.com/gideonshaked/nextinspace"
 
 if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/gideonshaked/${PN}"
+	EGIT_REPO_URI="https://github.com/gideonshaked/nextinspace.git"
 else
 	SRC_URI="https://github.com/gideonshaked/nextinspace/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
 	KEYWORDS="~amd64 ~x86"
@@ -22,15 +22,22 @@ LICENSE="GPL-3+"
 SLOT="0"
 
 RDEPEND="
-	>=dev-python/colorama-0.4.3
-	>=dev-python/requests-2.24
+	>=dev-python/colorama-0.4.3[${PYTHON_USEDEP}]
+	>=dev-python/requests-2.24[${PYTHON_USEDEP}]
 "
 BDEPEND="
 	test? (
 		${RDEPEND}
-		>=dev-python/pytest-lazy-fixture-0.6.3
-		>=dev-python/requests-mock-1.8
+		>=dev-python/pytest-lazy-fixture-0.6.3[${PYTHON_USEDEP}]
+		>=dev-python/requests-mock-1.8[${PYTHON_USEDEP}]
 	)
 "
 
 distutils_enable_tests pytest
+
+src_prepare() {
+	default
+
+	# Don't install license files
+	sed -e '/^include = \["LICENSE"\]$/d' -i pyproject.toml || die
+}
