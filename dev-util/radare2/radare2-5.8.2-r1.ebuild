@@ -39,7 +39,7 @@ RDEPEND="
 	dev-libs/xxhash
 	sys-apps/file
 	sys-libs/zlib
-	=dev-libs/capstone-5.0_rc2_p20221203:0=
+	~dev-libs/capstone-5.0_rc2_p20221203:0=
 	ssl? ( dev-libs/openssl:0= )
 "
 DEPEND="
