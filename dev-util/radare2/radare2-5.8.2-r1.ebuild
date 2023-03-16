@@ -8,8 +8,8 @@ inherit bash-completion-r1 toolchain-funcs
 DESCRIPTION="unix-like reverse engineering framework and commandline tools"
 HOMEPAGE="https://www.radare.org"
 
-# From libr/arch/p/arm/v35arm64/Makefile
-ARM64_COMMIT=c9e7242972837ac11fc94db05fabcb801a8269c9
+# From libr/arch/p/arm/v35/Makefile
+ARM64_COMMIT=55d73c6bbb94448a5c615933179e73ac618cf876
 ARMV7_COMMIT=f270a6cc99644cb8e76055b6fa632b25abd26024
 
 # Most recent commit from https://github.com/radareorg/radare2-testbins
