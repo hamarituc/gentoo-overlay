@@ -26,7 +26,7 @@ RESTRICT="!test? ( test )"
 DEPEND="
 	>=dev-libs/libev-4.31:=
 	dev-libs/libuv:=
-	<dev-python/greenlet-2[${PYTHON_USEDEP}]
+	>=dev-python/greenlet-2[${PYTHON_USEDEP}]
 	>=net-dns/c-ares-1.12:=
 "
 RDEPEND="
