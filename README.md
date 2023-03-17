@@ -238,6 +238,11 @@ Miscellaneous :toolbox:
 
 `desfsh` is an interactive untility for accessing Mifare DESFire NFC tags.
 
+### endesive
+
+Endesive is a python library for creating an verifying various kinds of
+electronic signatures.
+
 ### libfreefare
 
 A library on top of `libnfc` for accessing various Mifare NFC tags.
