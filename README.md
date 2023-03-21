@@ -209,6 +209,20 @@ Citing from https://github.com/JonathanSalwan/Triton/:
 > engineering and perform software verification.
 
 
+Cryptography :lock_with_ink_pen:
+--------------------------------
+
+### badkeys
+
+badkeys checks public keys in a variety of formats for known vulnerabilities.
+A web version can be found at badkeys.info.
+
+### endesive
+
+Endesive is a python library for creating an verifying various kinds of
+electronic signatures.
+
+
 Electronic Engineering :electric_plug:
 --------------------------------------
 
@@ -237,16 +251,6 @@ Miscellaneous :toolbox:
 ### Desfire Shell
 
 `desfsh` is an interactive untility for accessing Mifare DESFire NFC tags.
-
-### badkeys
-
-badkeys checks public keys in a variety of formats for known vulnerabilities.
-A web version can be found at badkeys.info.
-
-### endesive
-
-Endesive is a python library for creating an verifying various kinds of
-electronic signatures.
 
 ### libfreefare
 
