@@ -1,0 +1,19 @@
+From 1cabec3278296170a542ae79c22e1237b6f6e673 Mon Sep 17 00:00:00 2001
+From: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date: Tue, 21 Mar 2023 07:30:16 +0100
+Subject: [PATCH] include key data as data files into installation
+Upstream: https://github.com/badkeys/badkeys/pull/10
+
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -28,6 +28,10 @@ ssh = paramiko
+ [options.packages.find]
+ where = .
+ 
++[options.package_data]
++badkeys.keydata =
++    *.dat
++
+ [options.entry_points]
+ console_scripts = 
+     badkeys = badkeys.runcli:runcli

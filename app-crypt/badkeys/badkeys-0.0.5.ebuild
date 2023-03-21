@@ -31,6 +31,7 @@ RDEPEND="
 
 PATCHES=(
 	"${FILESDIR}/${PN}-tests.patch"
+	"${FILESDIR}/${PN}-data.patch"
 )
 
 src_prepare()
