@@ -238,6 +238,11 @@ Miscellaneous :toolbox:
 
 `desfsh` is an interactive untility for accessing Mifare DESFire NFC tags.
 
+### badkeys
+
+badkeys checks public keys in a variety of formats for known vulnerabilities.
+A web version can be found at badkeys.info.
+
 ### endesive
 
 Endesive is a python library for creating an verifying various kinds of
