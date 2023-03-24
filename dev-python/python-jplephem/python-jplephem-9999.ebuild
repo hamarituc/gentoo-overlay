@@ -23,7 +23,6 @@ LICENSE="MIT"
 SLOT="0"
 
 RDEPEND="
-	${PYTHON_DEPS}
 	dev-python/numpy[${PYTHON_USEDEP}]
 "
 

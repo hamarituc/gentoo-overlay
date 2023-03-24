@@ -22,7 +22,6 @@ LICENSE="MIT"
 SLOT="0"
 
 RDEPEND="
-	${PYTHON_DEPS}
 	dev-python/aiohttp[${PYTHON_USEDEP}]
 	dev-python/beautifulsoup4[${PYTHON_USEDEP}]
 	dev-python/beyond[${PYTHON_USEDEP}]

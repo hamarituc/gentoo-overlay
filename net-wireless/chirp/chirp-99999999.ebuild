@@ -19,7 +19,7 @@ SLOT="0"
 KEYWORDS=""
 IUSE="radioreference"
 
-DEPEND="${PYTHON_DEPS}
+DEPEND="
 	dev-python/pygobject[${PYTHON_USEDEP}]
 	dev-python/pyserial[${PYTHON_USEDEP}]
 	dev-libs/libxml2[python]

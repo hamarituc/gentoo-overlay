@@ -21,7 +21,6 @@ LICENSE="BSD"
 SLOT="0"
 
 RDEPEND="
-	${PYTHON_DEPS}
 	>=dev-python/numpy-1.17[${PYTHON_USEDEP}]
 	=sci-astronomy/erfa-$(ver_cut 1-3)*
 "

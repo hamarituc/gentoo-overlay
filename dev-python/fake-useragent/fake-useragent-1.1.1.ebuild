@@ -23,7 +23,6 @@ LICENSE="Apache-2.0"
 SLOT="0"
 
 RDEPEND="
-	${PYTHON_DEPS}
 	$(python_gen_cond_dep '
 		>=dev-python/importlib_resources-5.0[${PYTHON_USEDEP}]
 	' python3_8)

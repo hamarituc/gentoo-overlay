@@ -23,7 +23,6 @@ SLOT="0"
 IUSE="examples"
 
 RDEPEND="
-	${PYTHON_DEPS}
 	>=dev-libs/capstone-4.0.1[python,${PYTHON_USEDEP}]
 	>=dev-libs/keystone-0.9.2[python,${PYTHON_USEDEP}]
 	>=dev-util/unicorn-2.0.0_rc7[python,${PYTHON_USEDEP}]

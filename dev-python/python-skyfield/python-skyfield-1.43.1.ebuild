@@ -23,7 +23,6 @@ LICENSE="MIT"
 SLOT="0"
 
 RDEPEND="
-	${PYTHON_DEPS}
 	>=dev-python/certifi-2017.4.17[${PYTHON_USEDEP}]
 	dev-python/numpy[${PYTHON_USEDEP}]
 	>=dev-python/python-jplephem-2.13[${PYTHON_USEDEP}]

@@ -25,7 +25,8 @@ IUSE="doc"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-RDEPEND="${PYTHON_DEPS}
+RDEPEND="
+	${PYTHON_DEPS}
 	>=dev-lang/orc-0.4:=
 	dev-libs/spdlog:=
 	media-libs/libsndfile:=

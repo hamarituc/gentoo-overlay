@@ -16,7 +16,6 @@ LICENSE="MIT"
 SLOT="0"
 
 RDEPEND="
-	${PYTHON_DEPS}
 	dev-python/beautifulsoup4[${PYTHON_USEDEP}]
 	dev-python/requests[socks5,${PYTHON_USEDEP}]
 	dev-python/dnspython[${PYTHON_USEDEP}]

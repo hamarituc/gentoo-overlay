@@ -17,7 +17,7 @@ SLOT="0"
 IUSE="hdf5"
 
 # TODO: wcslib
-RDEPEND="${PYTHON_DEPS}
+RDEPEND="
 	>=dev-python/numpy-1.20[${PYTHON_USEDEP}]
 	>=dev-python/pyerfa-2.0[${PYTHON_USEDEP}]
 	>=dev-python/pyyaml-3.13[${PYTHON_USEDEP}]

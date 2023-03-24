@@ -22,7 +22,6 @@ LICENSE="BSD"
 SLOT="0"
 
 RDEPEND="
-	${PYTHON_DEPS}
 	>=dev-python/dill-0.3.5.1[${PYTHON_USEDEP}]
 "
 
