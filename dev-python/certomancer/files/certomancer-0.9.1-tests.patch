@@ -1,0 +1,63 @@
+From 6aab403b504720ba8dad8085f31ee6b0d629f513 Mon Sep 17 00:00:00 2001
+From: Matthias Valvekens <matthias@mvalvekens.be>
+Date: Fri, 10 Feb 2023 22:36:55 +0100
+Subject: [PATCH] Bump pyhanko-certvalidator test dep
+
+...to 0.20.0, and fix the resulting failure for DSA due to the more
+strict policy defaults in 0.20.0.
+
+Fixes #8.
+---
+ requirements.txt       | 2 +-
+ setup.py               | 2 +-
+ tests/test_services.py | 4 ++++
+ 3 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/requirements.txt b/requirements.txt
+index 2eb9a9f..34da171 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -10,7 +10,7 @@ Werkzeug>=1.0.1
+ Jinja2>=2.11.3
+ cryptography>=3.4.7
+ freezegun>=1.1.0
+-pyhanko-certvalidator==0.19.5
++pyhanko-certvalidator==0.20.0
+ requests>=2.0.0
+ requests-mock>=1.8.0
+ pytest-aiohttp~=1.0.4
+diff --git a/setup.py b/setup.py
+index 87a8eda..fa03608 100644
+--- a/setup.py
++++ b/setup.py
+@@ -76,7 +76,7 @@ def get_version():
+     },
+     tests_require=[
+         'pytest>=6.1.1', 'pytz>=2020.1',
+-        'freezegun>=1.1.0', 'pyhanko-certvalidator==0.19.5',
++        'freezegun>=1.1.0', 'pyhanko-certvalidator==0.20.0',
+         'requests>=2.0.0', 'pytest-aiohttp~=1.0.4'
+     ],
+     keywords="pki testing"
+diff --git a/tests/test_services.py b/tests/test_services.py
+index a444ad4..7d716f3 100644
+--- a/tests/test_services.py
++++ b/tests/test_services.py
+@@ -11,6 +11,7 @@
+ from freezegun import freeze_time
+ from oscrypto import asymmetric, symmetric
+ from pyhanko_certvalidator import CertificateValidator, ValidationContext
++from pyhanko_certvalidator.policy_decl import DisallowWeakAlgorithmsPolicy
+ 
+ from certomancer.integrations import illusionist
+ from certomancer.registry import (
+@@ -141,6 +142,9 @@ async def test_validate(requests_mock, setup):
+         allow_fetching=True,
+         revocation_mode='hard-fail',
+         other_certs=[interm],
++        algorithm_usage_policy=DisallowWeakAlgorithmsPolicy(
++            dsa_key_size_threshold=2048
++        ),
+     )
+ 
+     validator = CertificateValidator(
