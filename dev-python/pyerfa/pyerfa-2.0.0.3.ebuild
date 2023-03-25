@@ -6,17 +6,22 @@ EAPI=8
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{9..11} )
 
-inherit distutils-r1 git-r3
+inherit distutils-r1
 
 DESCRIPTION="Astronomical Computation Library"
-HOMEPAGE="https://github.com/liberfa/pyerfa"
-EGIT_REPO_URI="https://github.com/liberfa/pyerfa.git"
-EGIT_COMMIT="v${PV}"
-EGIT_OVERRIDE_COMMIT_LIBERFA_PYERFA="v${PV}"
-EGIT_SUBMODULES=( liberfa/erfa )
-EGIT_OVERRIDE_COMMIT_LIBERFA_ERFA="v$(ver_cut 1-3)"
+HOMEPAGE="
+	https://github.com/liberfa/pyerfa
+	https://pypi.org/project/pyerfa/
+"
 
-KEYWORDS="amd64 x86"
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/liberfa/pyerfa.git"
+else
+	inherit pypi
+	KEYWORDS="amd64 x86"
+fi
+
 LICENSE="BSD"
 SLOT="0"
 
@@ -24,6 +29,8 @@ RDEPEND="
 	>=dev-python/numpy-1.17[${PYTHON_USEDEP}]
 	=sci-astronomy/erfa-$(ver_cut 1-3)*
 "
+
+RESTRICT="test"
 
 python_compile()
 {
