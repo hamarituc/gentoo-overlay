@@ -47,7 +47,7 @@ DEPEND="
 PATCHES=(
 	"${FILESDIR}/${PN}-plugins-prefix.patch"
 	"${FILESDIR}/${P}-portaudio_sink.patch"
-	"${FILESDIR}/${P}-fix-cmake-libdir-location.patch"
+	"${FILESDIR}/${P}-installdirs.patch"
 )
 
 src_configure() {

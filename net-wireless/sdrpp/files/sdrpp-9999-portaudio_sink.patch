@@ -1,34 +1,15 @@
 diff --git a/sink_modules/portaudio_sink/CMakeLists.txt b/sink_modules/portaudio_sink/CMakeLists.txt
-index d920989..cd0068e 100644
+index 4881a81..7f59c5a 100644
 --- a/sink_modules/portaudio_sink/CMakeLists.txt
 +++ b/sink_modules/portaudio_sink/CMakeLists.txt
-@@ -1,37 +1,37 @@
+@@ -1,5 +1,5 @@
  cmake_minimum_required(VERSION 3.13)
 -project(audio_sink)
 +project(portaudio_sink)
  
  file(GLOB SRC "src/*.cpp")
  
--add_library(audio_sink SHARED ${SRC})
--target_link_libraries(audio_sink PRIVATE sdrpp_core)
--set_target_properties(audio_sink PROPERTIES PREFIX "")
-+add_library(portaudio_sink SHARED ${SRC})
-+target_link_libraries(portaudio_sink PRIVATE sdrpp_core)
-+set_target_properties(portaudio_sink PROPERTIES PREFIX "")
- 
--target_include_directories(audio_sink PRIVATE "src/")
-+target_include_directories(portaudio_sink PRIVATE "src/")
- 
- if (MSVC)
--    target_compile_options(audio_sink PRIVATE /O2 /Ob2 /std:c++17 /EHsc)
-+    target_compile_options(portaudio_sink PRIVATE /O2 /Ob2 /std:c++17 /EHsc)
- elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
--    target_compile_options(audio_sink PRIVATE -O3 -std=c++17 -Wno-unused-command-line-argument -undefined dynamic_lookup)
-+    target_compile_options(portaudio_sink PRIVATE -O3 -std=c++17 -Wno-unused-command-line-argument -undefined dynamic_lookup)
- else ()
--    target_compile_options(audio_sink PRIVATE -O3 -std=c++17)
-+    target_compile_options(portaudio_sink PRIVATE -O3 -std=c++17)
- endif ()
+@@ -7,16 +7,16 @@ include(${SDRPP_MODULE_CMAKE})
  
  if (MSVC)
      find_package(portaudio CONFIG REQUIRED)
@@ -48,15 +29,11 @@ index d920989..cd0068e 100644
 -    target_link_libraries(audio_sink PRIVATE ${PORTAUDIO_LIBRARIES})
 +    target_link_libraries(portaudio_sink PRIVATE ${PORTAUDIO_LIBRARIES})
  
- endif (MSVC)
- 
- # Install directives
--install(TARGETS audio_sink DESTINATION lib/sdrpp/plugins)
+-endif (MSVC)
 \ No newline at end of file
-+install(TARGETS portaudio_sink DESTINATION lib/sdrpp/plugins)
-\ No newline at end of file
++endif (MSVC)
 diff --git a/sink_modules/portaudio_sink/src/main.cpp b/sink_modules/portaudio_sink/src/main.cpp
-index c17df33..838a5fa 100644
+index 6df8be0..a80fb2d 100644
 --- a/sink_modules/portaudio_sink/src/main.cpp
 +++ b/sink_modules/portaudio_sink/src/main.cpp
 @@ -12,7 +12,7 @@
