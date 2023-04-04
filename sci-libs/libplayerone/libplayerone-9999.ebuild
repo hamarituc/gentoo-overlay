@@ -23,7 +23,6 @@ LICENSE="playerone"
 SLOT="0/1"
 
 DEPEND="
-	~sci-libs/indilib-${PV}
 	virtual/libudev
 	virtual/libusb:1
 "

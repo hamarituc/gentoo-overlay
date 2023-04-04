@@ -5,6 +5,9 @@
 		<email>mario@mariohaustein.de</email>
 		<name>Mario Haustein</name>
 	</maintainer>
+	<use>
+		<flag name='indilib_drivers_ahp-gt'>Install AHP GT Controllers Driver</flag>
+	</use>
 	<upstream>
 		<doc lang="en">http://indilib.org/</doc>
 		<bugs-to>https://github.com/indilib/indi-3rdparty/issues</bugs-to>

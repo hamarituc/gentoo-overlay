@@ -10,7 +10,6 @@
 		INDI stands for the Instrument-Neutral-Distributed-Interface, and was developed by Elwood C. Downey of ClearSky Institute.
 	</longdescription>
 	<use>
-		<flag name='drivers'>Installs <pkg>sci-libs/indilib-drivers</pkg> which is a metapackage for indilib 3rd party drivers.</flag>
 		<flag name='websocket'>Enable support for WebSocket protocol</flag>
 	</use>
 	<upstream>

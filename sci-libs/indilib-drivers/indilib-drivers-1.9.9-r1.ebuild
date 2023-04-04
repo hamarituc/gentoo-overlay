@@ -16,7 +16,6 @@ SLOT="0/1"
 
 IUSE_INDILIB_DRIVERS="
 	aagcloudwatcher-ng
-	ahp-gt
 	ahp-xc
 	aok
 	apogee
@@ -80,12 +79,10 @@ REQUIRED_USE="
 	indilib_drivers_rpi-gpio? ( arm )
 	indilib_drivers_rpicam? ( arm )
 	indilib_drivers_sbig? ( amd64 )
-	indilib_drivers_toupbase? ( amd64 )
 "
 
 RDEPEND="
 	indilib_drivers_aagcloudwatcher-ng? ( ~sci-libs/indilib-driver-aagcloudwatcher-ng-${PV} )
-	indilib_drivers_ahp-gt? ( ~sci-libs/indilib-driver-eqmod-${PV}[indilib_drivers_ahp-gt] )
 	indilib_drivers_ahp-xc? ( ~sci-libs/indilib-driver-ahp-xc-${PV} )
 	indilib_drivers_aok? ( ~sci-libs/indilib-driver-aok-${PV} )
 	indilib_drivers_apogee? ( ~sci-libs/indilib-driver-apogee-${PV} )
@@ -147,9 +144,7 @@ RDEPEND="
 	indilib_drivers_svbony? ( ~sci-libs/indilib-driver-svbony-${PV} )
 	indilib_drivers_sx? ( ~sci-libs/indilib-driver-sx-${PV} )
 	indilib_drivers_talon6? ( ~sci-libs/indilib-driver-talon6-${PV} )
-	indilib_drivers_toupbase? (
-		amd64? ( ~sci-libs/indilib-driver-toupbase-${PV} )
-	)
+	indilib_drivers_toupbase? ( ~sci-libs/indilib-driver-toupbase-${PV} )
 	indilib_drivers_webcam? ( ~sci-libs/indilib-driver-webcam-${PV} )
 	indilib_drivers_weewx-json? ( ~sci-libs/indilib-driver-weewx-json-${PV} )
 "

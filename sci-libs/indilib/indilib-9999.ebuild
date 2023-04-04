@@ -19,7 +19,7 @@ fi
 
 LICENSE="BSD GPL-2+ LGPL-2+ LGPL-2.1+"
 SLOT="0/1"
-IUSE="drivers ogg qt5 rtlsdr static-libs test websocket"
+IUSE="ogg qt5 rtlsdr static-libs test websocket"
 
 RESTRICT="!test? ( test )"
 
@@ -50,9 +50,6 @@ DEPEND="${RDEPEND}
 	kernel_linux? ( sys-kernel/linux-headers )
 	test? ( >=dev-cpp/gtest-1.8.0 )
 	websocket? ( dev-cpp/websocketpp )
-"
-PDEPEND="
-	drivers? ( sci-libs/indilib-drivers )
 "
 
 DOCS=( AUTHORS ChangeLog README )
