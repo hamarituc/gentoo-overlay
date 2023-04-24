@@ -17,7 +17,7 @@ SRC_URI="https://github.com/MatthiasValvekens/pyHanko/archive/refs/tags/${PV}.ta
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="async pkcs11 xmp"
+IUSE="async fonts image pkcs11 xmp"
 
 # TODO
 # * fonts
@@ -39,6 +39,8 @@ RDEPEND="
 	>=dev-python/requests-2.24.0[${PYTHON_USEDEP}]
 	>=dev-python/tzlocal-2.1[${PYTHON_USEDEP}]
 	async? ( >=dev-python/aiohttp-3.8.0[${PYTHON_USEDEP}] )
+	fonts? ( >=dev-python/fonttools-4.33.3[${PYTHON_USEDEP}] )
+	image? ( >=dev-python/pillow-7.2.0[${PYTHON_USEDEP}] )
 	pkcs11?	( >=dev-python/python-pkcs11-0.7.0[${PYTHON_USEDEP}] )
 	xmp? ( >=dev-python/defusedxml-0.7.1[${PYTHON_USEDEP}] )
 "
