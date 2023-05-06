@@ -78,11 +78,6 @@ Acknowledgement: These ebuild are based on the work of
  * [AlexandreFournier](https://github.com/AlexandreFournier/gentoo-overlay)
  * [Pentoo](https://www.pentoo.ch/).
 
-### Xnecview
-
-Xnecview is a software for visualizing the input and output files of the NEC
-antenna simulation software.
-
 
 Astronomy :telescope:
 ---------------------
@@ -291,3 +286,4 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `sci-astronomy/pysiril`
  * `sci-astronomy/siril`
  * `sci-astronomy/sirilic`
+ * `sci-electronics/xnecview`
