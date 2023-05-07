@@ -1,3 +1,9 @@
+commit f1e62684fa8df30d480407115b4d327b95c597ac
+Author: MACHIZAUD Andréa <andrea.machizaud@adobe.com>
+Date:   Wed Apr 6 23:50:34 2022 +0200
+
+    Support for current capstone next
+
 --- a/src/libtriton/arch/x86/x86Specifications.cpp
 +++ b/src/libtriton/arch/x86/x86Specifications.cpp
 @@ -155,9 +155,11 @@ namespace triton {

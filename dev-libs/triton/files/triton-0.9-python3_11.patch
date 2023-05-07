@@ -1,0 +1,209 @@
+commit 2ea11937edac40e4ff0bee24e969ae00305387d9
+Author: trcrsired <uwgghhbcad@gmail.com>
+Date:   Thu Jun 23 14:28:40 2022 -0400
+
+    Fix compilation issues with python 3.12
+
+--- a/src/libtriton/bindings/python/utils.cpp
++++ b/src/libtriton/bindings/python/utils.cpp
+@@ -249,7 +249,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
++#if PY_VERSION_HEX >= 0x030a00f0 
++        Py_SET_SIZE(v, ndigits);
++#else
+         Py_SIZE(v) = ndigits;
++#endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -282,7 +286,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
++#if PY_VERSION_HEX >= 0x030a00f0 
++        Py_SET_SIZE(v, ndigits);
++#else
+         Py_SIZE(v) = ndigits;
++#endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -318,7 +326,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
++#if PY_VERSION_HEX >= 0x030a00f0 
++        Py_SET_SIZE(v, ndigits);
++#else
+         Py_SIZE(v) = ndigits;
++#endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -347,7 +359,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
++#if PY_VERSION_HEX >= 0x030a00f0 
++        Py_SET_SIZE(v, ndigits);
++#else
+         Py_SIZE(v) = ndigits;
++#endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -376,7 +392,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
++#if PY_VERSION_HEX >= 0x030a00f0 
++        Py_SET_SIZE(v, ndigits);
++#else
+         Py_SIZE(v) = ndigits;
++#endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -405,7 +425,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
++#if PY_VERSION_HEX >= 0x030a00f0 
++        Py_SET_SIZE(v, ndigits);
++#else
+         Py_SIZE(v) = ndigits;
++#endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+--- a/src/libtriton/includes/triton/pythonBindings.hpp
++++ b/src/libtriton/includes/triton/pythonBindings.hpp
+@@ -9,8 +9,13 @@
+ #define TRITONPYTHONBINDINGS_H
+ 
+ #include <Python.h>
++#if __has_include(<cpython/longintrepr.h>)
++#include <cpython/longintrepr.h>
++#else
+ #include <longintrepr.h>
+-#if _WIN32
++#endif
++
++#if defined(_WIN32) && !defined(__WINE__)
+   #include <cmath>
+   #define _hypot hypot
+ #endif
+commit fb15b2b9b21f3fffe0cc571bd39b922621213e59
+Author: Jonathan Salwan <jonathan.salwan@gmail.com>
+Date:   Fri Jun 24 10:14:41 2022 +0200
+
+    Coding style
+
+--- a/src/libtriton/bindings/python/utils.cpp
++++ b/src/libtriton/bindings/python/utils.cpp
+@@ -249,11 +249,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
+-#if PY_VERSION_HEX >= 0x030a00f0 
++        #if PY_VERSION_HEX >= 0x030a00f0
+         Py_SET_SIZE(v, ndigits);
+-#else
++        #else
+         Py_SIZE(v) = ndigits;
+-#endif
++        #endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -286,11 +286,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
+-#if PY_VERSION_HEX >= 0x030a00f0 
++        #if PY_VERSION_HEX >= 0x030a00f0
+         Py_SET_SIZE(v, ndigits);
+-#else
++        #else
+         Py_SIZE(v) = ndigits;
+-#endif
++        #endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -326,11 +326,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
+-#if PY_VERSION_HEX >= 0x030a00f0 
++        #if PY_VERSION_HEX >= 0x030a00f0
+         Py_SET_SIZE(v, ndigits);
+-#else
++        #else
+         Py_SIZE(v) = ndigits;
+-#endif
++        #endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -359,11 +359,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
+-#if PY_VERSION_HEX >= 0x030a00f0 
++        #if PY_VERSION_HEX >= 0x030a00f0
+         Py_SET_SIZE(v, ndigits);
+-#else
++        #else
+         Py_SIZE(v) = ndigits;
+-#endif
++        #endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -392,11 +392,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
+-#if PY_VERSION_HEX >= 0x030a00f0 
++        #if PY_VERSION_HEX >= 0x030a00f0
+         Py_SET_SIZE(v, ndigits);
+-#else
++        #else
+         Py_SIZE(v) = ndigits;
+-#endif
++        #endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+@@ -425,11 +425,11 @@ namespace triton {
+ 
+         v = _PyLong_New(ndigits);
+         digit* p = v->ob_digit;
+-#if PY_VERSION_HEX >= 0x030a00f0 
++        #if PY_VERSION_HEX >= 0x030a00f0
+         Py_SET_SIZE(v, ndigits);
+-#else
++        #else
+         Py_SIZE(v) = ndigits;
+-#endif
++        #endif
+         while (value) {
+           *p++ = static_cast<digit>(value & PyLong_MASK);
+           value >>= PyLong_SHIFT;
+--- a/src/libtriton/includes/triton/pythonBindings.hpp
++++ b/src/libtriton/includes/triton/pythonBindings.hpp
+@@ -10,9 +10,9 @@
+ 
+ #include <Python.h>
+ #if __has_include(<cpython/longintrepr.h>)
+-#include <cpython/longintrepr.h>
++  #include <cpython/longintrepr.h>
+ #else
+-#include <longintrepr.h>
++  #include <longintrepr.h>
+ #endif
+ 
+ #if defined(_WIN32) && !defined(__WINE__)

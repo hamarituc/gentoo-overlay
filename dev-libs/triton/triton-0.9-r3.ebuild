@@ -50,6 +50,8 @@ BDEPEND=""
 PATCHES=(
 	"${FILESDIR}/${P}-installdir.patch"
 	"${FILESDIR}/${P}-capstone.patch"
+	"${FILESDIR}/${P}-python3_11.patch"
+	"${FILESDIR}/${P}-longintrepr.patch"
 )
 
 pkg_setup() {
