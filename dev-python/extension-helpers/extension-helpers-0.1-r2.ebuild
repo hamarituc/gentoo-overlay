@@ -16,5 +16,7 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 x86"
 
+BDEPEND="dev-python/setuptools-scm[${PYTHON_USEDEP}]"
+
 distutils_enable_tests pytest
 distutils_enable_sphinx docs dev-python/sphinx-automodapi
