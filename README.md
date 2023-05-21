@@ -257,6 +257,17 @@ Proxmark3 is a RFID/NFC reader, writer, sniffer and emulator.
 Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
   Project.
 
+### net-wireless/qflipper
+
+Citing https://docs.flipperzero.one/qflipper:
+
+> qFlipper is a desktop application for updating Flipper Zero firmware and
+> databases, as well as managing files on the microSD card, and repairing
+> corrupted firmware.
+
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
+
 
 Ebuilds made it into `::gentoo` :tada:
 ======================================
