@@ -78,6 +78,7 @@ IUSE="${use_indilib_drivers}"
 
 REQUIRED_USE="
 	indilib_drivers_asi-power? ( arm )
+	indilib_drivers_astroasis? ( amd64 )
 	indilib_drivers_qhy? ( amd64 )
 	indilib_drivers_rpi-gpio? ( arm )
 	indilib_drivers_rpicam? ( arm )
@@ -96,7 +97,9 @@ RDEPEND="
 	indilib_drivers_asi-power? (
 		arm? ( ~sci-libs/indilib-driver-asi-power-${PV} )
 	)
-	indilib_drivers_astroasis? ( ~sci-libs/indilib-driver-astroasis-${PV} )
+	indilib_drivers_astroasis? (
+		amd64? ( ~sci-libs/indilib-driver-astroasis-${PV} )
+	)
 	indilib_drivers_astrolink4? ( ~sci-libs/indilib-driver-astrolink4-${PV} )
 	indilib_drivers_astromechfoc? ( ~sci-libs/indilib-driver-astromechfoc-${PV} )
 	indilib_drivers_atik? ( ~sci-libs/indilib-driver-atik-${PV} )
