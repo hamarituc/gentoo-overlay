@@ -35,11 +35,11 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	app-arch/lz4:=
+	~dev-libs/capstone-5.0_rc2_p20230528:0=
 	dev-libs/libzip:=
 	dev-libs/xxhash
 	sys-apps/file
 	sys-libs/zlib
-	~dev-libs/capstone-5.0_rc2_p20230528:0=
 	ssl? ( dev-libs/openssl:0= )
 "
 DEPEND="
