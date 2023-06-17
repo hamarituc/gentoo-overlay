@@ -9,11 +9,11 @@ DESCRIPTION="unix-like reverse engineering framework and commandline tools"
 HOMEPAGE="https://www.radare.org"
 
 # From libr/arch/p/arm/v35/Makefile
-ARM64_COMMIT=55d73c6bbb94448a5c615933179e73ac618cf876
+ARM64_COMMIT=c9e7242972837ac11fc94db05fabcb801a8269c9
 ARMV7_COMMIT=f270a6cc99644cb8e76055b6fa632b25abd26024
 
 # Most recent commit from https://github.com/radareorg/radare2-testbins
-BINS_COMMIT=5746f74f58d0473472d231c1b522dee17241177f
+BINS_COMMIT=1f0ea409f2af83fc4d0b685855de9d3b0f9eee41
 
 if [[ ${PV} == *9999 ]]; then
 	inherit git-r3
@@ -35,7 +35,7 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	app-arch/lz4:=
-	~dev-libs/capstone-5.0_rc2_p20230319:0=
+	>=dev-libs/capstone-5.0_rc3:0=
 	dev-libs/libzip:=
 	dev-libs/xxhash
 	sys-apps/file
