@@ -4,12 +4,6 @@ Date: Mon, 10 Apr 2023 12:33:19 +0300
 Subject: [PATCH] Fix unknown type error in Qt5 builds
 
 Signed-off-by: Thibaud CANALE <thican@thican.net>
----
- backend/applicationbackend.cpp | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/backend/applicationbackend.cpp b/backend/applicationbackend.cpp
-index c763e40b..32baa7b1 100644
 --- a/backend/applicationbackend.cpp
 +++ b/backend/applicationbackend.cpp
 @@ -417,6 +417,9 @@ void ApplicationBackend::registerMetaTypes()

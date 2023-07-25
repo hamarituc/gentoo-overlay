@@ -1,12 +1,3 @@
----
- application/application.pro             | 5 ++---
- cli/cli.pro                             | 5 ++---
- plugins/flipperproto0/flipperproto0.pro | 5 ++---
- qFlipper.pro                            | 2 --
- 4 files changed, 6 insertions(+), 11 deletions(-)
-
-diff --git a/application/application.pro b/application/application.pro
-index c8b24333..28683b70 100644
 --- a/application/application.pro
 +++ b/application/application.pro
 @@ -47,8 +47,7 @@ win32:!win32-g++ {
@@ -28,8 +19,6 @@ index c8b24333..28683b70 100644
  }
  
  win32 {
-diff --git a/cli/cli.pro b/cli/cli.pro
-index 5c007e7d..fe0106ee 100644
 --- a/cli/cli.pro
 +++ b/cli/cli.pro
 @@ -20,8 +20,7 @@ win32:!win32-g++ {
@@ -51,8 +40,6 @@ index 5c007e7d..fe0106ee 100644
  }
  
  win32 {
-diff --git a/plugins/flipperproto0/flipperproto0.pro b/plugins/flipperproto0/flipperproto0.pro
-index 64848402..c6b9fee7 100644
 --- a/plugins/flipperproto0/flipperproto0.pro
 +++ b/plugins/flipperproto0/flipperproto0.pro
 @@ -12,8 +12,7 @@ CONFIG += plugin c++11
@@ -74,8 +61,6 @@ index 64848402..c6b9fee7 100644
  }
  
  DEFINES += PB_ENABLE_MALLOC
-diff --git a/qFlipper.pro b/qFlipper.pro
-index 1bb97627..8b2a6c44 100644
 --- a/qFlipper.pro
 +++ b/qFlipper.pro
 @@ -1,7 +1,6 @@

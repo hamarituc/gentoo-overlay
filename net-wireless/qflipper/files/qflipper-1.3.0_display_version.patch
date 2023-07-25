@@ -1,9 +1,3 @@
----
- qflipper_common.pri | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
-
-diff --git a/qflipper_common.pri b/qflipper_common.pri
-index 6266badf..8a293d05 100644
 --- a/qflipper_common.pri
 +++ b/qflipper_common.pri
 @@ -27,20 +27,11 @@ unix:!macx {
