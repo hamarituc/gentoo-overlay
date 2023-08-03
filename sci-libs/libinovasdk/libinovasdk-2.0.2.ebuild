@@ -15,7 +15,7 @@ if [[ ${PV} == "9999" ]]; then
 	S="${EGIT_CHECKOUT_DIR}/${PN}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~x86"
+	KEYWORDS="amd64 ~arm x86"
 	S="${WORKDIR}/indi-3rdparty-${PV}/${PN}"
 fi
 
