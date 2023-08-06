@@ -1,47 +1,34 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
-PYTHON_COMPAT=( python3_{9..11} )
+EAPI=8
+DISTUTILS_USE_PEP517=setuptools
+PYTHON_COMPAT=( python3_{10..11} )
 
-inherit distutils-r1 xdg-utils git-r3
+inherit distutils-r1 xdg-utils
 
 DESCRIPTION="Free open-source tool for programming your amateur radio"
 HOMEPAGE="http://chirp.danplanet.com"
 
-RESTRICT="test"
-
-EGIT_REPO_URI="https://github.com/hamarituc/chirp.git"
-EGIT_BRANCH="py3_new"
+if [[ ${PV} == "99999999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/kk7ds/chirp.git"
+else
+	SRC_URI="https://github.com/kk7ds/chirp/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+fi
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS=""
-IUSE="radioreference"
 
 DEPEND="
-	dev-python/pygobject[${PYTHON_USEDEP}]
 	dev-python/pyserial[${PYTHON_USEDEP}]
-	dev-libs/libxml2[python]
+	dev-python/requests[${PYTHON_USEDEP}]
+	dev-python/six[${PYTHON_USEDEP}]
 	dev-python/suds-community[${PYTHON_USEDEP}]
-	dev-python/future[${PYTHON_USEDEP}]"
-RDEPEND="${DEPEND}
-	radioreference? ( dev-python/suds-community[${PYTHON_USEDEP}] )"
-
-PATCHES=(
-	"${FILESDIR}/${P}-no-tests.patch"
-)
-
-src_prepare() {
-	sed -i -e "/share\/doc\/chirp/d" setup.py || die
-	distutils-r1_src_prepare
-}
-
-python_test() {
-	pushd tests > /dev/null
-	"${PYTHON}" run_tests || die
-	popd > /dev/null
-}
+	dev-python/wxpython:4.0[${PYTHON_USEDEP}]
+	dev-python/yattag[${PYTHON_USEDEP}]
+"
 
 pkg_postinst() {
 	xdg_desktop_database_update
@@ -50,3 +37,5 @@ pkg_postinst() {
 pkg_postrm() {
 	xdg_desktop_database_update
 }
+
+distutils_enable_tests pytest
