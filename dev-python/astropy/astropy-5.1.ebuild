@@ -12,7 +12,7 @@ inherit distutils-r1 pypi
 DESCRIPTION="Python astronomy package"
 HOMEPAGE="https://www.astropy.org/"
 
-KEYWORDS="amd64 x86"
+KEYWORDS="amd64 ~x86"
 LICENSE="BSD"
 SLOT="0"
 IUSE="hdf5"
