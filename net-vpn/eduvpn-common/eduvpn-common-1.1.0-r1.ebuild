@@ -6,7 +6,7 @@ EAPI=8
 PYTHON_COMPAT=( python3_{10..12} )
 
 DISTUTILS_USE_PEP517=setuptools
-inherit distutils-r1 go-module
+inherit distutils-r1 go-module linux-info
 
 DESCRIPTION="Linux client and Python client API for eduVPN"
 HOMEPAGE="https://www.eduvpn.org/"
@@ -24,8 +24,13 @@ fi
 
 LICENSE="GPL-3+"
 SLOT="0"
+IUSE="openvpn wireguard"
 
 RESTRICT="test"
+
+RDEPEND="
+	openvpn? ( net-vpn/openvpn )
+"
 
 wrap_python() {
 	local phase=$1
@@ -34,6 +39,14 @@ wrap_python() {
 	pushd wrappers/python >/dev/null || die
 	distutils-r1_${phase} "$@"
 	popd >/dev/null || die
+}
+
+pkg_pretend() {
+	if use wireguard; then
+		CONFIG_CHECK="~WIREGUARD"
+		WARNING_WIREGUARD="You must enable WIREGUARD to use wireguard."
+		check_extra_config
+	fi
 }
 
 src_prepare() {
