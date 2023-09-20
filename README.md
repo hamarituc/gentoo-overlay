@@ -128,6 +128,18 @@ determination is based on radio measurements.
 Computer Forensics, Reverse engineering :mag:
 ---------------------------------------------
 
+### CEmu
+
+Citing from https://github.com/hugsy/cemu
+
+> Writing assembly is fun. Assembly is the lowest language (humanly
+> understandable) available to communicate with computers, and is crucial to
+> understand the internal mechanisms of any machine. Unfortunately, setting up
+> an environment to write, compile and run assembly for various architectures
+> (x86, ARM, MIPS, SPARC) has always been painful. CEmu is an attempt to fix
+> this by providing GUI, CLI and library that allows to write and test assembly
+> quickly.
+
 ### Commix
 
 Citing from https://github.com/commixproject/commix:
