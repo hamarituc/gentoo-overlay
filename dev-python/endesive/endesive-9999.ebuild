@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..11} )
 inherit distutils-r1
 
 DESCRIPTION="Sign and verify digital signatures in mail, PDF and XML documents"
@@ -24,7 +24,6 @@ fi
 LICENSE="MIT LGPL-3 BSD"
 SLOT="0"
 IUSE="examples"
-RESTRICT="test"
 
 RDEPEND="
 	dev-python/asn1crypto[${PYTHON_USEDEP}]
@@ -38,9 +37,30 @@ RDEPEND="
 	dev-python/pykcs11[${PYTHON_USEDEP}]
 	dev-python/pytz[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
+	test?
+	(
+		dev-libs/softhsm:=
+		dev-python/unittest-or-fail[${PYTHON_USEDEP}]
+	)
 "
 
 DOCS=( README.rst )
+
+PATCHES=(
+	"${FILESDIR}/${PN}-2.16-test-import.patch"
+	"${FILESDIR}/${PN}-2.16-test-cms.patch"
+	"${FILESDIR}/${PN}-2.16-libdir.patch"
+	"${FILESDIR}/${PN}-2.16-fontdir.patch"
+)
+
+distutils_enable_tests unittest
+
+src_prepare() {
+	default
+
+	# Missing fixtures
+	rm tests/test_hsm.py || die
+}
 
 python_install_all() {
 	if use examples; then
