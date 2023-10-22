@@ -1,0 +1,24 @@
+diff --git a/examples/pdf-sign-cms-hsm-signature_manual.py b/examples/pdf-sign-cms-hsm-signature_manual.py
+index 53fe87c..726283f 100755
+--- a/examples/pdf-sign-cms-hsm-signature_manual.py
++++ b/examples/pdf-sign-cms-hsm-signature_manual.py
+@@ -100,7 +100,7 @@ def main():
+                     'DancingScript', 7, 25, 270, 50, 12, True, 'left', 'top', 1.2],
+                 ],
+         "manual_fonts": {
+-            'DancingScript': '/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf'
++            'DancingScript': '/usr/share/fonts/dejavu/DejaVuSansCondensed-Bold.ttf'
+         },
+         "contact": user.email,
+         "location": "Szczecin",
+--- a/tests/test_pdf.py
++++ b/tests/test_pdf.py
+@@ -190,7 +190,7 @@ class PDFTests(unittest.TestCase):
+                     'DancingScript', 7, 25, 270, 50, 12, True, 'left', 'top', 1.2],
+             ],
+             "manual_fonts": {
+-            'DancingScript': '/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf'
++            'DancingScript': '/usr/share/fonts/dejavu/DejaVuSansCondensed-Bold.ttf'
+             },
+             "contact": user.email,
+             "location": "Szczecin",

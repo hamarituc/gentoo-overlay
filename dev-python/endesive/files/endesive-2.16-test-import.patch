@@ -1,0 +1,52 @@
+diff --git a/tests/test_email.py b/tests/test_email.py
+index 4548ed2..e7e8df3 100644
+--- a/tests/test_email.py
++++ b/tests/test_email.py
+@@ -15,7 +15,7 @@ from endesive import email
+ import hashlib
+ from asn1crypto import cms, algos, core, pem
+ 
+-import test_cert
++from . import test_cert
+ 
+ tests_root = os.path.dirname(__file__)
+ fixtures_dir = os.path.join(tests_root, 'fixtures')
+diff --git a/tests/test_hsm.py b/tests/test_hsm.py
+index a7201b0..37d6064 100644
+--- a/tests/test_hsm.py
++++ b/tests/test_hsm.py
+@@ -20,7 +20,7 @@ from cryptography.hazmat.primitives.serialization import pkcs12
+ from endesive import hsm, signer, verifier
+ import PyKCS11 as PK11
+ 
+-import test_cert
++from . import test_cert
+ 
+ tests_root = os.path.dirname(__file__)
+ fixtures_dir = os.path.join(tests_root, 'fixtures')
+diff --git a/tests/test_pdf.py b/tests/test_pdf.py
+index b55aa00..a0a0bda 100644
+--- a/tests/test_pdf.py
++++ b/tests/test_pdf.py
+@@ -12,7 +12,7 @@ tests_root = os.path.dirname(__file__)
+ fixtures_dir = os.path.join(tests_root, 'fixtures')
+ 
+ 
+-import test_cert
++from . import test_cert
+ 
+ def fixture(fname):
+     return os.path.join(fixtures_dir, fname)
+diff --git a/tests/test_plain.py b/tests/test_plain.py
+index 30d270e..f694896 100644
+--- a/tests/test_plain.py
++++ b/tests/test_plain.py
+@@ -10,7 +10,7 @@ from cryptography.hazmat import backends
+ from cryptography.hazmat.primitives.serialization import pkcs12
+ from endesive import plain
+ 
+-import test_cert
++from . import test_cert
+ 
+ tests_root = os.path.dirname(__file__)
+ fixtures_dir = os.path.join(tests_root, 'fixtures')

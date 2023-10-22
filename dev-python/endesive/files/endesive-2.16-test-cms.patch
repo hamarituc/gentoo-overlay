@@ -1,0 +1,13 @@
+diff --git a/tests/test_email.py b/tests/test_email.py
+index 4548ed2..968fe66 100644
+--- a/tests/test_email.py
++++ b/tests/test_email.py
+@@ -86,7 +86,7 @@ class EMAILTests(unittest.TestCase):
+         process = Popen(cmd, stdout=PIPE, stderr=PIPE)
+         stdout, stderr = process.communicate()
+ 
+-        assert stderr == b'Verification successful\n'
++        assert stderr == b'CMS Verification successful\n'
+         assert datau.replace(b'\n', b'\r\n') == stdout
+ 
+     def test_email_signed_attr_custom(self):
