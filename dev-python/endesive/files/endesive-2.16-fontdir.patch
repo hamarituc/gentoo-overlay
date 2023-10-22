@@ -1,5 +1,3 @@
-diff --git a/examples/pdf-sign-cms-hsm-signature_manual.py b/examples/pdf-sign-cms-hsm-signature_manual.py
-index 53fe87c..726283f 100755
 --- a/examples/pdf-sign-cms-hsm-signature_manual.py
 +++ b/examples/pdf-sign-cms-hsm-signature_manual.py
 @@ -100,7 +100,7 @@ def main():

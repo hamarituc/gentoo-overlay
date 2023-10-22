@@ -1,5 +1,10 @@
-diff --git a/examples/cert-info-hsm.py b/examples/cert-info-hsm.py
-index 84b00db..10ac755 100755
+commit 0a478a230ddb7d5088dabfdf890686a154de4235
+Author: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date:   Mon Oct 23 00:10:04 2023 +0200
+Upstream: https://github.com/m32/endesive/pull/152
+
+    use LIBDIR from sysconfig
+
 --- a/examples/cert-info-hsm.py
 +++ b/examples/cert-info-hsm.py
 @@ -4,8 +4,7 @@ import sys
@@ -21,8 +26,6 @@ index 84b00db..10ac755 100755
  
  import PyKCS11 as PK11
  
-diff --git a/examples/cert-make-hsm.py b/examples/cert-make-hsm.py
-index cf988d6..8e89098 100755
 --- a/examples/cert-make-hsm.py
 +++ b/examples/cert-make-hsm.py
 @@ -3,6 +3,7 @@
@@ -42,8 +45,6 @@ index cf988d6..8e89098 100755
  
  from endesive import hsm
  import PyKCS11 as PK11
-diff --git a/examples/pdf-sign-cms-hash-sign.py b/examples/pdf-sign-cms-hash-sign.py
-index e63719c..0ce782a 100755
 --- a/examples/pdf-sign-cms-hash-sign.py
 +++ b/examples/pdf-sign-cms-hash-sign.py
 @@ -7,8 +7,7 @@ from asn1crypto import pem as asn1pem
@@ -65,8 +66,6 @@ index e63719c..0ce782a 100755
  
  import PyKCS11 as PK11
  
-diff --git a/examples/pdf-sign-cms-hsm-signature_appearance.py b/examples/pdf-sign-cms-hsm-signature_appearance.py
-index ae111e0..07c86a5 100755
 --- a/examples/pdf-sign-cms-hsm-signature_appearance.py
 +++ b/examples/pdf-sign-cms-hsm-signature_appearance.py
 @@ -5,6 +5,7 @@ from endesive import pdf, hsm
@@ -86,8 +85,6 @@ index ae111e0..07c86a5 100755
  
  import PyKCS11 as PK11
  
-diff --git a/examples/pdf-sign-cms-hsm-signature_manual.py b/examples/pdf-sign-cms-hsm-signature_manual.py
-index 53fe87c..fafa080 100755
 --- a/examples/pdf-sign-cms-hsm-signature_manual.py
 +++ b/examples/pdf-sign-cms-hsm-signature_manual.py
 @@ -5,6 +5,7 @@ from endesive import pdf, hsm
@@ -107,8 +104,6 @@ index 53fe87c..fafa080 100755
  
  import PyKCS11 as PK11
  
-diff --git a/examples/pdf-sign-cms-hsm.py b/examples/pdf-sign-cms-hsm.py
-index 8ec613b..45664e2 100755
 --- a/examples/pdf-sign-cms-hsm.py
 +++ b/examples/pdf-sign-cms-hsm.py
 @@ -5,6 +5,7 @@ from endesive import pdf, hsm
@@ -128,8 +123,6 @@ index 8ec613b..45664e2 100755
  
  import PyKCS11 as PK11
  
-diff --git a/examples/pdf-verify-hsm.py b/examples/pdf-verify-hsm.py
-index 4cd815e..e8be48e 100755
 --- a/examples/pdf-verify-hsm.py
 +++ b/examples/pdf-verify-hsm.py
 @@ -3,6 +3,7 @@
@@ -149,8 +142,6 @@ index 4cd815e..e8be48e 100755
  
  from endesive import hsm, pdf
  import PyKCS11 as PK11
-diff --git a/examples/xml-hsm-softhsm2-enveloped.py b/examples/xml-hsm-softhsm2-enveloped.py
-index 4e5e6d0..e740035 100755
 --- a/examples/xml-hsm-softhsm2-enveloped.py
 +++ b/examples/xml-hsm-softhsm2-enveloped.py
 @@ -9,12 +9,13 @@ from endesive import xades, signer, hsm
@@ -168,8 +159,6 @@ index 4e5e6d0..e740035 100755
  
  import PyKCS11 as PK11
  
-diff --git a/examples/xml-hsm-softhsm2-enveloping.py b/examples/xml-hsm-softhsm2-enveloping.py
-index c0fda4c..fccf3c0 100755
 --- a/examples/xml-hsm-softhsm2-enveloping.py
 +++ b/examples/xml-hsm-softhsm2-enveloping.py
 @@ -9,12 +9,13 @@ from endesive import xades, signer, hsm
@@ -187,8 +176,6 @@ index c0fda4c..fccf3c0 100755
  
  import PyKCS11 as PK11
  
-diff --git a/tests/test_hsm.py b/tests/test_hsm.py
-index a7201b0..eb19aaa 100644
 --- a/tests/test_hsm.py
 +++ b/tests/test_hsm.py
 @@ -4,6 +4,7 @@ import unittest
