@@ -30,7 +30,7 @@ RDEPEND="
 "
 BDEPEND="
 	test? (
-		virtual/python-cffi[${PYTHON_USEDEP}]
+		$(python_gen_cond_dep 'dev-python/cffi[${PYTHON_USEDEP}]' 'python*')
 	)
 "
 
