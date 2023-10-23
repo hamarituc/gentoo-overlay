@@ -21,7 +21,7 @@ if [[ ${PV} == "9999" ]]; then
 	EGIT_REPO_URI="https://github.com/LudovicRousseau/PyKCS11.git"
 else
 	SRC_URI="https://github.com/LudovicRousseau/PyKCS11/archive/refs/tags/${PV}.tar.gz -> ${P}.gh.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="amd64 x86"
 	S="${WORKDIR}/${MY_P}"
 fi
 
