@@ -47,9 +47,6 @@ RDEPEND="
 DOCS=( README.rst )
 
 PATCHES=(
-	"${FILESDIR}/${PN}-2.16-test-import.patch"
-	"${FILESDIR}/${PN}-2.16-test-cms.patch"
-	"${FILESDIR}/${PN}-2.16-libdir.patch"
 	"${FILESDIR}/${PN}-2.16-fontdir.patch"
 )
 
