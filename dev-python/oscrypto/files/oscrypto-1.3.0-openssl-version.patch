@@ -1,0 +1,72 @@
+From ebbc944485b278192b60080ea1f495e287efb4f8 Mon Sep 17 00:00:00 2001
+From: Martin Journois <BibMartin@users.noreply.github.com>
+Date: Thu, 17 Aug 2023 13:09:31 +0200
+Subject: [PATCH] MJ: Fix #75 bug with openssl 3.0.10 (#76)
+
+* MJ: Fix #75 bug with openssl 3.0.10
+* MJ: Add fix suggested by @vcunat on _libcrypto_ctypes regex
+--- a/oscrypto/_openssl/_libcrypto_cffi.py
++++ b/oscrypto/_openssl/_libcrypto_cffi.py
+@@ -37,7 +37,7 @@
+ 
+ is_libressl = 'LibreSSL' in version_string
+ 
+-version_match = re.search('\\b(\\d\\.\\d\\.\\d[a-z]*)\\b', version_string)
++version_match = re.search('\\b(\\d\\.\\d\\.\\d+[a-z]*)\\b', version_string)
+ if not version_match:
+     version_match = re.search('(?<=LibreSSL )(\\d\\.\\d(\\.\\d)?)\\b', version_string)
+ if not version_match:
+--- a/oscrypto/_openssl/_libcrypto_ctypes.py
++++ b/oscrypto/_openssl/_libcrypto_ctypes.py
+@@ -40,7 +40,7 @@
+ 
+ is_libressl = 'LibreSSL' in version_string
+ 
+-version_match = re.search('\\b(\\d\\.\\d\\.\\d[a-z]*)\\b', version_string)
++version_match = re.search('\\b(\\d\\.\\d\\.\\d+[a-z]*)\\b', version_string)
+ if not version_match:
+     version_match = re.search('(?<=LibreSSL )(\\d\\.\\d(\\.\\d)?)\\b', version_string)
+ if not version_match:
+From d5f3437ed24257895ae1edd9e503cfb352e635a8 Mon Sep 17 00:00:00 2001
+From: wbond <will@wbond.net>
+Date: Thu, 17 Aug 2023 07:06:19 -0400
+Subject: [PATCH] Make OpenSSL version regexes more robust
+
+--- a/oscrypto/_openssl/_libcrypto_cffi.py
++++ b/oscrypto/_openssl/_libcrypto_cffi.py
+@@ -37,13 +37,13 @@
+ 
+ is_libressl = 'LibreSSL' in version_string
+ 
+-version_match = re.search('\\b(\\d\\.\\d\\.\\d+[a-z]*)\\b', version_string)
++version_match = re.search('\\b(\\d+\\.\\d+\\.\\d+[a-z]*)\\b', version_string)
+ if not version_match:
+-    version_match = re.search('(?<=LibreSSL )(\\d\\.\\d(\\.\\d)?)\\b', version_string)
++    version_match = re.search('(?<=LibreSSL )(\\d+\\.\\d+(\\.\\d+)?)\\b', version_string)
+ if not version_match:
+     raise LibraryNotFoundError('Error detecting the version of libcrypto')
+ version = version_match.group(1)
+-version_parts = re.sub('(\\d)([a-z]+)', '\\1.\\2', version).split('.')
++version_parts = re.sub('(\\d+)([a-z]+)', '\\1.\\2', version).split('.')
+ version_info = tuple(int(part) if part.isdigit() else part for part in version_parts)
+ 
+ # LibreSSL is compatible with libcrypto from OpenSSL 1.0.1
+--- a/oscrypto/_openssl/_libcrypto_ctypes.py
++++ b/oscrypto/_openssl/_libcrypto_ctypes.py
+@@ -40,13 +40,13 @@
+ 
+ is_libressl = 'LibreSSL' in version_string
+ 
+-version_match = re.search('\\b(\\d\\.\\d\\.\\d+[a-z]*)\\b', version_string)
++version_match = re.search('\\b(\\d+\\.\\d+\\.\\d+[a-z]*)\\b', version_string)
+ if not version_match:
+-    version_match = re.search('(?<=LibreSSL )(\\d\\.\\d(\\.\\d)?)\\b', version_string)
++    version_match = re.search('(?<=LibreSSL )(\\d+\\.\\d+(\\.\\d+)?)\\b', version_string)
+ if not version_match:
+     raise LibraryNotFoundError('Error detecting the version of libcrypto')
+ version = version_match.group(1)
+-version_parts = re.sub('(\\d)([a-z]+)', '\\1.\\2', version).split('.')
++version_parts = re.sub('(\\d+)([a-z]+)', '\\1.\\2', version).split('.')
+ version_info = tuple(int(part) if part.isdigit() else part for part in version_parts)
+ 
+ # LibreSSL is compatible with libcrypto from OpenSSL 1.0.1
