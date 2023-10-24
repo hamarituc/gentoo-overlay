@@ -255,6 +255,10 @@ Miscellaneous :toolbox:
 
 `desfsh` is an interactive untility for accessing Mifare DESFire NFC tags.
 
+### LAPS4LINUX
+
+A client to access the Microsoft Local Administrator Password Solution.
+
 ### libfreefare
 
 A library on top of `libnfc` for accessing various Mifare NFC tags.
