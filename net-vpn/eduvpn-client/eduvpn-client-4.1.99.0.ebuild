@@ -37,5 +37,3 @@ RDEPEND="
 	dev-python/pygobject:3[${PYTHON_USEDEP}]
 	>=net-vpn/eduvpn-common-1.1.99.0[${PYTHON_USEDEP}]
 "
-
-distutils_enable_tests unittest
