@@ -69,7 +69,7 @@ src_test() {
 }
 
 src_install() {
-	# The shared library is installed within python package. There is no need
-	# to call the default routine.
+	# The shared library is installed within the python package. There is no
+	# need to call the default routine.
 	wrap_python ${FUNCNAME}
 }
