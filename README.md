@@ -213,6 +213,13 @@ A web version can be found at badkeys.info.
 Endesive is a python library for creating an verifying various kinds of
 electronic signatures.
 
+### gpg-tui
+
+Terminal User Interface for GnuPG
+
+Acknowledgement: The ebuild is based on the
+  [dm9pZCAq](https://notabug.org/dm9pZCAq/dm9pZCAq-overlay) overlay.
+
 
 Electronic Engineering :electric_plug:
 --------------------------------------
