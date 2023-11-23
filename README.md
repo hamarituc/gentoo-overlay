@@ -302,6 +302,7 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `net-analyzer/shodan`
  * `net-analyzer/termshark`
  * `net-analyzer/wtfis`
+ * `net-vpn/eduvpn-client`
  * `sci-astronomy/pysiril`
  * `sci-astronomy/siril`
  * `sci-astronomy/sirilic`
