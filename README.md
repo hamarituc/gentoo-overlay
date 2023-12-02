@@ -168,6 +168,15 @@ Citing from https://github.com/Arinerron/heaptrace:
 It's a graphical frontend for radare2, which is available in the main gentoo
 portage tree.
 
+### iocextract
+
+Citing from https://github.com/InQuest/iocextract:
+
+> The iocextract package is a library and command line interface (CLI) for
+> extracting URLs, IP addresses, MD5/SHA hashes, email addresses, and YARA
+> rules from text corpora. It allows for you to extract encoded and "defanged"
+> IOCs and optionally decode or refang them.
+
 ### Qiling
 
 Qiling is an advanced binary emulation framework.

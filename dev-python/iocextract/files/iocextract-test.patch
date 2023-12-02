@@ -1,0 +1,18 @@
+--- a/tests.py
++++ b/tests.py
+@@ -32,9 +32,12 @@ def _wrap_nonwords(content):
+ class TestExtractors(unittest.TestCase):
+ 
+     def test_corpus_results(self):
+-        input_data = open('test_data/input.txt', 'r').read()
+-        valid_results = open('test_data/valid.txt', 'r').read().splitlines()
+-        invalid_results = open('test_data/invalid.txt', 'r').read().splitlines()
++        with open('test_data/input.txt', 'r') as f:
++            input_data = f.read()
++        with open('test_data/valid.txt', 'r') as f:
++            valid_results = f.read().splitlines()
++        with open('test_data/invalid.txt', 'r') as f:
++            invalid_results = f.read().splitlines()
+ 
+         out_data = list(iocextract.extract_iocs(input_data))
+ 
