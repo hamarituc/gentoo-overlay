@@ -13,7 +13,7 @@ if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 else
 	SRC_URI="https://github.com/indilib/indi/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~ppc ~ppc64 ~riscv ~x86"
+	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/indi-${PV}"
 fi
 
@@ -26,6 +26,7 @@ RESTRICT="!test? ( test )"
 RDEPEND="
 	acct-group/indiserver
 	acct-user/indiserver
+	dev-cpp/cpp-httplib:=
 	dev-libs/libev:=
 	media-libs/libjpeg-turbo:=
 	net-misc/curl
@@ -54,6 +55,10 @@ DEPEND="${RDEPEND}
 
 DOCS=( AUTHORS ChangeLog README )
 
+PATCHES=(
+	"${FILESDIR}/${P}-httplib.patch"
+)
+
 src_configure() {
 	local mycmakeargs=(
 		-DINDI_BUILD_QT5_CLIENT=$(usex qt5)
@@ -63,6 +68,7 @@ src_configure() {
 		-DINDI_BUILD_UNITTESTS=$(usex test)
 		-DINDI_BUILD_WEBSOCKET=$(usex websocket)
 		-DINDI_BUILD_STATIC=$(usex static-libs)
+		-DINDI_SYSTEM_HTTPLIB=1
 	)
 
 	cmake_src_configure
