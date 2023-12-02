@@ -1,0 +1,17 @@
+commit b24003b9ed1b0598cb16206a023f8764816bca15
+Author: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date:   Sat Dec 2 09:04:37 2023 +0100
+Upstream: https://github.com/indilib/indi/pull/1968
+
+    Link against httplib if using system libraries
+
+--- a/drivers/telescope/CMakeLists.txt
++++ b/drivers/telescope/CMakeLists.txt
+@@ -262,6 +262,6 @@ install(TARGETS indi_skywatcherAltAzMount RUNTIME DESTINATION bin)
+ add_executable(indi_planewave_telescope
+     planewave_mount.cpp)
+ 
+-target_link_libraries(indi_planewave_telescope indidriver)
++target_link_libraries(indi_planewave_telescope indidriver ${HTTPLIB_LIBRARY})
+ 
+ install(TARGETS indi_planewave_telescope RUNTIME DESTINATION bin)
