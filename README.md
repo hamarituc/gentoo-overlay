@@ -268,6 +268,13 @@ A library on top of `libnfc` for accessing various Mifare NFC tags.
 Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
   Project.
 
+### libpostal
+
+Citing from https://github.com/openvenues/libpostal:
+
+> libpostal is a C library for parsing/normalizing street addresses around the
+> world using statistical NLP and open data.
+
 ### net-wireless/proxmark3
 
 Proxmark3 is a RFID/NFC reader, writer, sniffer and emulator.
