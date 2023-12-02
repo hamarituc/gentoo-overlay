@@ -42,6 +42,10 @@ BDEPEND="
 
 S="${MY_S}/indi-${PN##*-driver-}"
 
+PATCHES=(
+	"${FILESDIR}/${P}-sharedblob.patch"
+)
+
 src_install() {
 	cmake_src_install
 	rm -r "${D}"/lib/udev
