@@ -21,7 +21,6 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 	app-arch/unzip
-	virtual/jdk:17
 "
 
 S="${WORKDIR}/ghidra_${PV}_PUBLIC"
