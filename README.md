@@ -177,6 +177,16 @@ Citing from https://github.com/InQuest/iocextract:
 > rules from text corpora. It allows for you to extract encoded and "defanged"
 > IOCs and optionally decode or refang them.
 
+### Plasma
+
+Citing from https://github.com/plasma-disassembler/plasma
+
+> Plasma is an interactive disassembler for x86/ARM/MIPS. It can generates
+> indented pseudo-code with colored syntax.
+
+Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
+  Project.
+
 ### Qiling
 
 Qiling is an advanced binary emulation framework.
