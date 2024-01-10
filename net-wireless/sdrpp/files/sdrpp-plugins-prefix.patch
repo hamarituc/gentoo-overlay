@@ -1,5 +1,3 @@
-diff --git a/core/CMakeLists.txt b/core/CMakeLists.txt
-index 8b289ec..b132fb0 100644
 --- a/core/CMakeLists.txt
 +++ b/core/CMakeLists.txt
 @@ -41,6 +41,9 @@ endif ()
@@ -12,8 +10,6 @@ index 8b289ec..b132fb0 100644
  # Include core headers
  target_include_directories(sdrpp_core PUBLIC "src/")
  target_include_directories(sdrpp_core PUBLIC "src/imgui")
-diff --git a/core/src/core.cpp b/core/src/core.cpp
-index b54cf31..591fdec 100644
 --- a/core/src/core.cpp
 +++ b/core/src/core.cpp
 @@ -32,6 +32,14 @@
