@@ -48,6 +48,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-plugins-prefix.patch"
 	"${FILESDIR}/${P}-portaudio_sink.patch"
 	"${FILESDIR}/${P}-fix-cmake-libdir-location.patch"
+	"${FILESDIR}/${P}-stdexcept.patch"
 )
 
 src_configure() {

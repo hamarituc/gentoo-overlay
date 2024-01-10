@@ -1,0 +1,14 @@
+From a4f3c92a03367cb15a8d7d428d65ab59d80dde26 Mon Sep 17 00:00:00 2001
+From: AlexandreRouma <alexandre.rouma@gmail.com>
+Date: Fri, 10 Mar 2023 17:59:13 +0100
+Subject: [PATCH] added missing include to legacy network lib
+
+--- a/core/src/utils/networking.cpp
++++ b/core/src/utils/networking.cpp
+@@ -1,6 +1,7 @@
+ #include <utils/networking.h>
+ #include <assert.h>
++#include <stdexcept>
+ 
+ namespace net {
+ 
