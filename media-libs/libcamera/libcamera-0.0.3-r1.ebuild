@@ -58,7 +58,7 @@ RDEPEND="
 BDEPEND="
 	doc?
 	(
-		app-doc/doxygen[dot]
+		app-text/doxygen[dot]
 		dev-python/sphinx
 		dev-texlive/texlive-latexextra
 	)

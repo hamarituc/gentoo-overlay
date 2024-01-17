@@ -35,12 +35,11 @@ RDEPEND="
 		>=dev-python/construct-2.9[${PYTHON_USEDEP}]
 		dev-python/pybind11[${PYTHON_USEDEP}]
 		dev-python/requests[${PYTHON_USEDEP}]
-		dev-python/websocket-client[${PYTHON_USEDEP}]
 	')
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 
 PATCHES=(

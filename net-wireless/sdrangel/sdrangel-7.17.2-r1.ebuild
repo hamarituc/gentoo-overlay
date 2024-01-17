@@ -80,7 +80,7 @@ RDEPEND="
 
 DEPEND="
 	${RDEPEND}
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 
 src_configure() {

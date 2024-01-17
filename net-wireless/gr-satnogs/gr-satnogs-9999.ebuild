@@ -44,7 +44,7 @@ RDEPEND="${PYTHON_DEPS}
 DEPEND="${RDEPEND}"
 BDEPEND="
 	dev-lang/swig
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 
 PATCHES=(
