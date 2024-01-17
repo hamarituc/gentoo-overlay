@@ -250,6 +250,10 @@ Acknowledgement: The ebuild is based on the
 Electronic Engineering :electric_plug:
 --------------------------------------
 
+### pasmo
+
+Pasmo is a Z80 cross assembler.
+
 ### simavr
 
 simavr is an AVR microcontroller simulator. Don't confuse it with simulavr.
