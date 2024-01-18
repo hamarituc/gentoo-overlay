@@ -250,6 +250,11 @@ Acknowledgement: The ebuild is based on the
 Electronic Engineering :electric_plug:
 --------------------------------------
 
+### minipro
+
+minipro is a program for controlling the MiniPRO TL866xx series of chip
+programmers.
+
 ### pasmo
 
 Pasmo is a Z80 cross assembler.

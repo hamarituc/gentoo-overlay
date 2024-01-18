@@ -1,0 +1,13 @@
+--- a/Makefile
++++ b/Makefile
+@@ -5,9 +5,7 @@
+ #CC=clang
+ 
+ # Compiler options
+-CFLAGS = -g -O0 -Wall -Wextra -W -Wno-sign-compare -Wno-unused-parameter
+-CPPFLAGS = -DSHARE_INSTDIR="\"$(SHARE_INSTDIR)\""
+-LDFLAGS =
++CPPFLAGS += -DSHARE_INSTDIR="\"$(SHARE_INSTDIR)\""
+ 
+ # Normally minipro is installed to /usr/local.  If you want to put it
+ # somewhere else, define that location here.
