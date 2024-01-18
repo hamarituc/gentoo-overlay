@@ -269,11 +269,11 @@ simulavr is an AVR microcontroller simulator. Don't confuse it with simavr.
 
 ### z80asm
 
-`z80asm` is an assembler for the Z80 microprcessor.
+z80asm is an assembler for the Z80 microprcessor.
 
 ### z80dasm
 
-`z80dasm` is a disassembler for the Zilog Z80 microprocessor and compatibles.
+z80dasm is a disassembler for the Zilog Z80 microprocessor and compatibles.
 
 Geographic Data Processing :globe_with_meridians:
 -------------------------------------------------
