@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit distutils-r1
 
@@ -33,6 +33,10 @@ RDEPEND="
 "
 
 RESTRICT="test"
+
+PATCHES=(
+	"${FILESDIR}/${P}-version.patch"
+)
 
 src_prepare() {
 	default
