@@ -33,19 +33,12 @@ PATCHES=(
 
 src_compile()
 {
-	export PREFIX="${EPREFIX}/usr"
-	export COMPLETIONS_DIR="$(get_bashcompdir)"
-
-	emake
+	emake PREFIX="${EPREFIX}/usr" COMPLETIONS_DIR="$(get_bashcompdir)"
 }
 
 src_install()
 {
-	export DESTDIR="${D}"
-	export PREFIX="${EPREFIX}/usr"
-	export COMPLETIONS_DIR="$(get_bashcompdir)"
-
-	emake install
+	emake DESTDIR="${D}" PREFIX="${EPREFIX}/usr" COMPLETIONS_DIR="$(get_bashcompdir)" install
 }
 
 pkg_postinst()
