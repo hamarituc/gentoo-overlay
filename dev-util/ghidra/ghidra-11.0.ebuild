@@ -87,13 +87,13 @@ src_unpack() {
 	cd "${S}/.gradle"
 
 	unpack dex2jar-2.1.zip
-	cp "dex-tools-2.1/lib/dex-*.jar" ./flatRepo || die "(2) cp failed"
+	cp dex-tools-2.1/lib/dex-*.jar ./flatRepo || die "(2) cp failed"
 
-	cp "${DISTDIR}/AXMLPrinter2.jar" ./flatRepo  || die "(3) cp failed"
-	cp "${DISTDIR}/java-sarif-2.1-modified.jar" ./flatRepo  || die "(4) cp failed"
+	cp "${DISTDIR}/AXMLPrinter2.jar" ./flatRepo || die "(3) cp failed"
+	cp "${DISTDIR}/java-sarif-2.1-modified.jar" ./flatRepo || die "(4) cp failed"
 
 	unpack hfsexplorer-0_21-bin.zip
-	cp "lib/*.jar" ./flatRepo            || die "(5) cp failed"
+	cp lib/*.jar ./flatRepo || die "(5) cp failed"
 
 	mkdir -p "${WORKDIR}"/ghidra.bin/Ghidra/Features/GhidraServer/ || die "(6) mkdir failed"
 	cp "${DISTDIR}"/yajsw-stable-13.09.zip "${WORKDIR}"/ghidra.bin/Ghidra/Features/GhidraServer/ || die "(7) cp failed"
@@ -101,19 +101,19 @@ src_unpack() {
 	PLUGIN_DEP_PATH="ghidra.bin/GhidraBuild/EclipsePlugins/GhidraDev/buildDependencies"
 	mkdir -p "${WORKDIR}/${PLUGIN_DEP_PATH}/" || die "(8) mkdir failed"
 	cp "${DISTDIR}/PyDev-6.3.1.zip" "${WORKDIR}/${PLUGIN_DEP_PATH}/PyDev 6.3.1.zip" || die "(9) cp failed"
-	cp "${DISTDIR}/cdt-8.6.0.zip"   "${WORKDIR}/${PLUGIN_DEP_PATH}/" || die "(10) cp failed"
-	cp "${DISTDIR}/postgresql-15.3.tar.gz"   "${WORKDIR}/${PLUGIN_DEP_PATH}/" || die "(10) cp failed"
+	cp "${DISTDIR}/cdt-8.6.0.zip" "${WORKDIR}/${PLUGIN_DEP_PATH}/" || die "(10) cp failed"
+	cp "${DISTDIR}/postgresql-15.3.tar.gz" "${WORKDIR}/${PLUGIN_DEP_PATH}/" || die "(10) cp failed"
 
 	cd "${S}"
 	mv ../dependencies .
 
 	mkdir ./dependencies/fidb || die "failed to create fidb dir"
-	cp "${DISTDIR}/*.fidb" ./dependencies/fidb/
+	cp "${DISTDIR}/{vs2012_x64,vs2012_x86,vs2015_x64,vs2015_x86,vs2017_x64,vs2017_x86,vs2019_x64,vs2019_x86,vsOlder_x64,vsOlder_x86}.fidb" ./dependencies/fidb/
 }
 
 src_prepare() {
-	mkdir -p ".gradle/init.d"                       || die "(10) mkdir failed"
-	cp "${FILESDIR}/repos.gradle" .gradle/init.d    || die "(11) cp failed"
+	mkdir -p ".gradle/init.d" || die "(10) mkdir failed"
+	cp "${FILESDIR}/repos.gradle" .gradle/init.d || die "(11) cp failed"
 	sed -i "s|S_DIR|${S}|g" .gradle/init.d/repos.gradle || die "(12) sed failed"
 	#remove build date so we can unpack dist.zip later
 	sed -i "s|_\${rootProject.BUILD_DATE_SHORT}||g" gradle/root/distribution.gradle || die "(13) sed failed"
@@ -149,7 +149,7 @@ src_install() {
 	find "${ED}/usr/share/ghidra" -type f -name '*.zip' -exec rm -f {} +
 
 	#fixme: add doc flag
-	rm -r  "${ED}/usr/share/ghidra/docs/" || die "rm failed"
+	rm -r "${ED}/usr/share/ghidra/docs/" || die "rm failed"
 	dosym ../share/ghidra/ghidraRun /usr/bin/ghidra
 
 	# icon
