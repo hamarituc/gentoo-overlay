@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit bash-completion-r1 udev
+inherit bash-completion-r1 toolchain-funcs udev
 
 DESCRIPTION="A program for controlling the MiniPRO TL866xx series of chip programmers"
 HOMEPAGE="https://gitlab.com/DavidGriffith/minipro/"
@@ -33,12 +33,12 @@ PATCHES=(
 
 src_compile()
 {
-	emake PREFIX="${EPREFIX}/usr" COMPLETIONS_DIR="$(get_bashcompdir)"
+	emake CC=$(tc-getCC) PREFIX="${EPREFIX}/usr" COMPLETIONS_DIR="$(get_bashcompdir)"
 }
 
 src_install()
 {
-	emake DESTDIR="${D}" PREFIX="${EPREFIX}/usr" COMPLETIONS_DIR="$(get_bashcompdir)" install
+	emake CC=$(tc-getCC) DESTDIR="${D}" PREFIX="${EPREFIX}/usr" COMPLETIONS_DIR="$(get_bashcompdir)" install
 }
 
 pkg_postinst()
