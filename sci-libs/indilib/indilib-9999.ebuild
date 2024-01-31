@@ -27,6 +27,7 @@ RDEPEND="
 	acct-group/indiserver
 	acct-user/indiserver
 	dev-cpp/cpp-httplib:=
+	dev-cpp/nlohmann_json:=
 	dev-libs/libev:=
 	media-libs/libjpeg-turbo:=
 	net-misc/curl
@@ -47,17 +48,14 @@ RDEPEND="
 	rtlsdr? ( net-wireless/rtl-sdr )
 	websocket? ( dev-libs/boost:= )
 "
-DEPEND="${RDEPEND}
+DEPEND="
+	${RDEPEND}
 	kernel_linux? ( sys-kernel/linux-headers )
 	test? ( >=dev-cpp/gtest-1.8.0 )
 	websocket? ( dev-cpp/websocketpp )
 "
 
 DOCS=( AUTHORS ChangeLog README )
-
-PATCHES=(
-	"${FILESDIR}/${P}-httplib.patch"
-)
 
 src_configure() {
 	local mycmakeargs=(
@@ -69,6 +67,7 @@ src_configure() {
 		-DINDI_BUILD_WEBSOCKET=$(usex websocket)
 		-DINDI_BUILD_STATIC=$(usex static-libs)
 		-DINDI_SYSTEM_HTTPLIB=1
+		-DINDI_SYSTEM_JSONLIB=1
 	)
 
 	cmake_src_configure

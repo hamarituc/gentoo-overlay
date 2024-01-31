@@ -59,7 +59,6 @@ IUSE_INDILIB_DRIVERS="
 	qsi
 	rolloffino
 	rpi-gpio
-	rpicam
 	rtklib
 	sbig
 	shelyak
@@ -82,7 +81,6 @@ REQUIRED_USE="
 	indilib_drivers_astroasis? ( amd64 )
 	indilib_drivers_qhy? ( amd64 )
 	indilib_drivers_rpi-gpio? ( arm )
-	indilib_drivers_rpicam? ( arm )
 	indilib_drivers_sbig? ( amd64 )
 	indilib_drivers_toupbase? ( amd64 )
 "
@@ -140,9 +138,6 @@ RDEPEND="
 	indilib_drivers_rolloffino? ( ~sci-libs/indilib-driver-rolloffino-${PV} )
 	indilib_drivers_rpi-gpio? (
 		arm? ( ~sci-libs/indilib-driver-rpi-gpio-${PV} )
-	)
-	indilib_drivers_rpicam? (
-		arm? ( ~sci-libs/indilib-driver-rpicam-${PV} )
 	)
 	indilib_drivers_rtklib? ( ~sci-libs/indilib-driver-rtklib-${PV} )
 	indilib_drivers_sbig?

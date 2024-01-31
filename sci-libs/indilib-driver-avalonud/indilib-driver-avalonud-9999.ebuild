@@ -24,6 +24,7 @@ SLOT="0/1"
 
 DEPEND="
 	~sci-libs/indilib-${PV}
+	dev-cpp/nlohmann_json:=
 	>=net-libs/zeromq-4.3.1:=
 "
 RDEPEND="${DEPEND}"

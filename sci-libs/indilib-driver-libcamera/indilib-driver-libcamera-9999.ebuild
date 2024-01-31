@@ -28,7 +28,7 @@ DEPEND="
 	media-libs/libexif:=
 	media-libs/libjpeg-turbo:=
 	media-libs/libraw:=
-	media-libs/tiff:=
+	media-gfx/rpicam-apps:=
 	sci-libs/cfitsio:=
 	~sci-libs/indilib-${PV}
 	sys-libs/zlib:=
