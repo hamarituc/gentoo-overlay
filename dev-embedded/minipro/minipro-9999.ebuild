@@ -27,10 +27,6 @@ BDEPEND="
 	virtual/pkgconfig
 "
 
-PATCHES=(
-	"${FILESDIR}/${PN}-flags.patch"
-)
-
 src_compile()
 {
 	emake CC=$(tc-getCC) PREFIX="${EPREFIX}/usr" COMPLETIONS_DIR="$(get_bashcompdir)"
