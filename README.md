@@ -275,6 +275,14 @@ z80asm is an assembler for the Z80 microprcessor.
 
 z80dasm is a disassembler for the Zilog Z80 microprocessor and compatibles.
 
+
+Emulation :computer:
+--------------------
+
+KCemu is an emulator for the KC85 homecomputer series and other Z80 based
+microcomputers like Z1013, LC80, Polycomputer 880 and BIC A5105.
+
+
 Geographic Data Processing :globe_with_meridians:
 -------------------------------------------------
 
