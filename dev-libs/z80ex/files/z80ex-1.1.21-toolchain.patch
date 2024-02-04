@@ -1,0 +1,23 @@
+diff --color -Naur z80ex-1.1.21.org/Makefile z80ex-1.1.21/Makefile
+--- z80ex-1.1.21.org/Makefile	2013-07-29 02:23:15.000000000 +0200
++++ z80ex-1.1.21/Makefile	2024-02-01 10:52:00.886929554 +0100
+@@ -5,14 +5,13 @@
+ #################################################################
+ # You may tune these values to fit your setup:
+ #################################################################
+-INSTALL_PREFIX := /usr/local
+-TOOLS_PREFIX :=
++INSTALL_PREFIX ?= /usr/local
+ 
+-CC := $(TOOLS_PREFIX)gcc 
+-LINKER := $(TOOLS_PREFIX)gcc
+-AR := $(TOOLS_PREFIX)ar
++CC = gcc
++LINKER ?= gcc
++AR = ar
+ 
+-ALL_CFLAGS := -fPIC -fno-common -ansi -pedantic -Wall -pipe -O2 -I. -I./include 
++ALL_CFLAGS := -fPIC -fno-common -ansi -pedantic -I. -I./include
+ 
+ #endianness (one of: WORDS_LITTLE_ENDIAN, WORDS_BIG_ENDIAN)
+ ENDIANNESS := WORDS_LITTLE_ENDIAN
