@@ -1,0 +1,27 @@
+From 65cb686fcf7d72fad0235b60d5f8524086293be0 Mon Sep 17 00:00:00 2001
+From: Andrew Savchenko <bircoph@gmail.com>
+Date: Tue, 1 Jan 2019 10:15:37 +0300
+Subject: [PATCH 03/14] fbsd
+
+(cherry picked from commit 53a84d83b375483439d79e9d7dc150401f2477a8)
+(cherry picked from commit 6d3c928ae95773f8cfbb801c7b000fa1f03d72c2)
+---
+ src/comerr/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/comerr/Makefile.in b/src/comerr/Makefile.in
+index b94f1c616..2d58e5cc5 100644
+--- a/src/comerr/Makefile.in
++++ b/src/comerr/Makefile.in
+@@ -40,7 +40,7 @@ compile_et:	compile_et.o error_table.o
+ 	*_linux* | *_umlinux* | *_darwin* ) \
+ 	$(LT_LDRULE_static_NOQ) compile_et.o error_table.o -L${TOP_LIBDIR} -lopr $(buildtool_roken) $(MT_LIBS);; \
+ 	* ) \
+-	$(LT_LDRULE_static_NOQ) compile_et.o error_table.o -L${TOP_LIBDIR} -lopr -ll $(buildtool_roken) $(MT_LIBS);; \
++	$(LT_LDRULE_static_NOQ) compile_et.o error_table.o -L${TOP_LIBDIR} -lopr -lfl $(buildtool_roken) $(MT_LIBS);; \
+ 	esac
+ 
+ libafscom_err.a: $(LT_objs)
+-- 
+2.34.1
+

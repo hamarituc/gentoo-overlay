@@ -1,0 +1,32 @@
+From fd38a7b50fdda5ed3a14c5c4fdd20a02c436eccc Mon Sep 17 00:00:00 2001
+From: Andrew Savchenko <bircoph@gmail.com>
+Date: Tue, 1 Jan 2019 01:28:26 +0300
+Subject: [PATCH 01/14] compiler-settings
+
+(cherry picked from commit a02caa25b0d0a0f13bae8db50fe3b4a7c7a0417e)
+(cherry picked from commit eb711afbb628a1fbf7cff5e61515fb962d710b1f)
+---
+ src/cf/osconf.m4 | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/cf/osconf.m4 b/src/cf/osconf.m4
+index 1e1b08057..6251ea354 100644
+--- a/src/cf/osconf.m4
++++ b/src/cf/osconf.m4
+@@ -25,10 +25,11 @@ PAM_OPTMZ=
+ 
+ dnl standard programs
+ AC_PROG_RANLIB
+-AC_CHECK_PROGS(AS, as, [false])
++AC_CHECK_TOOL(AS, as, [false])
++AC_CHECK_TOOL(AR, ar, [false])
+ AC_CHECK_PROGS(MV, mv, [false])
+ AC_CHECK_PROGS(RM, rm, [false])
+-AC_CHECK_PROGS(LD, ld, [false])
++AC_CHECK_TOOL(LD, ld, [false])
+ AC_CHECK_PROGS(CP, cp, [false])
+ AC_CHECK_PROGS(GENCAT, gencat, [false])
+ 
+-- 
+2.34.1
+
