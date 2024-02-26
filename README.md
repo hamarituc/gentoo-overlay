@@ -168,6 +168,16 @@ Citing from https://github.com/Arinerron/heaptrace:
 It's a graphical frontend for radare2, which is available in the main gentoo
 portage tree.
 
+### ImHex
+
+Citing from https://github.com/WerWolv/ImHex:
+
+> A Hex Editor for Reverse Engineers, Programmers and people who value their
+> retinas when working at 3 AM.
+
+Acknowledgement: The ebuild is based on the [GURU](https://github.com/gentoo-mirror/guru)
+  Project.
+
 ### iocextract
 
 Citing from https://github.com/InQuest/iocextract:
