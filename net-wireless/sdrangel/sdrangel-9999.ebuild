@@ -48,9 +48,10 @@ RDEPEND="
 		gui? (
 			>=dev-qt/qtgamepad-5.15.0:5
 			>=dev-qt/qtlocation-5.15.0:5
+			>=dev-qt/qtopengl-5.15.0:5
+			>=dev-qt/qtquickcontrols2-5.15.0:5[widgets]
 			>=dev-qt/qtspeech-5.15.0:5
 			>=dev-qt/qtwebengine-5.15.0:5[widgets]
-			>=dev-qt/qtopengl-5.15.0:5
 		)
 	)
 	qt6? (
