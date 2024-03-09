@@ -48,10 +48,10 @@ RDEPEND="
 		gui? (
 			>=dev-qt/qtgamepad-5.15.0:5
 			>=dev-qt/qtlocation-5.15.0:5
-			>=dev-qt/qtopengl-5.15.0:5
-			>=dev-qt/qtquickcontrols2-5.15.0:5[widgets]
 			>=dev-qt/qtspeech-5.15.0:5
 			>=dev-qt/qtwebengine-5.15.0:5[widgets]
+			>=dev-qt/qtopengl-5.15.0:5
+			>=dev-qt/qtsvg-5.15.0:5
 		)
 	)
 	qt6? (
@@ -64,6 +64,7 @@ RDEPEND="
 		dev-qt/qt5compat:6
 		gui? (
 			dev-qt/qtbase:6[opengl]
+			dev-qt/qtsvg:6
 			dev-qt/qtwebengine:6[widgets]
 		)
 	)
@@ -73,7 +74,7 @@ RDEPEND="
 	hackrf? ( net-libs/libhackrf:= )
 	limesuite? ( net-wireless/limesuite:= )
 	plutosdr? ( net-libs/libiio:= )
-	rtlsdr? ( net-wireless/rtl-sdr:= )
+	rtlsdr? ( >=net-wireless/rtl-sdr-2.0.1:= )
 	sgp4? ( sci-libs/sgp4:= )
 	soapy? ( net-wireless/soapysdr:= )
 	uhd? ( net-wireless/uhd:= )
