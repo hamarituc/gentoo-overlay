@@ -1,0 +1,25 @@
+commit 657117d59440b92246c6fe50e4e2f28384a5ba48
+Author: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date:   Thu Apr 11 22:27:14 2024 +0200
+Upstream: https://github.com/indilib/indi/pull/2039
+
+    Link against httplib if using system libraries
+
+--- a/drivers/auxiliary/CMakeLists.txt
++++ b/drivers/auxiliary/CMakeLists.txt
+@@ -313,5 +313,5 @@ SET(dragonlight_SRC
+     dragonlight.cpp)
+ 
+ add_executable(indi_dragon_light ${dragonlight_SRC})
+-target_link_libraries(indi_dragon_light indidriver)
++target_link_libraries(indi_dragon_light indidriver ${HTTPLIB_LIBRARY})
+ install(TARGETS indi_dragon_light RUNTIME DESTINATION bin)
+--- a/drivers/dome/CMakeLists.txt
++++ b/drivers/dome/CMakeLists.txt
+@@ -80,5 +80,5 @@ SET(dragonlair_SRC
+     dragonlair.cpp)
+ 
+ add_executable(indi_dragonlair_dome ${dragonlair_SRC})
+-target_link_libraries(indi_dragonlair_dome indidriver)
++target_link_libraries(indi_dragonlair_dome indidriver ${HTTPLIB_LIBRARY})
+ install(TARGETS indi_dragonlair_dome RUNTIME DESTINATION bin)
