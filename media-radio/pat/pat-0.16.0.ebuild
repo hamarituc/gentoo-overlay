@@ -18,7 +18,6 @@ KEYWORDS="~amd64 ~x86"
 
 DEPEND="dev-libs/libax25"
 RDEPEND="${DEPEND}"
-BDEPEND=""
 
 src_compile() {
 	set -- go build -tags libax25 ${EGO_PN}
