@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 inherit distutils-r1
 
 DESCRIPTION="Tool to find common vulnerabilities in cryptographic public keys"
@@ -28,11 +28,6 @@ RDEPEND="
 	dev-python/cryptography[${PYTHON_USEDEP}]
 	dev-python/gmpy[${PYTHON_USEDEP}]
 "
-
-PATCHES=(
-	"${FILESDIR}/${PN}-tests.patch"
-	"${FILESDIR}/${PN}-data.patch"
-)
 
 src_prepare()
 {
