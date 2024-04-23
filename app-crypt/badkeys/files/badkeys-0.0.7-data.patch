@@ -1,0 +1,9 @@
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -38,3 +38,6 @@
+ [project.optional-dependencies]
+ urllookup = ["binary-file-search"]
+ ssh = ["paramiko"]
++
++[tool.setuptools.package-data]
++"badkeys.keydata" = ["*.dat"]
