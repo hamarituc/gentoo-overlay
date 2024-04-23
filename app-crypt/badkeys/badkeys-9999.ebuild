@@ -29,6 +29,10 @@ RDEPEND="
 	dev-python/gmpy[${PYTHON_USEDEP}]
 "
 
+PATCHES=(
+	"${FILESDIR}/${PN}-0.0.7-data.patch"
+)
+
 src_prepare()
 {
 	default
