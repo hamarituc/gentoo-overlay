@@ -30,8 +30,8 @@ RDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/${PN}-tests.patch"
-	"${FILESDIR}/${PN}-data.patch"
+	"${FILESDIR}/${PN}-0.0.5-tests.patch"
+	"${FILESDIR}/${PN}-0.0.5-data.patch"
 )
 
 src_prepare()
