@@ -58,14 +58,13 @@ RDEPEND="
 	qt6? (
 		dev-qt/qtbase:6[widgets]
 		dev-qt/qtcharts:6
+		dev-qt/qtserialport:6
 		dev-qt/qtmultimedia:6
 		dev-qt/qtpositioning:6
-		dev-qt/qtserialport:6
 		dev-qt/qtwebsockets:6
 		dev-qt/qt5compat:6
 		gui? (
 			dev-qt/qtbase:6[opengl]
-			dev-qt/qtlocation:6
 			dev-qt/qtsvg:6
 			dev-qt/qtwebengine:6[widgets]
 		)
