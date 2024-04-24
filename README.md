@@ -137,6 +137,13 @@ Citing from https://github.com/commixproject/commix:
 > automates the detection and exploitation of command injection
 > vulnerabilities.
 
+### ddrescueview
+
+Citing from https://sourceforge.net/projects/ddrescueview/ (and slightly modified):
+
+> This small tool allows the user to graphically examine the mapfiles created
+> by `sys-fs/ddrescueview` in a user friendly GUI application.
+
 ### Ghidra
 
 Citing from https://github.com/NationalSecurityAgency/ghidra:
