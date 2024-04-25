@@ -29,13 +29,4 @@ RDEPEND="
 	dev-python/gmpy[${PYTHON_USEDEP}]
 "
 
-src_prepare()
-{
-	default
-
-	# These tests require access to the online blocklist.
-	rm "${S}/tests/test_ecbl.py" || die
-	rm "${S}/tests/test_rsabl.py" || die
-}
-
 distutils_enable_tests pytest
