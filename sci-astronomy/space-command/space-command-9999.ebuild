@@ -23,6 +23,7 @@ SLOT="0"
 
 RDEPEND="
 	dev-python/aiohttp[${PYTHON_USEDEP}]
+	dev-python/async-timeout[${PYTHON_USEDEP}]
 	dev-python/beautifulsoup4[${PYTHON_USEDEP}]
 	dev-python/beyond[${PYTHON_USEDEP}]
 	dev-python/docopt[${PYTHON_USEDEP}]
