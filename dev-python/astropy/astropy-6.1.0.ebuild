@@ -14,7 +14,7 @@ HOMEPAGE="https://www.astropy.org/"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~x86"
 IUSE="hdf5 parquet test"
 
 # TODO: Unbundle wcslib
