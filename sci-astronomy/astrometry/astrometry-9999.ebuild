@@ -6,7 +6,7 @@ EAPI=8
 # this could be a multiple python package
 # but the way it is packaged makes it very time consuming.
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit toolchain-funcs python-single-r1
 
@@ -22,6 +22,8 @@ else
 	SRC_URI="https://github.com/dstndstn/astrometry.net/releases/download/${PV}/${MYP}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
+
+S="${WORKDIR}/${MYP}"
 
 LICENSE="BSD GPL-2 GPL-3"
 SLOT="0"
@@ -48,8 +50,6 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	netpbm? ( media-libs/netpbm )
 "
-
-S="${WORKDIR}/${MYP}"
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-soname.patch
