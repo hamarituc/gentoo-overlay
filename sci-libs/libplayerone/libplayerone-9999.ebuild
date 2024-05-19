@@ -23,8 +23,8 @@ LICENSE="playerone"
 SLOT="0/1"
 
 DEPEND="
-	virtual/libudev
 	virtual/libusb:1
+	virtual/udev
 "
 RDEPEND="${DEPEND}"
 

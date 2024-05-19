@@ -27,6 +27,7 @@ DEPEND="
 	~sci-libs/indilib-${PV}
 	sys-libs/zlib
 	virtual/libusb:1
+	virtual/udev
 "
 RDEPEND="${DEPEND}"
 

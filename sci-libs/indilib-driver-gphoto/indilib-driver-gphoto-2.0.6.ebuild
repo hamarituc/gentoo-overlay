@@ -31,6 +31,7 @@ DEPEND="
 	sci-libs/cfitsio:0=
 	~sci-libs/indilib-${PV}
 	virtual/libusb:1
+	virtual/udev
 "
 RDEPEND="${DEPEND}"
 

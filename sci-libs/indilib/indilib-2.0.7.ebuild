@@ -37,6 +37,7 @@ RDEPEND="
 	sci-libs/libnova:=
 	sys-libs/zlib:=
 	virtual/libusb:1
+	virtual/udev
 	ogg? (
 		media-libs/libogg
 		media-libs/libtheora

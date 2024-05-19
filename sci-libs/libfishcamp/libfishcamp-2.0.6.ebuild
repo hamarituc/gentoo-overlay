@@ -22,7 +22,10 @@ fi
 LICENSE="fishcamp"
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}"
+DEPEND="
+	~sci-libs/indilib-${PV}
+	virtual/udev
+"
 RDEPEND="
 	${DEPEND}
 	sys-apps/fxload

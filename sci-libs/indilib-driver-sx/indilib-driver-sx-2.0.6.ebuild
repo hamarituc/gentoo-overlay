@@ -22,7 +22,10 @@ fi
 LICENSE="LGPL-2 cloudmakers"
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}"
+DEPEND="
+	~sci-libs/indilib-${PV}
+	virtual/udev
+"
 RDEPEND="${DEPEND}"
 
 S="${MY_S}/indi-${PN##*-driver-}"

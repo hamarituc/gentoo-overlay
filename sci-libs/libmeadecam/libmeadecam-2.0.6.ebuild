@@ -24,6 +24,7 @@ SLOT="0/1"
 
 DEPEND="
 	virtual/libusb:=
+	virtual/udev
 "
 RDEPEND="${DEPEND}"
 

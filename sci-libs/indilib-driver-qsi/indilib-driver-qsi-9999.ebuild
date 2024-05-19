@@ -25,6 +25,7 @@ SLOT="0/1"
 DEPEND="
 	~sci-libs/indilib-${PV}
 	~sci-libs/libqsi-${PV}
+	virtual/udev
 "
 RDEPEND="${DEPEND}"
 

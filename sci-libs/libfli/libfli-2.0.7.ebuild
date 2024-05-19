@@ -25,6 +25,7 @@ SLOT="0/1"
 DEPEND="
 	~sci-libs/indilib-${PV}
 	virtual/libusb:1
+	virtual/udev
 "
 RDEPEND="${DEPEND}"
 

@@ -22,11 +22,10 @@ fi
 LICENSE="inova"
 SLOT="0/1"
 
-DEPEND=""
-RDEPEND="
-	${DEPEND}
-	virtual/libudev
+DEPEND="
+	virtual/udev
 "
+RDEPEND="${DEPEND}"
 
 pkg_postinst() {
 	udev_reload

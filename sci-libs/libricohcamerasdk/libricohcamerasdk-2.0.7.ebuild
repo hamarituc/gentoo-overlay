@@ -22,7 +22,9 @@ fi
 LICENSE="RICOH"
 SLOT="0/1"
 
-DEPEND=""
+DEPEND="
+	virtual/udev
+"
 RDEPEND="${DEPEND}"
 
 pkg_postinst() {

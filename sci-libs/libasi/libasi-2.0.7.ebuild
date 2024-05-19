@@ -22,11 +22,12 @@ fi
 LICENSE="zwo-asi"
 SLOT="0/1"
 
-DEPEND=""
+DEPEND="
+	virtual/udev
+"
 RDEPEND="
 	${DEPEND}
 	sys-apps/fxload
-	virtual/libudev
 "
 
 pkg_postinst() {

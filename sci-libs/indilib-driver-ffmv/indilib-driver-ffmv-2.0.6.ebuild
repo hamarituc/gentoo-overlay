@@ -25,6 +25,7 @@ SLOT="0/1"
 DEPEND="
 	media-libs/libdc1394
 	~sci-libs/indilib-${PV}
+	virtual/udev
 "
 RDEPEND="${DEPEND}"
 

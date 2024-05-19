@@ -22,7 +22,9 @@ fi
 LICENSE="LGPL-2.1"
 SLOT="0/1"
 
-DEPEND=""
+DEPEND="
+	virtual/udev
+"
 RDEPEND="${DEPEND}"
 
 pkg_postinst() {

@@ -30,6 +30,7 @@ DEPEND="
 RDEPEND="
 	${DEPEND}
 	sys-apps/fxload
+	virtual/udev
 "
 
 pkg_postinst() {

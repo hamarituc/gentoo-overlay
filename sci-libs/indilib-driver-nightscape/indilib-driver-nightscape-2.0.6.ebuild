@@ -25,6 +25,7 @@ SLOT="0/1"
 DEPEND="
 	dev-embedded/libftdi:1
 	~sci-libs/indilib-${PV}
+	virtual/udev
 "
 RDEPEND="${DEPEND}"
 

@@ -22,7 +22,10 @@ fi
 LICENSE="LGPL-2.1"
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}"
+DEPEND="
+	~sci-libs/indilib-${PV}
+	virtual/udev
+"
 RDEPEND="${DEPEND}"
 
 pkg_postinst() {

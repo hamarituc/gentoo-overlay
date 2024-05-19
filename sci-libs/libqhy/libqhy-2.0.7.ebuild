@@ -22,7 +22,9 @@ fi
 LICENSE="qhyccd"
 SLOT="0/1"
 
-DEPEND=""
+DEPEND="
+	virtual/udev
+"
 RDEPEND="
 	${DEPEND}
 	sys-apps/fxload
