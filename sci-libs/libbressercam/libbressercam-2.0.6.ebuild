@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake udev
 
-DESCRIPTION="This is the Altair Library SDK"
+DESCRIPTION="This is the Bresser Library SDK"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
