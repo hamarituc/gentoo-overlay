@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake udev
 
-DESCRIPTION="This is the Toupcam Library SDK"
+DESCRIPTION="This is the library that supports the Meade-branded Touptek camers"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
