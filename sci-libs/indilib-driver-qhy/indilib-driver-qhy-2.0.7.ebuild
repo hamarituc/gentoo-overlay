@@ -19,6 +19,8 @@ else
 	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
 fi
 
+S="${MY_S}/indi-${PN##*-driver-}"
+
 LICENSE="LGPL-2.1"
 SLOT="0/1"
 
@@ -31,8 +33,6 @@ DEPEND="
 	virtual/libusb:1
 "
 RDEPEND="${DEPEND}"
-
-S="${MY_S}/indi-${PN##*-driver-}"
 
 PATCHES=(
 	"${FILESDIR}/${P}-jsonlib.patch"

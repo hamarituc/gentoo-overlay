@@ -19,6 +19,8 @@ else
 	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
 fi
 
+S="${MY_S}/indi-${PN##*-driver-}"
+
 LICENSE="LGPL-2.1"
 SLOT="0/1"
 
@@ -39,8 +41,6 @@ RDEPEND="${DEPEND}"
 BDEPEND="
 	virtual/pkgconfig
 "
-
-S="${MY_S}/indi-${PN##*-driver-}"
 
 src_install() {
 	cmake_src_install

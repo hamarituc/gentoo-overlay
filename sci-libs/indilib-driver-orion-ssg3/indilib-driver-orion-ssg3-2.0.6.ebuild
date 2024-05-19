@@ -19,6 +19,8 @@ else
 	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
 fi
 
+S="${MY_S}/indi-${PN##*-driver-}"
+
 LICENSE="GPL-3"
 SLOT="0/1"
 
@@ -30,8 +32,6 @@ DEPEND="
 	virtual/udev
 "
 RDEPEND="${DEPEND}"
-
-S="${MY_S}/indi-${PN##*-driver-}"
 
 pkg_postinst() {
 	udev_reload
