@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake udev
 
-DESCRIPTION="SDK and firmware for the Moravian MI CCD cameras"
+DESCRIPTION="SDK and firmware for the SvBony cameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
