@@ -11,16 +11,12 @@ DESCRIPTION="Simplified perturbations models"
 HOMEPAGE="https://github.com/dnwrnr/sgp4"
 SRC_URI="https://github.com/dnwrnr/sgp4/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
 
+S="${WORKDIR}/${PN}-${COMMIT}"
+
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64 x86"
 
-DEPEND=""
-RDEPEND="${DEPEND}"
-BDEPEND=""
-
 PATCHES=(
 	"${FILESDIR}/${PN}-libdir.patch"
 )
-
-S="${WORKDIR}/${PN}-${COMMIT}"
