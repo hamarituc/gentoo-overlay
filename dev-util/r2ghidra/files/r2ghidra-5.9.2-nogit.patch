@@ -1,0 +1,13 @@
+diff --git a/ghidra/Makefile b/ghidra/Makefile
+index 652ba23..44f3848 100644
+--- a/ghidra/Makefile
++++ b/ghidra/Makefile
+@@ -23,8 +23,6 @@ uninstall:
+ 	$(MAKE) sleigh-uninstall D="$(DD)"
+ 
+ ghidra-native:
+-	git clone https://github.com/radareorg/ghidra-native
+-	cd ghidra-native && git checkout $(GHIDRA_NATIVE_COMMIT)
+ 	$(MAKE) -C ghidra-native patch
+ 
+ .PHONY: install uninstall user-install user-uninstall all
