@@ -18,6 +18,7 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="
 		https://github.com/radareorg/r2ghidra/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
+		https://github.com/radareorg/r2ghidra/releases/download/${PV}/r2ghidra_sleigh-${PV}.zip
 		https://github.com/radareorg/ghidra-native/archive/${GHIDRA_COMMIT}.tar.gz -> ghidra-${PN}-${GHIDRA_COMMIT}.tar.gz
 	"
 	KEYWORDS="~amd64"
@@ -31,6 +32,7 @@ DEPEND="
 	dev-util/radare2:=
 "
 RDEPEND="${DEPEND}"
+BDEPEND="app-arch/unzip"
 
 PATCHES=(
 	"${FILESDIR}/${P}-nogit.patch"
@@ -39,6 +41,14 @@ PATCHES=(
 
 src_prepare() {
 	default
+
 	mv "${WORKDIR}/ghidra-native-${GHIDRA_COMMIT}" "${S}/ghidra-native" || die
 	emake -C ghidra-native patch
+}
+
+src_install() {
+	meson_install
+
+	insinto "/usr/lib/radare2/${PV}/r2ghidra_sleigh"
+	doins -r "${WORKDIR}/r2ghidra_sleigh-${PV}"/*
 }
