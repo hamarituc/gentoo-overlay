@@ -33,6 +33,7 @@ RDEPEND="
 	media-libs/hamlib:=
 	media-libs/opus:=
 	media-libs/opencv:=
+	media-radio/ggmorse:=
 	media-video/ffmpeg:=
 	net-wireless/dsdcc:=
 	sci-libs/fftw:3.0
