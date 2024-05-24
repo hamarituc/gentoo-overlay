@@ -1,0 +1,104 @@
+--- a/examples/CMakeLists.txt
++++ b/examples/CMakeLists.txt
+@@ -91,14 +91,16 @@ if (GGMORSE_SUPPORT_SDL2)
+     add_subdirectory(ggmorse-gui)
+ endif()
+ 
++include(GNUInstallDirs)
++
+ install(TARGETS ggmorse-common
+-    LIBRARY DESTINATION lib
+-    ARCHIVE DESTINATION lib/static
++    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/static
+     )
+ 
+ if (GGMORSE_SUPPORT_SDL2)
+     install(TARGETS ggmorse-common-sdl2
+-        LIBRARY DESTINATION lib
+-        ARCHIVE DESTINATION lib/static
++        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/static
+         )
+ endif()
+--- a/examples/ggmorse-from-file/CMakeLists.txt
++++ b/examples/ggmorse-from-file/CMakeLists.txt
+@@ -12,4 +12,6 @@ target_link_libraries(${TARGET} PRIVATE
+     ${CMAKE_THREAD_LIBS_INIT}
+     )
+ 
+-install(TARGETS ${TARGET} RUNTIME DESTINATION bin)
++include(GNUInstallDirs)
++
++install(TARGETS ${TARGET} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+--- a/examples/ggmorse-gui/CMakeLists.txt
++++ b/examples/ggmorse-gui/CMakeLists.txt
+@@ -1,5 +1,7 @@
+ set(TARGET ggmorse-gui)
+ 
++include(GNUInstallDirs)
++
+ if (EMSCRIPTEN)
+     add_executable(${TARGET} main.cpp common.cpp interface.cpp interface-emscripten.cpp)
+ 
+@@ -44,9 +46,9 @@ else()
+         ${CMAKE_THREAD_LIBS_INIT}
+         )
+ 
+-    install(FILES ${PROJECT_SOURCE_DIR}/examples/assets/fonts/DroidSans.ttf DESTINATION bin)
+-    install(FILES ${PROJECT_SOURCE_DIR}/examples/assets/fonts/ProggyTiny.ttf DESTINATION bin)
+-    install(FILES ${PROJECT_SOURCE_DIR}/examples/assets/fonts/fontawesome-webfont.ttf DESTINATION bin)
++    install(FILES ${PROJECT_SOURCE_DIR}/examples/assets/fonts/DroidSans.ttf DESTINATION ${CMAKE_INSTALL_BINDIR})
++    install(FILES ${PROJECT_SOURCE_DIR}/examples/assets/fonts/ProggyTiny.ttf DESTINATION ${CMAKE_INSTALL_BINDIR})
++    install(FILES ${PROJECT_SOURCE_DIR}/examples/assets/fonts/fontawesome-webfont.ttf DESTINATION ${CMAKE_INSTALL_BINDIR})
+ endif()
+ 
+-install(TARGETS ${TARGET} RUNTIME DESTINATION bin)
++install(TARGETS ${TARGET} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+--- a/examples/ggmorse-to-file/CMakeLists.txt
++++ b/examples/ggmorse-to-file/CMakeLists.txt
+@@ -12,4 +12,6 @@ target_link_libraries(${TARGET} PRIVATE
+     ${CMAKE_THREAD_LIBS_INIT}
+     )
+ 
+-install(TARGETS ${TARGET} RUNTIME DESTINATION bin)
++include(GNUInstallDirs)
++
++install(TARGETS ${TARGET} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+--- a/examples/third-party/imgui/CMakeLists.txt
++++ b/examples/third-party/imgui/CMakeLists.txt
+@@ -124,14 +124,16 @@ if (GGMORSE_SUPPORT_SDL2)
+     endif()
+ endif()
+ 
++include(GNUInstallDirs)
++
+ install(TARGETS imgui
+-    LIBRARY DESTINATION lib
+-    ARCHIVE DESTINATION lib/static
++    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/static
+     )
+ 
+ if (GGMORSE_SUPPORT_SDL2)
+     install(TARGETS imgui-sdl2
+-        LIBRARY DESTINATION lib
+-        ARCHIVE DESTINATION lib/static
++        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/static
+         )
+ endif()
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -28,7 +28,9 @@ if (MINGW)
+         )
+ endif()
+ 
++include(GNUInstallDirs)
++
+ install(TARGETS ${TARGET}
+-    LIBRARY DESTINATION lib
+-    ARCHIVE DESTINATION lib/static
++    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/static
+     )

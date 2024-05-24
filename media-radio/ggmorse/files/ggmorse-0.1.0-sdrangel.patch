@@ -1,0 +1,614 @@
+From 4af880eaf31e73292512e6f6ee57d5b07b606b25 Mon Sep 17 00:00:00 2001
+From: f4exb <f4exb06@gmail.com>
+Date: Sat, 18 May 2024 01:15:12 +0200
+Subject: [PATCH 02/10] Fix for some compilers
+
+--- a/src/ggmorse.cpp
++++ b/src/ggmorse.cpp
+@@ -972,8 +972,10 @@ void GGMorse::decode_float() {
+                         } else {
+                             if (intervals[j].type == 0 ||
+                                 intervals[j].type == 2 ||
+-                                intervals[j].type == 3) {
+-                                if (auto let = m_impl->alphabet.find(m_impl->curLetter); let != m_impl->alphabet.end()) {
++                                intervals[j].type == 3)
++                            {
++                                auto let = m_impl->alphabet.find(m_impl->curLetter);
++                                if (let != m_impl->alphabet.end()) {
+                                     m_impl->rxData.push_back(let->second);
+                                     printf("%c", let->second);
+                                 } else {
+
+From b34f6e42546f976ea3e54dcbcd25c1f1dc8c160b Mon Sep 17 00:00:00 2001
+From: f4exb <f4exb06@gmail.com>
+Date: Sun, 19 May 2024 19:01:13 +0200
+Subject: [PATCH 03/10] Core: store thresholds in vector for display or
+ debugging
+
+--- a/include/ggmorse/ggmorse.h
++++ b/include/ggmorse/ggmorse.h
+@@ -101,6 +101,7 @@ class GGMorse {
+     using TxRx        = std::vector<std::uint8_t>;
+     using Spectrogram = std::vector<std::vector<float>>;
+     using SignalF     = std::vector<float>;
++    using ThresholdF  = std::vector<float>;
+ 
+     using CBWaveformOut = std::function<void(const void * data, uint32_t nBytes)>;
+     using CBWaveformInp = std::function<uint32_t(void * data, uint32_t nMaxBytes)>;
+@@ -140,6 +141,7 @@ class GGMorse {
+ 
+     int takeRxData(TxRx & dst);
+     int takeSignalF(SignalF & dst);
++    int takeThresholdF(ThresholdF & dst);
+     int takeTxWaveformI16(WaveformI16 & dst);
+ 
+     const Statistics & getStatistics() const;
+--- a/src/ggmorse.cpp
++++ b/src/ggmorse.cpp
+@@ -155,6 +155,7 @@ struct GGMorse::Impl {
+     TxRx rxData = {};
+     TxRx txData = {};
+     SignalF signalF = {};
++    ThresholdF thresholdF = {};
+     WaveformI16 txWaveformI16 = {};
+ 
+     TxRx outputBlockTmp = {};
+@@ -756,6 +757,8 @@ void GGMorse::decode_float() {
+         nModes = 1;
+     }
+ 
++    m_impl->thresholdF.push_back(m_impl->statistics.signalThreshold);
++
+     for (int mode = 0; mode < nModes; ++mode) {
+         if (mode == 1) {
+             s0 = std::min(std::max(0.0f, std::round(m_impl->statistics.estimatedSpeed_wpm - 5.0f - 2.0f)), 50.0f);
+@@ -1037,6 +1040,14 @@ int GGMorse::takeSignalF(SignalF & dst) {
+     return (int) dst.size();
+ }
+ 
++int GGMorse::takeThresholdF(ThresholdF & dst) {
++    if (m_impl->thresholdF.size() == 0) return 0;
++
++    dst = std::move(m_impl->thresholdF);
++
++    return (int) dst.size();
++}
++
+ int GGMorse::takeTxWaveformI16(WaveformI16 & dst) {
+     if (m_impl->txWaveformI16.size() == 0) return false;
+ 
+
+From ec23cd583aaeee4cfb5995e1e1205e0b4578a6b0 Mon Sep 17 00:00:00 2001
+From: f4exb <f4exb06@gmail.com>
+Date: Tue, 21 May 2024 20:52:59 +0200
+Subject: [PATCH 04/10] Fix for MSVC
+
+--- /dev/null
++++ b/.vscode/c_cpp_properties.json
+@@ -0,0 +1,82 @@
++{
++    "configurations": [
++        {
++            "name": "Linux",
++            "includePath": [
++                "${workspaceFolder}/**",
++                "/usr/include/x86_64-linux-gnu/qt5/QtCore/**",
++                "/usr/include/x86_64-linux-gnu/qt5",
++                "/usr/include/c++/11",
++                "/usr/include/x86_64-linux-gnu/c++/11",
++                "/usr/include/x86_64-linux-gnu/qt5/QtNetwork",
++                "/usr/include/x86_64-linux-gnu/qt5/QtCharts",
++                "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent",
++                "/usr/include/x86_64-linux-gnu/qt5/QtDBus",
++                "/usr/include/x86_64-linux-gnu/qt5/QtDesigner",
++                "/usr/include/x86_64-linux-gnu/qt5/QtDesignerComponents",
++                "/usr/include/x86_64-linux-gnu/qt5/QtGui/**",
++                "/usr/include/x86_64-linux-gnu/qt5/QtHelp",
++                "/usr/include/x86_64-linux-gnu/qt5/QtMultimedia",
++                "/usr/include/x86_64-linux-gnu/qt5/QtLocation",
++                "/usr/include/x86_64-linux-gnu/qt5/QtMultimediaGstTools",
++                "/usr/include/x86_64-linux-gnu/qt5/QtMultimediaQuick",
++                "/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets",
++                "/usr/include/x86_64-linux-gnu/qt5/QtNetwork",
++                "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL",
++                "/usr/include/x86_64-linux-gnu/qt5/QtOpenGLExtensions",
++                "/usr/include/x86_64-linux-gnu/qt5/QtPlatformHeaders",
++                "/usr/include/x86_64-linux-gnu/qt5/QtPositioning",
++                "/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport",
++                "/usr/include/x86_64-linux-gnu/qt5/QtQml",
++                "/usr/include/x86_64-linux-gnu/qt5/QtQuick",
++                "/usr/include/x86_64-linux-gnu/qt5/QtSerialPort",
++                "/usr/include/x86_64-linux-gnu/qt5/QtSql",
++                "/usr/include/x86_64-linux-gnu/qt5/QtTest",
++                "/usr/include/x86_64-linux-gnu/qt5/QtTextToSpeech",
++                "/usr/include/x86_64-linux-gnu/qt5/QtUiPlugin",
++                "/usr/include/x86_64-linux-gnu/qt5/QtUiTools",
++                "/usr/include/x86_64-linux-gnu/qt5/QtWebSockets",
++                "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
++                "/usr/include/x86_64-linux-gnu/qt5/QtXml",
++                "/usr/include/x86_64-linux-gnu/qt5/QtWebEngine",
++                "/usr/include/x86_64-linux-gnu/qt5/QtWebEngineCore",
++                "/usr/include/x86_64-linux-gnu/qt5/QtWebEngineWidgets",
++                "/usr/include/hidapi",
++                "/usr/include/SDL2",
++                "/opt/install/libsigmf/include",
++                "/opt/install/libairspy/include",
++                "/opt/install/librtlsdr/include",
++                "/opt/install/libbladeRF/include",
++                "/opt/install/LimeSuite/include",
++                "/opt/install/xtrx-images/include",
++                "/opt/install/libhackrf/include",
++                "/opt/install/libperseus/include",
++                "/opt/install/libmirisdr/include",
++                "/opt/install/SoapySDR/include",
++                "/opt/install/libiio/include",
++                "/opt/install/libairspyhf/include",
++                "/opt/install/cm256cc/include",
++                "/opt/install/dsdcc/include",
++                "/opt/install/codec2/include",
++                "/usr/include/libusb-1.0",
++                "/opt/install/libperseus",
++                "/usr/include/x86_64-linux-gnu/qt5",
++                "/opt/install/serialdv/include/serialdv",
++                "/opt/install/sgp4/include/libsgp4",
++                "/opt/install/aptdec/include/apt",
++                "/opt/install/libdab/include",
++                "/opt/install/ggmorse/include",
++                "/opt/install/libdab/include/dab_lib"
++            ],
++            "defines": [
++                "LINUX",
++                "HAS_FT8",
++                "COMPANY=f4exb"
++            ],
++            "compilerPath": "/usr/bin/clang",
++            "cStandard": "c17",
++            "cppStandard": "c++14"
++        }
++    ],
++    "version": 4
++}
+--- /dev/null
++++ b/.vscode/settings.json
+@@ -0,0 +1,65 @@
++{
++    "files.associations": {
++        "deque": "cpp",
++        "string": "cpp",
++        "vector": "cpp",
++        "cctype": "cpp",
++        "clocale": "cpp",
++        "cmath": "cpp",
++        "cstdarg": "cpp",
++        "cstddef": "cpp",
++        "cstdio": "cpp",
++        "cstdlib": "cpp",
++        "cstring": "cpp",
++        "ctime": "cpp",
++        "cwchar": "cpp",
++        "cwctype": "cpp",
++        "array": "cpp",
++        "atomic": "cpp",
++        "bit": "cpp",
++        "*.tcc": "cpp",
++        "chrono": "cpp",
++        "compare": "cpp",
++        "concepts": "cpp",
++        "condition_variable": "cpp",
++        "cstdint": "cpp",
++        "list": "cpp",
++        "map": "cpp",
++        "unordered_map": "cpp",
++        "exception": "cpp",
++        "algorithm": "cpp",
++        "functional": "cpp",
++        "iterator": "cpp",
++        "memory": "cpp",
++        "memory_resource": "cpp",
++        "numeric": "cpp",
++        "random": "cpp",
++        "ratio": "cpp",
++        "string_view": "cpp",
++        "system_error": "cpp",
++        "tuple": "cpp",
++        "type_traits": "cpp",
++        "utility": "cpp",
++        "fstream": "cpp",
++        "initializer_list": "cpp",
++        "iosfwd": "cpp",
++        "iostream": "cpp",
++        "istream": "cpp",
++        "limits": "cpp",
++        "mutex": "cpp",
++        "new": "cpp",
++        "numbers": "cpp",
++        "ostream": "cpp",
++        "semaphore": "cpp",
++        "sstream": "cpp",
++        "stdexcept": "cpp",
++        "stop_token": "cpp",
++        "streambuf": "cpp",
++        "thread": "cpp",
++        "cinttypes": "cpp",
++        "typeinfo": "cpp",
++        "*.tpp": "cpp",
++        "bitset": "cpp",
++        "regex": "cpp"
++    }
++}
+--- a/examples/ggmorse-gui/common.cpp
++++ b/examples/ggmorse-gui/common.cpp
+@@ -28,6 +28,10 @@
+ #include <thread>
+ #include <vector>
+ 
++#if defined(_WIN32) && !defined(M_PI)
++#define M_PI 3.14159265358979323846
++#endif
++
+ #if defined(IOS) || defined(ANDROID)
+ #include "imgui-wrapper/icons_font_awesome.h"
+ #endif
+--- a/include/ggmorse/ggmorse.h
++++ b/include/ggmorse/ggmorse.h
+@@ -147,6 +147,7 @@ class GGMorse {
+     const Statistics & getStatistics() const;
+     const Spectrogram getSpectrogram() const;
+ 
++#if !defined(_WIN32)
+     // Modify the Morse Code alphabet
+     //
+     // 0 - dot
+@@ -155,6 +156,7 @@ class GGMorse {
+     // For example: setCharacter("01101", 'A') will set the character 'A' to the Morse Code sequence "01101"
+     //
+     bool setCharacter(const std::string & s01, char c);
++#endif
+ 
+ private:
+     void decode_float();
+--- a/src/fft.h
++++ b/src/fft.h
+@@ -2,6 +2,10 @@
+ 
+ #include <cmath>
+ 
++#if defined(_WIN32) && !defined(M_PI)
++#define M_PI 3.14159265358979323846
++#endif
++
+ // FFT routines taken from https://stackoverflow.com/a/37729648/4039976
+ 
+ constexpr auto kMaxSamplesPerFrame = 1024;
+--- a/src/filter.h
++++ b/src/filter.h
+@@ -2,6 +2,10 @@
+ 
+ #include <cmath>
+ 
++#if defined(_WIN32) && !defined(M_PI)
++#define M_PI 3.14159265358979323846
++#endif
++
+ #ifndef pi
+ #define  pi 3.1415926535897932384626433832795
+ #endif
+@@ -132,7 +136,7 @@ struct Filter {
+     float a2;
+     float b1;
+     float b2;
+-    
++
+     float xnz1;
+     float xnz2;
+     float ynz1;
+--- a/src/ggmorse.cpp
++++ b/src/ggmorse.cpp
+@@ -1059,16 +1059,19 @@ int GGMorse::takeTxWaveformI16(WaveformI16 & dst) {
+ const GGMorse::Statistics & GGMorse::getStatistics() const { return m_impl->statistics; }
+ const GGMorse::Spectrogram GGMorse::getSpectrogram() const { return m_impl->stfft.spectrogram(); }
+ 
++#if !defined(_WIN32)
+ bool GGMorse::setCharacter(const std::string & s01, char c) {
+     // remove old character
+-    for (auto it : m_impl->alphabet) {
+-        if (it.second == c) {
+-            m_impl->alphabet.erase(it.first);
+-            break;
++    for (TAlphabet::iterator it = m_impl->alphabet.begin(); it != m_impl->alphabet.end(); ++it)
++    {
++        if (it->second == c) {
++            m_impl->alphabet.erase(it->first);
+         }
++        break;
+     }
+ 
+     m_impl->alphabet[s01] = c;
+ 
+     return true;
+ }
++#endif
+--- a/src/goertzel.h
++++ b/src/goertzel.h
+@@ -3,6 +3,10 @@
+ #include <vector>
+ #include <cmath>
+ 
++#if defined(_WIN32) && !defined(M_PI)
++#define M_PI 3.14159265358979323846
++#endif
++
+ struct GoertzelRunningFIR {
+     void init(
+             float sampleRate,
+--- a/src/resampler.cpp
++++ b/src/resampler.cpp
+@@ -4,6 +4,10 @@
+ #include <cmath>
+ #include <cstdio>
+ 
++#if defined(_WIN32) && !defined(M_PI)
++#define M_PI 3.14159265358979323846
++#endif
++
+ namespace {
+ double linear_interp(double first_number, double second_number, double fraction) {
+     return (first_number + ((second_number - first_number)*fraction));
+--- a/src/stfft.h
++++ b/src/stfft.h
+@@ -5,6 +5,10 @@
+ #include <vector>
+ #include <cmath>
+ 
++#if defined(_WIN32) && !defined(M_PI)
++#define M_PI 3.14159265358979323846
++#endif
++
+ struct STFFT {
+     void init(
+             int sampleRate,
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -46,6 +46,7 @@ option(GGMORSE_SUPPORT_SDL2             "ggmorse: support for libSDL2" ${GGMORSE
+ 
+ option(GGMORSE_BUILD_TESTS              "ggmorse: build examples" ${GGMORSE_STANDALONE})
+ option(GGMORSE_BUILD_EXAMPLES           "ggmorse: build examples" ${GGMORSE_STANDALONE})
++option(GGMORSE_BUILD                    "ggmorse: build" ON)
+ 
+ option(GGMORSE_MALLOC_COUNT             "ggmorse: count memory allocations" OFF)
+ 
+--- a/include/ggmorse/ggmorse.h
++++ b/include/ggmorse/ggmorse.h
+@@ -1,7 +1,7 @@
+ #ifndef GGMORSE_H
+ #define GGMORSE_H
+ 
+-#ifdef GGMORSE_SHARED
++#ifdef BUILD_SHARED_LIBS
+ #    ifdef _WIN32
+ #        ifdef GGMORSE_BUILD
+ #            define GGMORSE_API __declspec(dllexport)
+@@ -81,7 +81,7 @@ extern "C" {
+ #include <vector>
+ #include <functional>
+ 
+-class GGMorse {
++class GGMORSE_API GGMorse {
+ public:
+     static constexpr auto kBaseSampleRate = 4000.0f;
+     static constexpr auto kDefaultSamplesPerFrame = 128;
+
+From b7bd756424013884f159a21a2b837d0d7ace67e7 Mon Sep 17 00:00:00 2001
+From: Jon Beniston <jon@beniston.com>
+Date: Fri, 24 May 2024 09:12:15 +0100
+Subject: [PATCH 07/10] Use GGMORSE_SHARED which is defined in
+ src/CMakeLists.txt
+
+--- a/include/ggmorse/ggmorse.h
++++ b/include/ggmorse/ggmorse.h
+@@ -1,7 +1,7 @@
+ #ifndef GGMORSE_H
+ #define GGMORSE_H
+ 
+-#ifdef BUILD_SHARED_LIBS
++#ifdef GGMORSE_SHARED
+ #    ifdef _WIN32
+ #        ifdef GGMORSE_BUILD
+ #            define GGMORSE_API __declspec(dllexport)
+
+From 74ffa8c56d4fd4bd1fa8ea6c0517461c3c9a2487 Mon Sep 17 00:00:00 2001
+From: Jon Beniston <jon@beniston.com>
+Date: Fri, 24 May 2024 09:12:57 +0100
+Subject: [PATCH 08/10] Define GGMORSE_BUILD for MSVC so __declspec(dllexport)
+ is used
+
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -20,6 +20,11 @@ if (BUILD_SHARED_LIBS)
+     target_compile_definitions(${TARGET} PUBLIC
+         GGMORSE_SHARED
+         )
++    if (MSVC)
++        target_compile_definitions(${TARGET} PUBLIC
++            GGMORSE_BUILD
++            )
++    endif()
+ endif()
+ 
+ if (MINGW)
+
+From d81bc9f338f8695e518cff39f031aab693b5688a Mon Sep 17 00:00:00 2001
+From: Jon Beniston <jon@beniston.com>
+Date: Fri, 24 May 2024 09:13:31 +0100
+Subject: [PATCH 09/10] Remove GGMORSE_BUILD which doesn't do anything
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -46,7 +46,6 @@ option(GGMORSE_SUPPORT_SDL2             "ggmorse: support for libSDL2" ${GGMORSE
+ 
+ option(GGMORSE_BUILD_TESTS              "ggmorse: build examples" ${GGMORSE_STANDALONE})
+ option(GGMORSE_BUILD_EXAMPLES           "ggmorse: build examples" ${GGMORSE_STANDALONE})
+-option(GGMORSE_BUILD                    "ggmorse: build" ON)
+ 
+ option(GGMORSE_MALLOC_COUNT             "ggmorse: count memory allocations" OFF)
+ 
+
+From 75c335f343aa15514c6437c5c19c7ea54ea3ce7e Mon Sep 17 00:00:00 2001
+From: f4exb <f4exb06@gmail.com>
+Date: Fri, 24 May 2024 14:42:20 +0200
+Subject: [PATCH 10/10] Removed vscode files from tracking
+
+--- a/.vscode/c_cpp_properties.json
++++ /dev/null
+@@ -1,82 +0,0 @@
+-{
+-    "configurations": [
+-        {
+-            "name": "Linux",
+-            "includePath": [
+-                "${workspaceFolder}/**",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtCore/**",
+-                "/usr/include/x86_64-linux-gnu/qt5",
+-                "/usr/include/c++/11",
+-                "/usr/include/x86_64-linux-gnu/c++/11",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtNetwork",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtCharts",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtDBus",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtDesigner",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtDesignerComponents",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtGui/**",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtHelp",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtMultimedia",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtLocation",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtMultimediaGstTools",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtMultimediaQuick",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtNetwork",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtOpenGLExtensions",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtPlatformHeaders",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtPositioning",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtQml",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtQuick",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtSerialPort",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtSql",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtTest",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtTextToSpeech",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtUiPlugin",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtUiTools",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtWebSockets",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtXml",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtWebEngine",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtWebEngineCore",
+-                "/usr/include/x86_64-linux-gnu/qt5/QtWebEngineWidgets",
+-                "/usr/include/hidapi",
+-                "/usr/include/SDL2",
+-                "/opt/install/libsigmf/include",
+-                "/opt/install/libairspy/include",
+-                "/opt/install/librtlsdr/include",
+-                "/opt/install/libbladeRF/include",
+-                "/opt/install/LimeSuite/include",
+-                "/opt/install/xtrx-images/include",
+-                "/opt/install/libhackrf/include",
+-                "/opt/install/libperseus/include",
+-                "/opt/install/libmirisdr/include",
+-                "/opt/install/SoapySDR/include",
+-                "/opt/install/libiio/include",
+-                "/opt/install/libairspyhf/include",
+-                "/opt/install/cm256cc/include",
+-                "/opt/install/dsdcc/include",
+-                "/opt/install/codec2/include",
+-                "/usr/include/libusb-1.0",
+-                "/opt/install/libperseus",
+-                "/usr/include/x86_64-linux-gnu/qt5",
+-                "/opt/install/serialdv/include/serialdv",
+-                "/opt/install/sgp4/include/libsgp4",
+-                "/opt/install/aptdec/include/apt",
+-                "/opt/install/libdab/include",
+-                "/opt/install/ggmorse/include",
+-                "/opt/install/libdab/include/dab_lib"
+-            ],
+-            "defines": [
+-                "LINUX",
+-                "HAS_FT8",
+-                "COMPANY=f4exb"
+-            ],
+-            "compilerPath": "/usr/bin/clang",
+-            "cStandard": "c17",
+-            "cppStandard": "c++14"
+-        }
+-    ],
+-    "version": 4
+-}
+--- a/.vscode/settings.json
++++ /dev/null
+@@ -1,65 +0,0 @@
+-{
+-    "files.associations": {
+-        "deque": "cpp",
+-        "string": "cpp",
+-        "vector": "cpp",
+-        "cctype": "cpp",
+-        "clocale": "cpp",
+-        "cmath": "cpp",
+-        "cstdarg": "cpp",
+-        "cstddef": "cpp",
+-        "cstdio": "cpp",
+-        "cstdlib": "cpp",
+-        "cstring": "cpp",
+-        "ctime": "cpp",
+-        "cwchar": "cpp",
+-        "cwctype": "cpp",
+-        "array": "cpp",
+-        "atomic": "cpp",
+-        "bit": "cpp",
+-        "*.tcc": "cpp",
+-        "chrono": "cpp",
+-        "compare": "cpp",
+-        "concepts": "cpp",
+-        "condition_variable": "cpp",
+-        "cstdint": "cpp",
+-        "list": "cpp",
+-        "map": "cpp",
+-        "unordered_map": "cpp",
+-        "exception": "cpp",
+-        "algorithm": "cpp",
+-        "functional": "cpp",
+-        "iterator": "cpp",
+-        "memory": "cpp",
+-        "memory_resource": "cpp",
+-        "numeric": "cpp",
+-        "random": "cpp",
+-        "ratio": "cpp",
+-        "string_view": "cpp",
+-        "system_error": "cpp",
+-        "tuple": "cpp",
+-        "type_traits": "cpp",
+-        "utility": "cpp",
+-        "fstream": "cpp",
+-        "initializer_list": "cpp",
+-        "iosfwd": "cpp",
+-        "iostream": "cpp",
+-        "istream": "cpp",
+-        "limits": "cpp",
+-        "mutex": "cpp",
+-        "new": "cpp",
+-        "numbers": "cpp",
+-        "ostream": "cpp",
+-        "semaphore": "cpp",
+-        "sstream": "cpp",
+-        "stdexcept": "cpp",
+-        "stop_token": "cpp",
+-        "streambuf": "cpp",
+-        "thread": "cpp",
+-        "cinttypes": "cpp",
+-        "typeinfo": "cpp",
+-        "*.tpp": "cpp",
+-        "bitset": "cpp",
+-        "regex": "cpp"
+-    }
+-}
