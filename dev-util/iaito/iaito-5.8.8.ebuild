@@ -16,6 +16,8 @@ SRC_URI="
 	https://github.com/radareorg/iaito/archive/refs/tags/${PV/_/-}.tar.gz -> ${P}.tar.gz
 "
 
+S="${WORKDIR}/${PN}-${PV/_/-}"
+
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
@@ -43,8 +45,6 @@ RDEPEND="
 "
 
 #	python? ( ${PYTHON_DEPS} )
-
-S="${WORKDIR}/${PN}-${PV/_/-}"
 
 EMESON_SOURCE="${S}/src"
 
