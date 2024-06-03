@@ -24,6 +24,5 @@ SLOT="0"
 RDEPEND="
 	dev-libs/hidapi
 "
-BDEPEND=""
 
 RESTRICT="test"
