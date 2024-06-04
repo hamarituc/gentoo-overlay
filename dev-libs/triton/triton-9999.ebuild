@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit cmake python-single-r1
 
@@ -45,7 +45,6 @@ RDEPEND="
 		')
 	)
 "
-BDEPEND=""
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
