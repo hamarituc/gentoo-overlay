@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit cmake python-single-r1
 
@@ -45,13 +45,13 @@ RDEPEND="
 		')
 	)
 "
-BDEPEND=""
 
 PATCHES=(
 	"${FILESDIR}/${P}-installdir.patch"
 	"${FILESDIR}/${P}-capstone.patch"
 	"${FILESDIR}/${P}-python3_11.patch"
 	"${FILESDIR}/${P}-longintrepr.patch"
+	"${FILESDIR}/${P}-python3_12.patch"
 )
 
 pkg_setup() {
