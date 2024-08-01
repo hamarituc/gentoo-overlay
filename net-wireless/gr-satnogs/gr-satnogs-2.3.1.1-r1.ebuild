@@ -3,14 +3,14 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 if [[ ${PV} == 9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://gitlab.com/librespacefoundation/satnogs/gr-satnogs.git"
 else
 	MY_P="${PN}-v${PV}"
-	SRC_URI="https://gitlab.com/librespacefoundation/satnogs/gr-satnogs/-/archive/v${PV}/${MY_P}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://gitlab.com/librespacefoundation/satnogs/gr-satnogs/-/archive/v${PV}/${MY_P}.tar.bz2 -> ${P}.tar.bz2"
 	S="${WORKDIR}/${MY_P}"
 	KEYWORDS="~amd64 ~x86"
 fi
