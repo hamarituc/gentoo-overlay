@@ -4,7 +4,8 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{10..13} )
+
 inherit distutils-r1
 
 DESCRIPTION="Pure Python parser for Windows Registry hives"
