@@ -4,9 +4,10 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{9..11} )
+PYPI_NO_NORMALIZE=1
+PYTHON_COMPAT=( python3_{10..13} )
 
-inherit distutils-r1
+inherit distutils-r1 pypi
 
 DESCRIPTION="Sphinx extension for generating API documentation"
 HOMEPAGE="
@@ -14,7 +15,6 @@ HOMEPAGE="
 	https://github.com/astropy/sphinx-automodapi
 	https://pypi.org/project/sphinx-automodapi/
 "
-SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
