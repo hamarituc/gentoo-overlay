@@ -28,7 +28,3 @@ DEPEND="
 	~sci-libs/indilib-${PV}
 "
 RDEPEND="${DEPEND}"
-
-PATCHES=(
-	"${FILESDIR}/${P}-uint8.patch"
-)
