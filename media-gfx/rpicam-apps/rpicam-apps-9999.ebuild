@@ -23,7 +23,7 @@ IUSE="drm egl ffmpeg opencv qt5"
 
 DEPEND="
 	dev-libs/boost:=
-	media-libs/libcamera:=
+	>=media-libs/libcamera-0.3.0:=
 	media-libs/libexif:=
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
@@ -44,10 +44,18 @@ BDEPEND="
 
 src_configure() {
 	local emesonargs=(
-		$(meson_feature drm)
-		$(meson_feature ffmpeg libav)
-		$(meson_feature opencv)
-		$(meson_feature qt5 qt)
+		$(meson_feature drm enable_drm)
+		$(meson_feature ffmpeg enable_libav)
+		$(meson_feature opencv enable_opencv)
+		$(meson_feature qt5 enable_qt)
+		-Denable_egl=disabled
+		-Denable_tflite=disabled
+		-Denable_hailo=disabled
+		-Ddownload_hailo_models=false
 	)
 	meson_src_configure
 }
+
+PATCHES=(
+	"${FILESDIR}/rpicam-apps-1.5-includedirs.patch"
+)
