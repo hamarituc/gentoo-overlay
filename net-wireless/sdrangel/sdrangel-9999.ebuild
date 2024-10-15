@@ -95,6 +95,7 @@ src_configure() {
 
 	local mycmakeargs=(
 		-DDEBUG_OUTPUT="$(usex debug)" \
+		-DBUILD_SHARED_LIBS=ON \
 		-DENABLE_EXTERNAL_LIBRARIES=OFF \
 		-DSANITIZE_ADDRESS=OFF \
 		-DRX_SAMPLE_24BIT=ON \
