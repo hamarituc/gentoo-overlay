@@ -30,6 +30,7 @@ RDEPEND="
 	dev-libs/hidapi:=
 	dev-libs/serialDV:=
 	>=media-libs/codec2-1.0.5:=
+	media-libs/flac:=
 	media-libs/hamlib:=
 	media-libs/opus:=
 	media-libs/opencv:=
