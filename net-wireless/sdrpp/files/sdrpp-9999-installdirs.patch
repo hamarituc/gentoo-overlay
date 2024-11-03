@@ -11,7 +11,7 @@
  # Backends
  option(OPT_BACKEND_GLFW "Use the GLFW backend" ON)
  option(OPT_BACKEND_ANDROID "Use the Android backend" OFF)
-@@ -303,18 +307,18 @@ endif ()
+@@ -379,16 +383,16 @@ endif ()
  configure_file(${CMAKE_SOURCE_DIR}/sdrpp_module.cmake ${CMAKE_CURRENT_BINARY_DIR}/sdrpp_module.cmake @ONLY)
  
  # Install directives
@@ -35,13 +35,9 @@
  endif ()
  
  # Create uninstall target
- configure_file(${CMAKE_SOURCE_DIR}/cmake_uninstall.cmake ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake @ONLY)
--add_custom_target(uninstall ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
-\ No newline at end of file
-+add_custom_target(uninstall ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 --- a/core/CMakeLists.txt
 +++ b/core/CMakeLists.txt
-@@ -168,4 +168,4 @@ set(CORE_FILES ${RUNTIME_OUTPUT_DIRECTORY} PARENT_SCOPE)
+@@ -167,4 +167,4 @@ set(CORE_FILES ${RUNTIME_OUTPUT_DIRECTORY} PARENT_SCOPE)
  # cmake .. "-DCMAKE_TOOLCHAIN_FILE=C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake"
  
  # Install directives

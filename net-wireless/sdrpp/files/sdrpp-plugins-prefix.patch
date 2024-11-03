@@ -1,6 +1,6 @@
 --- a/core/CMakeLists.txt
 +++ b/core/CMakeLists.txt
-@@ -41,6 +41,9 @@ endif ()
+@@ -36,6 +36,9 @@ target_compile_options(sdrpp_core PRIVATE ${SDRPP_COMPILER_FLAGS})
  # Set the install prefix
  target_compile_definitions(sdrpp_core PUBLIC INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
  
@@ -27,7 +27,7 @@
  namespace core {
      ConfigManager configManager;
      ModuleManager moduleManager;
-@@ -250,7 +258,7 @@ int sdrpp_main(int argc, char* argv[]) {
+@@ -266,7 +274,7 @@ int sdrpp_main(int argc, char* argv[]) {
      defConfig["modulesDirectory"] = root + "/modules";
      defConfig["resourcesDirectory"] = root + "/res";
  #else
