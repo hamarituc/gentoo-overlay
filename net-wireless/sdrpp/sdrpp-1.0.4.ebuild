@@ -19,8 +19,8 @@ else
 	KEYWORDS="~amd64 ~x86"
 fi
 
-SLOT="0"
 LICENSE="GPL-3"
+SLOT="0"
 
 IUSE="+audiosink +rtlsdr soapysdr hackrf airspy airspyhf plutosdr discord portaudio bladerf limesdr spyserver"
 
