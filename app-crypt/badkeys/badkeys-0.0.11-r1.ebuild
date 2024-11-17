@@ -26,7 +26,7 @@ SLOT="0"
 
 RDEPEND="
 	dev-python/cryptography[${PYTHON_USEDEP}]
-	dev-python/gmpy[${PYTHON_USEDEP}]
+	dev-python/gmpy2[${PYTHON_USEDEP}]
 	dev-python/dnspython[${PYTHON_USEDEP}]
 	dev-python/paramiko[${PYTHON_USEDEP}]
 "
