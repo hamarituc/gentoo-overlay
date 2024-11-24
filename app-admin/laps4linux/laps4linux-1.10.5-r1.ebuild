@@ -35,7 +35,7 @@ RDEPEND="
 		dev-python/gssapi[${PYTHON_USEDEP}]
 		>=dev-python/ldap3-2.9.1[${PYTHON_USEDEP}]
 		dev-python/pycryptodome[${PYTHON_USEDEP}]
-		dev-python/PyQt5[${PYTHON_USEDEP}]
+		dev-python/pyqt5[${PYTHON_USEDEP}]
 		dev-python/qrcode[${PYTHON_USEDEP}]
 	')
 "
