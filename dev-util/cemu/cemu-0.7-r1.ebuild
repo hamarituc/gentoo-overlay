@@ -27,7 +27,7 @@ RDEPEND="
 	dev-libs/keystone:=[python,${PYTHON_USEDEP}]
 	dev-python/prompt-toolkit[${PYTHON_USEDEP}]
 	dev-python/pygments[${PYTHON_USEDEP}]
-	dev-python/PyQt6[${PYTHON_USEDEP}]
+	dev-python/pyqt6[${PYTHON_USEDEP}]
 	dev-util/lief:=[python,${PYTHON_USEDEP}]
 	dev-util/unicorn:=[python,${PYTHON_USEDEP}]
 "
