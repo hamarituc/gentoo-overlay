@@ -120,14 +120,6 @@ src_install() {
 	find "${ED}" -name '*.py[oc]' -delete || die
 	python_optimize
 
-	# remove duplicates and non installable libraries
-	# cfitsio
-	rm "${ED}"/usr/bin/listhead || die
-	# cfitsio utilities
-	#rm "${ED}"/usr/bin/{fitsverify,imarith,imstat,liststruc,modhead,tablist,tabmerge} || die
-	#rm "${ED}"/usr/$(get_libdir)/lib*.a || die
-	#rm "${ED}"/usr/share/doc/${PF}/LICENSE || die
-
 	if use examples; then
 		docompress -x /usr/share/doc/${PF}/examples
 	else
