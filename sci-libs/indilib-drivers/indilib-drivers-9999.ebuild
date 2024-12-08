@@ -24,15 +24,12 @@ IUSE_INDILIB_DRIVERS="
 	asi-power
 	astarbox
 	astroasis
-	astrolink4
-	astromechfoc
 	atik
 	avalon
 	avalonud
 	beefocus
 	bresserexos2
 	celestronaux
-	dreamfocuser
 	dsi
 	duino
 	eqmod
@@ -64,7 +61,6 @@ IUSE_INDILIB_DRIVERS="
 	rtklib
 	sbig
 	shelyak
-	spectracyber
 	starbook
 	starbook-ten
 	svbony
@@ -102,15 +98,12 @@ RDEPEND="
 	indilib_drivers_astroasis? (
 		amd64? ( ~sci-libs/indilib-driver-astroasis-${PV} )
 	)
-	indilib_drivers_astrolink4? ( ~sci-libs/indilib-driver-astrolink4-${PV} )
-	indilib_drivers_astromechfoc? ( ~sci-libs/indilib-driver-astromechfoc-${PV} )
 	indilib_drivers_atik? ( ~sci-libs/indilib-driver-atik-${PV} )
 	indilib_drivers_avalon? ( ~sci-libs/indilib-driver-avalon-${PV} )
 	indilib_drivers_avalonud? ( ~sci-libs/indilib-driver-avalonud-${PV} )
 	indilib_drivers_beefocus? ( ~sci-libs/indilib-driver-beefocus-${PV} )
 	indilib_drivers_bresserexos2? ( ~sci-libs/indilib-driver-bresserexos2-${PV} )
 	indilib_drivers_celestronaux? ( ~sci-libs/indilib-driver-celestronaux-${PV} )
-	indilib_drivers_dreamfocuser? ( ~sci-libs/indilib-driver-dreamfocuser-${PV} )
 	indilib_drivers_dsi? ( ~sci-libs/indilib-driver-dsi-${PV} )
 	indilib_drivers_duino? ( ~sci-libs/indilib-driver-duino-${PV} )
 	indilib_drivers_eqmod? ( ~sci-libs/indilib-driver-eqmod-${PV} )
@@ -150,7 +143,6 @@ RDEPEND="
 		amd64? ( ~sci-libs/indilib-driver-sbig-${PV} )
 	)
 	indilib_drivers_shelyak? ( ~sci-libs/indilib-driver-shelyak-${PV} )
-	indilib_drivers_spectracyber? ( ~sci-libs/indilib-driver-spectracyber-${PV} )
 	indilib_drivers_starbook? ( ~sci-libs/indilib-driver-starbook-${PV} )
 	indilib_drivers_starbook-ten? ( ~sci-libs/indilib-driver-starbook-ten-${PV} )
 	indilib_drivers_svbony? ( ~sci-libs/indilib-driver-svbony-${PV} )
