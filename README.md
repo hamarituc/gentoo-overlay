@@ -267,6 +267,11 @@ Electronic Engineering :electric_plug:
 minipro is a program for controlling the MiniPRO TL866xx series of chip
 programmers.
 
+### nec2c
+
+nec2c is an implementation of the Numerical Electromagnetics Code antenna
+simulation program.
+
 ### pasmo
 
 Pasmo is a Z80 cross assembler.
