@@ -5,8 +5,9 @@ EAPI=8
 
 CMAKE_BUILD_TYPE="Release"
 CMAKE_MAKEFILE_GENERATOR="emake"
+LLVM_COMPAT=( {15..19} )
 
-inherit cmake llvm toolchain-funcs desktop
+inherit cmake llvm-r1 toolchain-funcs desktop
 
 DESCRIPTION="A hex editor for reverse engineers, programmers, and eyesight"
 HOMEPAGE="https://github.com/WerWolv/ImHex"
@@ -29,7 +30,7 @@ DEPEND="
 	app-forensics/yara
 	>=dev-cpp/nlohmann_json-3.10.2
 	dev-libs/capstone
-	dev-libs/nativefiledialog-extended
+	>=dev-libs/nativefiledialog-extended-1.2.0
 	>=dev-libs/libfmt-8.0.0:=
 	media-libs/freetype
 	media-libs/glfw
@@ -45,11 +46,9 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
-	system-llvm? ( sys-devel/llvm )
 	app-admin/chrpath
 	gnome-base/librsvg
-	sys-devel/lld
-	dev-util/ccache
+	system-llvm? ( $(llvm_gen_dep 'llvm-core/llvm:${LLVM_SLOT}=' ) )
 "
 
 pkg_pretend() {
@@ -65,12 +64,6 @@ src_configure() {
 
 	local mycmakeargs=(
 		-D CMAKE_BUILD_TYPE="Release" \
-		-D CMAKE_C_COMPILER_LAUNCHER=ccache \
-		-D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
-		-D CMAKE_C_FLAGS="-fuse-ld=lld ${CFLAGS}" \
-		-D CMAKE_CXX_FLAGS="-fuse-ld=lld ${CXXFLAGS}" \
-		-D CMAKE_OBJC_COMPILER_LAUNCHER=ccache \
-		-D CMAKE_OBJCXX_COMPILER_LAUNCHER=ccache \
 		-D CMAKE_SKIP_RPATH=ON \
 		-D IMHEX_PLUGINS_IN_SHARE=OFF \
 		-D IMHEX_STRIP_RELEASE=OFF \
