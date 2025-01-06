@@ -3,8 +3,9 @@
 
 EAPI=8
 
-DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..12} )
+DISTUTILS_USE_PEP517=hatchling
+PYTHON_COMPAT=( python3_{10..13} )
+
 inherit distutils-r1
 
 DESCRIPTION="Flight Dynamic Library"
@@ -33,10 +34,12 @@ BDEPEND="
 	)
 "
 
+RESTRICT="test"
+
 distutils_enable_tests pytest
 
 src_prepare() {
 	default
 
-	sed -e "s/--cov beyond --cov-report html //" -i "${S}/setup.cfg" || die
+	sed -e "s|--cov src/beyond --cov-report html ||" -i "${S}/pyproject.toml" || die
 }
