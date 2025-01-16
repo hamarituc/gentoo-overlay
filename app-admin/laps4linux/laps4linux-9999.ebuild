@@ -29,8 +29,8 @@ SLOT="0"
 
 RDEPEND="
 	$(python_gen_cond_dep '
-		dev-python/cryptography[${PYTHON_USEDEP}]
-		dev-python/dnspython[${PYTHON_USEDEP}]
+		>=dev-python/cryptography-3.1.0[${PYTHON_USEDEP}]
+		>=dev-python/dnspython-2.0.0[${PYTHON_USEDEP}]
 		>=dev-python/dpapi-ng-0.2.0[${PYTHON_USEDEP}]
 		dev-python/gssapi[${PYTHON_USEDEP}]
 		>=dev-python/ldap3-2.9.1[${PYTHON_USEDEP}]
