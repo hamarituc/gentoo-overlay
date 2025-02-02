@@ -36,6 +36,7 @@ RDEPEND="${COMMON_DEPEND}
 PATCHES=(
 	"${FILESDIR}/${PN}-3.2.6a-solaris.patch"
 	"${FILESDIR}/${PN}-3.2.9-app-defaults.patch"
+	"${FILESDIR}/${PN}-3.2.9a-prototypes.patch"
 )
 
 src_configure() {
