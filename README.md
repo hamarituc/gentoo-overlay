@@ -258,6 +258,10 @@ Terminal User Interface for GnuPG
 Acknowledgement: The ebuild is based on the
   [dm9pZCAq](https://notabug.org/dm9pZCAq/dm9pZCAq-overlay) overlay.
 
+### signxml
+
+Python XML Signature and XAdES library
+
 
 Electronic Engineering :electric_plug:
 --------------------------------------
