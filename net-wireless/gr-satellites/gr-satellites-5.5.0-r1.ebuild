@@ -10,7 +10,7 @@ if [[ ${PV} == 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/daniestevez/gr-satellites/${PN}"
 	EGIT_BRANCH="maint-3.10"
 else
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 	SRC_URI="https://github.com/daniestevez/gr-satellites/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 fi
 
