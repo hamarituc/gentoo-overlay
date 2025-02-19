@@ -266,11 +266,6 @@ Python XML Signature and XAdES library
 Electronic Engineering :electric_plug:
 --------------------------------------
 
-### minipro
-
-minipro is a program for controlling the MiniPRO TL866xx series of chip
-programmers.
-
 ### nec2c
 
 nec2c is an implementation of the Numerical Electromagnetics Code antenna
@@ -367,6 +362,7 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `app-forensics/volatility3`
  * `app-forensics/yara`
  * `dev-db/sqlmap`
+ * `dev-embedded/minipro`
  * `dev-python/filebytes`
  * `dev-python/nextinspace`
  * `dev-python/yara-python`
