@@ -16,14 +16,10 @@ else
 	KEYWORDS="~amd64 ~x86"
 fi
 
-LICENSE="MIT"
-SLOT="0"
-
 S="${WORKDIR}/${P}/src"
 
-DEPEND=""
-RDEPEND="${DEPEND}"
-BDEPEND=""
+LICENSE="MIT"
+SLOT="0"
 
 src_install() {
 	dobin "${BUILD_DIR}/rp-lin"
