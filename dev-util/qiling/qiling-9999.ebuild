@@ -3,8 +3,8 @@
 
 EAPI=8
 
-DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..12} )
+DISTUTILS_USE_PEP517=poetry
+PYTHON_COMPAT=( python3_{10..13} )
 inherit distutils-r1
 
 DESCRIPTION="Advanced binary emulation framework"
@@ -27,13 +27,13 @@ RESTRICT="test"
 RDEPEND="
 	>=dev-libs/capstone-4.0.1[python,${PYTHON_USEDEP}]
 	>=dev-libs/keystone-0.9.2[python,${PYTHON_USEDEP}]
-	>=dev-util/unicorn-2.0.0_rc7[python,${PYTHON_USEDEP}]
+	>=dev-util/unicorn-2.1.2[python,${PYTHON_USEDEP}]
 	>=dev-python/gevent-20.9.0[${PYTHON_USEDEP}]
 	>=dev-python/multiprocess-0.70.12.2[${PYTHON_USEDEP}]
 	>=dev-python/pefile-2022.5.30[${PYTHON_USEDEP}]
 	>=dev-python/pyelftools-0.28[${PYTHON_USEDEP}]
 	>=dev-python/python-registry-1.3.1[${PYTHON_USEDEP}]
-	>=dev-python/pyyaml-6.0[${PYTHON_USEDEP}]
+	>=dev-python/pyyaml-6.0.1[${PYTHON_USEDEP}]
 "
 
 python_install_all() {
