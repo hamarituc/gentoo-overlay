@@ -7,7 +7,7 @@ inherit autotools
 
 DESCRIPTION="Amateur Radio Logging Program"
 HOMEPAGE="http://www.w1hkj.com/fllog-help/index.html"
-#SRC_URI="mirror://sourceforge/fldigi/${P}.tar.gz"
+#SRC_URI="https://downloads.sourceforge.net/fldigi/${P}.tar.gz"
 SRC_URI="https://github.com/w1hkj/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
