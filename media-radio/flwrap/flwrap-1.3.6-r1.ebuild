@@ -5,7 +5,7 @@ EAPI=8
 
 DESCRIPTION="Reliable File Transfer Programm for Amateur Radio Use"
 HOMEPAGE="http://www.w1hkj.com/Flwrap/index.html"
-SRC_URI="mirror://sourceforge/fldigi/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/fldigi/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
