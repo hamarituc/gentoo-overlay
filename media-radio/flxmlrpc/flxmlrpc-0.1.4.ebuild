@@ -5,7 +5,7 @@ EAPI=8
 
 DESCRIPTION="XmlRpc library used by fldigi, flrig, flnet, flmsg, flarq, flamp, fllog"
 HOMEPAGE="http://www.w1hkj.com/downloads/flxmlrpc/README.txt"
-SRC_URI="mirror://sourceforge/fldigi/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/fldigi/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
