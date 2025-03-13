@@ -32,7 +32,6 @@ RDEPEND="
 	dev-python/certvalidator[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
 	dev-python/lxml[${PYTHON_USEDEP}]
-	dev-python/oscrypto[${PYTHON_USEDEP}]
 	dev-python/paramiko[${PYTHON_USEDEP}]
 	dev-python/pillow[${PYTHON_USEDEP}]
 	dev-python/pykcs11[${PYTHON_USEDEP}]
@@ -48,6 +47,7 @@ RDEPEND="
 DOCS=( README.rst )
 
 PATCHES=(
+	"${FILESDIR}/${PN}-2.16-test-import.patch"
 	"${FILESDIR}/${PN}-2.16-fontdir.patch"
 )
 
