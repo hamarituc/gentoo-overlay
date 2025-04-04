@@ -1,0 +1,29 @@
+diff --git a/meson.build b/meson.build
+index 807513f..1764502 100644
+--- a/meson.build
++++ b/meson.build
+@@ -8,6 +8,7 @@ version : '5.9.8',
+ )
+ 
+ pugixml_dep = dependency('pugixml')
++z_dep = dependency('zlib')
+ 
+ r2ghidra_sources = [
+   'src/ArchMap.cpp',
+@@ -207,7 +208,7 @@ sleighc_sources = [
+ 
+ r2ghidra_core_plugin = library('core_r2ghidra',
+   r2ghidra_core_sources,
+-  dependencies: [r_core, pugixml_dep],
++  dependencies: [r_core, pugixml_dep, z_dep],
+   override_options : ['c_std=c11', 'cpp_std=c++11'],
+   include_directories: r2ghidra_incdirs,
+   install: true,
+@@ -217,6 +218,6 @@ r2ghidra_core_plugin = library('core_r2ghidra',
+ sleighc_exe = executable('sleighc', sleighc_sources,
+   include_directories: r2ghidra_incdirs,
+   override_options : ['c_std=c11', 'cpp_std=c++11'],
+-  dependencies: [r_core, pugixml_dep],
++  dependencies: [r_core, pugixml_dep, z_dep],
+   install: true
+ )
