@@ -3,10 +3,10 @@
 
 EAPI=8
 
-# PYTHON_COMPAT=( python3_{9..11} )
+# PYTHON_COMPAT=( python3_{10..13} )
 
-# inherit cmake git-r3 python-r1
-inherit cmake git-r3
+# inherit cmake python-r1
+inherit cmake
 
 DESCRIPTION="Atmel AVR simulator"
 HOMEPAGE="https://www.nongnu.org/simulavr/"
@@ -20,8 +20,6 @@ KEYWORDS="~amd64 ~x86"
 IUSE="verilog"
 
 # RDEPEND="${PYTHON_DEPS}"
-RDEPEND=""
-DEPEND="${RDEPEND}"
 BDEPEND="
 	sys-apps/help2man
 	sys-apps/texinfo
