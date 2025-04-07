@@ -262,7 +262,7 @@ SRC_URI="
 # use cargo-license for a more accurate license picture
 LICENSE="0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD-2 Boost-1.0 CC0-1.0 CDDL ISC LGPL-2.1 MIT MIT-0 MPL-2.0 Unicode-DFS-2016 Unlicense WTFPL-2 ZLIB"
 SLOT="0"
-KEYWORDS="amd64 ~x86"
+KEYWORDS="amd64"
 RESTRICT="mirror"
 
 DEPEND="

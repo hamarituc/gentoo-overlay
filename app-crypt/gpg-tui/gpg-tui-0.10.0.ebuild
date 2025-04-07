@@ -237,7 +237,7 @@ LICENSE+="
 	MIT MPL-2.0 Unicode-DFS-2016 Unlicense
 "
 SLOT="0"
-KEYWORDS="amd64 ~x86"
+KEYWORDS="amd64"
 RESTRICT="mirror"
 
 DEPEND="
