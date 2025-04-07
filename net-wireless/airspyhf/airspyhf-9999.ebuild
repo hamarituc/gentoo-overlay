@@ -5,10 +5,10 @@ inherit cmake udev
 DESCRIPTION="User mode driver for Airspy HF+"
 HOMEPAGE="https://github.com/airspy/airspyhf"
 
+LICENSE="BSD"
+SLOT="0"
 IUSE="udev"
 
-SLOT="0"
-LICENSE="BSD"
 RDEPEND="
 	dev-libs/libusb:1
 	udev? ( virtual/udev )
