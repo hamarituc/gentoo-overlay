@@ -25,9 +25,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="+data static-libs"
 
-DEPEND=""
 RDEPEND="
-	${DEPEND}
 	net-misc/curl
 "
 BDEPEND="
