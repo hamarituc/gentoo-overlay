@@ -5,8 +5,9 @@ EAPI=8
 
 inherit cmake
 
-HOMEPAGE="https://github.com/szechyjs/mbelib"
 DESCRIPTION="P25 Phase 1 and ProVoice vocoder"
+HOMEPAGE="https://github.com/szechyjs/mbelib"
+
 LICENSE="BSD"
 SLOT=0
 IUSE="static-libs"
