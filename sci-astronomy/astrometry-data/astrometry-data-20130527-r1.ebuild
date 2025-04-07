@@ -333,6 +333,8 @@ SRC_URI="
 	astrometry_index_4219? ( http://data.astrometry.net/4200/index-4219.fits -> astrometry-data-index-4219.fits )
 "
 
+S="${WORKDIR}"
+
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
@@ -347,8 +349,6 @@ IUSE="${use_astrometry_index}"
 
 DEPEND="sci-astronomy/astrometry"
 RDEPEND="${DEPEND}"
-
-S="${WORKDIR}"
 
 src_unpack()
 {

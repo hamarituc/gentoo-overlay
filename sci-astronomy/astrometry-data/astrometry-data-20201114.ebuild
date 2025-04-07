@@ -690,6 +690,8 @@ SRC_URI="
 	)
 "
 
+S="${WORKDIR}"
+
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
@@ -705,8 +707,6 @@ IUSE="${use_astrometry_index}"
 
 DEPEND="sci-astronomy/astrometry"
 RDEPEND="${DEPEND}"
-
-S="${WORKDIR}"
 
 src_unpack()
 {
