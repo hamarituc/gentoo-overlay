@@ -19,10 +19,6 @@ LICENSE="MIT"
 SLOT="0"
 IUSE="bladerf uhd"
 
-DEPEND=""
-RDEPEND="${DEPEND}"
-BDEPEND=""
-
 src_install() {
 	dobin gps-sdr-sim
 	use uhd && dobin gps-sdr-sim-uhd.py
