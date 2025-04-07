@@ -12,7 +12,7 @@ else
 	MY_P="${PN}-v${PV}"
 	SRC_URI="https://gitlab.com/librespacefoundation/satnogs/gr-satnogs/-/archive/v${PV}/${MY_P}.tar.bz2 -> ${P}.tar.bz2"
 	S="${WORKDIR}/${MY_P}"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 fi
 
 inherit cmake python-single-r1
