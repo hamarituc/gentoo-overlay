@@ -7,8 +7,8 @@ DESCRIPTION="GDAL plugin to access GRASS data"
 HOMEPAGE="https://www.gdal.org/"
 SRC_URI="https://github.com/OSGeo/gdal-grass/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
 
-SLOT="0"
 LICENSE="MIT"
+SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
 IUSE="postgres"
