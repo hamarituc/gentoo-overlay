@@ -12,7 +12,6 @@ SRC_URI="https://github.com/liberfa/erfa/releases/download/v${PV}/${P}.tar.gz"
 LICENSE="BSD"
 SLOT="0/1"
 KEYWORDS="amd64 x86"
-IUSE=""
 
 src_prepare() {
 	default
