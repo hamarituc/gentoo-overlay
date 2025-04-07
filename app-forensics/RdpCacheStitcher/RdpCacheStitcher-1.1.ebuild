@@ -17,8 +17,8 @@ else
 fi
 
 LICENSE="GPL-3+ LGPL-3+"
-IUSE="doc"
 SLOT="0"
+IUSE="doc"
 
 DEPEND="
 	dev-qt/qtcore:5
