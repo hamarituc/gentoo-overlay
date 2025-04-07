@@ -18,10 +18,6 @@ fi
 LICENSE="GPL-3"
 SLOT="0"
 
-RDEPEND=""
-DEPEND="${RDEPEND}"
-BDEPEND=""
-
 PATCHES="
 	${FILESDIR}/${PN}-install.patch
 "
