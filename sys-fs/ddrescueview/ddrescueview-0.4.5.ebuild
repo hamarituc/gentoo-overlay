@@ -9,7 +9,7 @@ inherit edo
 
 DESCRIPTION="Graphical viewer for GNU ddrescue mapfiles"
 HOMEPAGE="https://sourceforge.net/projects/ddrescueview/"
-SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.xz -> ${P}.tar.xz"
+SRC_URI="https://downloads.sourceforge.net/${PN}/${MY_P}.tar.xz"
 
 S="${WORKDIR}/${MY_P}"
 
