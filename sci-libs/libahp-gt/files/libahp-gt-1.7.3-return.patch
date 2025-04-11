@@ -1,0 +1,76 @@
+From 41002e6b7ff1eda8c75ba196c20efc45027ab003 Mon Sep 17 00:00:00 2001
+From: Ilia Platone <info@iliaplatone.com>
+Date: Sun, 2 Mar 2025 13:21:31 +0100
+Subject: [PATCH] Update ahp_gt_set_torque
+
+---
+ ahp_gt.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/ahp_gt.c b/ahp_gt.c
+index 9a8cb9b..d56123f 100644
+--- a/ahp_gt.c
++++ b/ahp_gt.c
+@@ -854,10 +854,12 @@ static void optimize_values(int axis)
+     devices[ahp_gt_get_current_device()].index &= 0x7f;
+     devices[ahp_gt_get_current_device()].rs232_polarity &= 0x1;
+     devices[ahp_gt_get_current_device()].axis [axis].dividers = devices[ahp_gt_get_current_device()].rs232_polarity | (devices[ahp_gt_get_current_device()].index << 9);
+-    if((devices[ahp_gt_get_current_device()].axis [axis].version & 0xff) == 0x38)
+-        devices[ahp_gt_get_current_device()].axis [axis].dividers |= ((unsigned char)devices[ahp_gt_get_current_device()].axis [axis].divider << 1) | ((((unsigned char)(devices[ahp_gt_get_current_device()].axis[axis].torque + 8)) & 0xf) << 5);
+-    else
++    if((devices[ahp_gt_get_current_device()].axis [axis].version & 0xfff) == 0x538)
++        devices[ahp_gt_get_current_device()].axis [axis].dividers |= ((unsigned char)devices[ahp_gt_get_current_device()].axis [axis].divider << 1) | ((((unsigned char)(devices[ahp_gt_get_current_device()].axis[axis].torque)) & 0xf) << 5);
++    else if((devices[ahp_gt_get_current_device()].axis [axis].version & 0xff) == 0x37)
+         devices[ahp_gt_get_current_device()].axis [axis].dividers |= ((unsigned char)devices[ahp_gt_get_current_device()].axis [0].divider << 1) | (((unsigned char)devices[ahp_gt_get_current_device()].axis [1].divider) << 5);
++    else
++        devices[ahp_gt_get_current_device()].axis [axis].dividers |= ((unsigned char)devices[ahp_gt_get_current_device()].axis [axis].divider << 1);
+ }
+ 
+ static int Reload(int axis)
+@@ -1001,7 +1003,7 @@ void ahp_gt_write_values(int axis, int *percent, int *finished)
+         *percent = axis * 50;
+     int dividers = devices[ahp_gt_get_current_device()].axis [axis].dividers;
+     int mount_flags = devices[ahp_gt_get_current_device()].mount_flags & ~0x1;
+-    if((devices[ahp_gt_get_current_device()].axis [axis].version & 0xfff) == 0x385) {
++    if((devices[ahp_gt_get_current_device()].axis [axis].version & 0xfff) == 0x538) {
+         if((ahp_gt_get_mount_flags() & torqueControl) != 0)
+             mount_flags |= 1;
+     } else if((ahp_gt_get_mount_flags() & isForkMount) != 0) {
+@@ -1193,7 +1195,7 @@ void ahp_gt_read_values(int axis)
+     double sidereal_period = (double)(devices[ahp_gt_get_current_device()].axis[axis].multiplier * devices[ahp_gt_get_current_device()].axis[axis].wormsteps) / devices[ahp_gt_get_current_device()].axis[axis].totalsteps;
+     devices[ahp_gt_get_current_device()].axis [axis].maxspeed = sidereal_period * SIDEREAL_DAY / devices[ahp_gt_get_current_device()].axis [axis].maxspeed_value;
+     int mount_flags = devices[ahp_gt_get_current_device()].mount_flags & ~0x1;
+-    if((devices[ahp_gt_get_current_device()].axis [axis].version & 0xfff) == 0x385) {
++    if((devices[ahp_gt_get_current_device()].axis [axis].version & 0xfff) == 0x538) {
+         if((value & torqueControl) != 0)
+             mount_flags |= 1;
+     } else if((value & isForkMount) != 0) {
+@@ -1433,7 +1435,7 @@ int ahp_gt_get_rs232_polarity()
+ int ahp_gt_get_torque(int axis)
+ {
+     if(!ahp_gt_is_detected(ahp_gt_get_current_device()))
+-        return;
++        return 0;
+     return devices[ahp_gt_get_current_device()].axis[axis].torque;
+ }
+ 
+@@ -1592,7 +1594,7 @@ void ahp_gt_set_torque(int axis, int value)
+ {
+     if(!ahp_gt_is_detected(ahp_gt_get_current_device()))
+         return;
+-    devices[ahp_gt_get_current_device()].axis[axis].torque = fmin(7, fmax(-7, value));
++    devices[ahp_gt_get_current_device()].axis[axis].torque = value;
+     optimize_values(axis);
+ }
+ 
+@@ -1744,8 +1746,9 @@ void ahp_gt_set_address(int address)
+     if(!ahp_gt_is_detected(ahp_gt_get_current_device()))
+         return;
+     devices[ahp_gt_get_current_device()].index = fmax(1, fmin(address, 128)) - 1;
+-    for(a = 0; a < devices[ahp_gt_get_current_device()].num_axes; a++)
++    for(a = 0; a < devices[ahp_gt_get_current_device()].num_axes; a++) {
+         optimize_values(a);
++    }
+ }
+ 
+ int ahp_gt_get_address()
