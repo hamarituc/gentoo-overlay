@@ -13,7 +13,7 @@ if [[ ${PV} == "9999" ]]; then
 	EGIT_REPO_URI="https://github.com/ahp-electronics/libahp-gt.git"
 else
 	SRC_URI="https://github.com/ahp-electronics/libahp-gt/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64"
+	KEYWORDS="~amd64 ~x86"
 fi
 
 LICENSE="MIT"
