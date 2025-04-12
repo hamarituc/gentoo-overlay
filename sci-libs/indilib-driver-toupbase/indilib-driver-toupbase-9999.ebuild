@@ -35,6 +35,7 @@ DEPEND="
 	~sci-libs/libogmacam-${PV}
 	~sci-libs/libomegonprocam-${PV}
 	~sci-libs/libstarshootg-${PV}
+	~sci-libs/libsvbonycam-${PV}
 	~sci-libs/libtscam-${PV}
 "
 RDEPEND="${DEPEND}"

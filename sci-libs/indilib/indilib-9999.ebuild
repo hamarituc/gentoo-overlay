@@ -19,7 +19,7 @@ fi
 
 LICENSE="BSD GPL-2+ LGPL-2+ LGPL-2.1+"
 SLOT="0/1"
-IUSE="ogg qt5 rtlsdr static-libs test websocket"
+IUSE="ogg qt5 rtlsdr static-libs test"
 
 RESTRICT="!test? ( test )"
 
@@ -47,13 +47,11 @@ RDEPEND="
 		dev-qt/qtnetwork:5
 	)
 	rtlsdr? ( net-wireless/rtl-sdr )
-	websocket? ( dev-libs/boost:= )
 "
 DEPEND="
 	${RDEPEND}
 	kernel_linux? ( sys-kernel/linux-headers )
 	test? ( >=dev-cpp/gtest-1.8.0 )
-	websocket? ( dev-cpp/websocketpp )
 "
 
 DOCS=( AUTHORS ChangeLog README )
@@ -76,7 +74,6 @@ src_configure() {
 		$(cmake_use_find_package rtlsdr RTLSDR)
 		-DINDI_BUILD_UNITTESTS=$(usex test)
 		-DINDI_BUILD_INTEGTESTS=$(usex test)
-		-DINDI_BUILD_WEBSOCKET=$(usex websocket)
 	)
 
 	cmake_src_configure

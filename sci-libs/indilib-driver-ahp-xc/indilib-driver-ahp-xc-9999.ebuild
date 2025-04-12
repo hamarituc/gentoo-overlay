@@ -26,6 +26,6 @@ SLOT="0/1"
 
 DEPEND="
 	~sci-libs/indilib-${PV}
-	~sci-libs/libahp-xc-${PV}
+	<sci-libs/libahp-xc-2:=
 "
 RDEPEND="${DEPEND}"

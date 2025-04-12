@@ -25,8 +25,11 @@ LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND="
+	sci-libs/cfitsio:0=
 	~sci-libs/indilib-${PV}
 	~sci-libs/libasi-${PV}
+	sys-libs/zlib:=
 	virtual/libudev
+	virtual/libusb:1
 "
 RDEPEND="${DEPEND}"
