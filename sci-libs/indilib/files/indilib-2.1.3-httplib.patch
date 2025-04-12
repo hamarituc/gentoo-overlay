@@ -1,0 +1,32 @@
+commit 45122c9142ab05e6e105aa1c4bc735d8544ddad0
+Author: Pino Toscano <toscano.pino@tiscali.it>
+Date:   Fri Apr 11 07:46:29 2025 +0200
+
+    Link alpaca drivers with httplib (#2219)
+    
+    They explicitly use httplib, so make sure to link against it.
+
+diff --git a/drivers/dome/CMakeLists.txt b/drivers/dome/CMakeLists.txt
+index 25cdb06a1..234a7e24d 100644
+--- a/drivers/dome/CMakeLists.txt
++++ b/drivers/dome/CMakeLists.txt
+@@ -99,5 +99,5 @@ SET(alpaca_dome_SRC
+     )
+ 
+ add_executable(indi_alpaca_dome ${alpaca_dome_SRC})
+-target_link_libraries(indi_alpaca_dome indidriver indiclient)
+-install(TARGETS indi_alpaca_dome RUNTIME DESTINATION bin)
+\ No newline at end of file
++target_link_libraries(indi_alpaca_dome indidriver indiclient ${HTTPLIB_LIBRARY})
++install(TARGETS indi_alpaca_dome RUNTIME DESTINATION bin)
+diff --git a/drivers/weather/CMakeLists.txt b/drivers/weather/CMakeLists.txt
+index fd5d9775b..e2e54e9ff 100644
+--- a/drivers/weather/CMakeLists.txt
++++ b/drivers/weather/CMakeLists.txt
+@@ -79,5 +79,5 @@ SET(WeatherSafetyAlpaca_SRC
+     weather_safety_alpaca.cpp)
+ 
+ add_executable(indi_weather_safety_alpaca ${WeatherSafetyAlpaca_SRC})
+-target_link_libraries(indi_weather_safety_alpaca indidriver indiclient)
++target_link_libraries(indi_weather_safety_alpaca indidriver indiclient ${HTTPLIB_LIBRARY})
+ install(TARGETS indi_weather_safety_alpaca RUNTIME DESTINATION bin)
