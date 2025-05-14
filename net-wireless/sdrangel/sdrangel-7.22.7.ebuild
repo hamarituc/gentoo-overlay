@@ -69,6 +69,8 @@ RDEPEND="
 			dev-qt/qtbase:6[opengl]
 			dev-qt/qtlocation:6
 			dev-qt/qtsvg:6
+			dev-qt/qtspeech:6
+			dev-qt/qtscxml:6
 			dev-qt/qtwebengine:6[widgets]
 		)
 	)
