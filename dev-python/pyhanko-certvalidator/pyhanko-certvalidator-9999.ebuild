@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..13} )
 inherit distutils-r1
 
 DESCRIPTION="Python library for validating X.509 certificates and paths"
@@ -19,7 +19,7 @@ if [[ ${PV} == "9999" ]]; then
 else
 	SRC_URI="https://github.com/MatthiasValvekens/certvalidator/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
 	S="${WORKDIR}/certvalidator-${PV}"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 fi
 
 LICENSE="MIT"
@@ -27,15 +27,16 @@ SLOT="0"
 
 RDEPEND="
 	>=dev-python/asn1crypto-1.5.1[${PYTHON_USEDEP}]
-	>=dev-python/cryptography-3.3.1[${PYTHON_USEDEP}]
+	>=dev-python/cryptography-41.0.5[${PYTHON_USEDEP}]
 	>=dev-python/oscrypto-1.1.0[${PYTHON_USEDEP}]
-	>=dev-python/requests-2.24.0[${PYTHON_USEDEP}]
+	>=dev-python/requests-2.31.0[${PYTHON_USEDEP}]
 	>=dev-python/uritools-3.0.1[${PYTHON_USEDEP}]
 "
 BDEPEND="
 	test? (
 		>=dev-python/freezegun-1.1.0[${PYTHON_USEDEP}]
 		>=dev-python/aiohttp-3.8.0[${PYTHON_USEDEP}]
+		<dev-python/aiohttp-3.12.0[${PYTHON_USEDEP}]
 		>=dev-python/pytest-aiohttp-1.0.4[${PYTHON_USEDEP}]
 	)
 "
