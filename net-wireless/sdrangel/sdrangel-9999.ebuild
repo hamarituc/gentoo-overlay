@@ -18,9 +18,7 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="airspy bladerf cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1 cpu_flags_x86_sse4_2 faad fcd debug doc +gui hackrf limesuite plutosdr +qt5 qt6 rtlsdr server sgp4 soapy uhd"
-
-REQUIRED_USE="^^ ( qt5 qt6 )"
+IUSE="airspy bladerf cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1 cpu_flags_x86_sse4_2 faad fcd debug doc +gui hackrf limesuite plutosdr qt6 rtlsdr server sgp4 soapy uhd"
 
 # TODO: perseus, xtrx, mirisdr
 
@@ -28,7 +26,7 @@ RDEPEND="
 	dev-libs/boost:=
 	dev-libs/cm256cc:=
 	dev-libs/hidapi:=
-	dev-libs/serialDV:=
+	>=dev-libs/serialDV-1.1.5:=
 	>=media-libs/codec2-1.0.5:=
 	media-libs/flac:=
 	media-libs/hamlib:=
@@ -36,27 +34,11 @@ RDEPEND="
 	media-libs/opencv:=
 	media-radio/ggmorse:=
 	media-video/ffmpeg:=
+	net-libs/libhackrf:=
 	net-wireless/dsdcc:=
 	sci-libs/fftw:3.0
+	sys-libs/zlib:=
 	virtual/libusb:1
-	qt5? (
-		>=dev-qt/qtcharts-5.15.0:5
-		>=dev-qt/qtcore-5.15.0:5
-		>=dev-qt/qtmultimedia-5.15.0:5[widgets]
-		>=dev-qt/qtpositioning-5.15.0:5
-		>=dev-qt/qtserialport-5.15.0:5
-		>=dev-qt/qtwebsockets-5.15.0:5
-		>=dev-qt/qtwidgets-5.15.0:5
-		gui? (
-			>=dev-qt/qtgamepad-5.15.0:5
-			>=dev-qt/qtlocation-5.15.0:5
-			>=dev-qt/qtopengl-5.15.0:5
-			>=dev-qt/qtquickcontrols2-5.15.0:5[widgets]
-			>=dev-qt/qtspeech-5.15.0:5
-			>=dev-qt/qtwebengine-5.15.0:5[widgets]
-			>=dev-qt/qtsvg-5.15.0:5
-		)
-	)
 	qt6? (
 		dev-qt/qtbase:6[widgets]
 		dev-qt/qtcharts:6
@@ -67,15 +49,18 @@ RDEPEND="
 		dev-qt/qt5compat:6
 		gui? (
 			dev-qt/qtbase:6[opengl]
+			dev-qt/qtdeclarative:6
 			dev-qt/qtlocation:6
 			dev-qt/qtsvg:6
+			dev-qt/qtspeech:6
+			dev-qt/qtscxml:6
 			dev-qt/qtwebengine:6[widgets]
 		)
 	)
 	airspy? ( net-wireless/airspy:= )
 	bladerf? ( net-wireless/bladerf:= )
 	faad? ( media-libs/faad2:= )
-	hackrf? ( net-libs/libhackrf:= )
+	hackrf? ( >=net-libs/libhackrf-2024.02.1:= )
 	limesuite? ( net-wireless/limesuite:= )
 	plutosdr? ( net-libs/libiio:= )
 	rtlsdr? ( >=net-wireless/rtl-sdr-2.0.1:= )
