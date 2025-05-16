@@ -3,20 +3,22 @@
 
 EAPI=8
 
-inherit git-r3
-
 DESCRIPTION="ARDOP Software Modem"
 HOMEPAGE="https://www.cantab.net/users/john.wiseman/Documents/ARDOPC.html https://github.com/hamarituc/ardop"
-EGIT_REPO_URI="https://github.com/hamarituc/ardop.git"
-EGIT_COMMIT="${PV}"
+
+if [[ ${PV} == "99999999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/hamarituc/ardop.git"
+else
+	SRC_URI="https://github.com/hamarituc/ardop/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+fi
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 
 DEPEND="media-libs/alsa-lib"
 RDEPEND="${DEPEND}"
-BDEPEND=""
 
 src_compile() {
 	for i in ARDOPC ARDOP2 ARDOP3K ARDOPOFDM ARDOP1OFDM; do
