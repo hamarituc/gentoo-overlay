@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..13} )
-DISTUTILS_USE_SETUPTOOLS=no
+DISTUTILS_USE_PEP517=setuptools
 
 inherit distutils-r1
 
@@ -22,3 +22,11 @@ fi
 LICENSE="GPL-2"
 SLOT="0"
 RESTRICT="test"
+
+src_prepare() {
+	default
+
+	if [[ ${PV} != "9999" ]] ; then
+		echo ${PV} > "${S}/${PN}/VERSION" || die
+	fi
+}
