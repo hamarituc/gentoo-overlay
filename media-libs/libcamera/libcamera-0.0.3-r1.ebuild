@@ -24,7 +24,7 @@ REQUIRED_USE="qt5? ( tiff )"
 
 DEPEND="
 	dev-libs/libyaml:=
-	dev-python/jinja
+	dev-python/jinja2
 	dev-python/ply
 	dev-python/pyyaml
 	|| (
