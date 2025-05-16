@@ -22,38 +22,45 @@ HOMEPAGE="https://gitlab.com/librespacefoundation/satnogs/gr-satnogs"
 
 LICENSE="GPL-3"
 SLOT="0/${PV}"
-IUSE="doc"
+IUSE="doc python"
 
-REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
-RDEPEND="${PYTHON_DEPS}
+RDEPEND="
 	>=dev-cpp/nlohmann_json-3.5:=
 	dev-cpp/pngpp:=
 	dev-libs/boost:=
+	media-libs/hamlib:=
 	media-libs/libogg:=
 	media-libs/libpng:=
 	media-libs/libvorbis:=
-	>=net-wireless/gnuradio-3.8:=[${PYTHON_SINGLE_USEDEP}]
+	>=net-wireless/gnuradio-3.10:=[${PYTHON_SINGLE_USEDEP}]
+	sci-libs/gsl:=
+	sci-libs/itpp:=
 	sci-libs/volk:=
-	$(python_gen_cond_dep '
-		>=dev-python/construct-2.9[${PYTHON_USEDEP}]
-		dev-python/pybind11[${PYTHON_USEDEP}]
-		dev-python/requests[${PYTHON_USEDEP}]
-	')
+	python?
+	(
+		${PYTHON_DEPS}
+		$(python_gen_cond_dep '
+			>=dev-python/construct-2.9[${PYTHON_USEDEP}]
+			dev-python/pybind11[${PYTHON_USEDEP}]
+			dev-python/requests[${PYTHON_USEDEP}]
+		')
+	)
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	dev-lang/swig
 	doc? ( app-text/doxygen )
 "
 
-PATCHES=(
-	"${FILESDIR}/${PN}-no-qa.patch"
-)
+pkg_setup() {
+	use python && python-single-r1_pkg_setup
+}
 
 src_configure() {
 	local mycmakeargs=(
 		-DENABLE_DOXYGEN=$(usex doc)
+		-DENABLE_PYTHON=$(usex python)
 		-DPYTHON_EXECUTABLE="${PYTHON}"
 	)
 	cmake_src_configure
