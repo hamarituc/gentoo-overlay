@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit bash-completion-r1 toolchain-funcs
+inherit toolchain-funcs shell-completion
 
 DESCRIPTION="unix-like reverse engineering framework and commandline tools"
 HOMEPAGE="https://www.radare.org"
@@ -102,8 +102,7 @@ src_test() {
 src_install() {
 	default
 
-	insinto /usr/share/zsh/site-functions
-	doins doc/zsh/_*
+	dozshcomp doc/zsh/_*
 
 	newbashcomp doc/bash_autocompletion.sh "${PN}"
 	bashcomp_alias "${PN}" rafind2 r2 rabin2 rasm2 radiff2
