@@ -217,7 +217,7 @@ CRATES="
 	${PN}@${PV}
 "
 
-inherit bash-completion-r1 cargo
+inherit cargo shell-completion
 
 DESCRIPTION="Terminal User Interface for GnuPG"
 HOMEPAGE="
@@ -274,10 +274,8 @@ src_install() {
 	newbashcomp "completions/${PN}.bash" "${PN}"
 
 	# zsh-completion
-	insinto /usr/share/zsh/site-functions
-	doins "completions/_${PN}"
+	dozshcomp "completions/_${PN}"
 
 	# fish-completion
-	insinto /usr/share/fish/vendor_completions.d
-	doins "completions/${PN}.fish"
+	dofishcomp "completions/${PN}.fish"
 }
