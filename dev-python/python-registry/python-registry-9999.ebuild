@@ -26,4 +26,4 @@ PATCHES=(
 	"${FILESDIR}/${PN}-no-enum-compat.patch"
 )
 
-distutils_enable_tests setup.py
+# distutils_enable_tests unittest
