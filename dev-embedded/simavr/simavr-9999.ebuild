@@ -8,7 +8,6 @@ HOMEPAGE="https://github.com/buserror/simavr"
 
 if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/buserror/simavr.git"
-	KEYWORDS=""
 	inherit git-r3
 else
 	SRC_URI="https://github.com/buserror/simavr/archive/v${PV}.tar.gz -> ${P}.tar.gz"
