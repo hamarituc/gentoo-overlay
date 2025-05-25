@@ -8,6 +8,10 @@ personal interests.
 Amateur Radio :radio:
 ---------------------
 
+### aioax25
+
+`aioax25` is a pure Python AX.25 library implementing an APRS stack.
+
 ### ARDOP
 
 The Amateur Radio Digital Open Protocol is an ARQ data transmission protocol
