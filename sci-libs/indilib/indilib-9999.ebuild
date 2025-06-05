@@ -65,15 +65,20 @@ src_configure() {
 	local mycmakeargs=(
 		-DINDI_SYSTEM_HTTPLIB=ON
 		-DINDI_SYSTEM_JSONLIB=ON
+		-DINDI_BUILD_SERVER=ON
+		-DINDI_BUILD_DRIVERS=ON
+		-DINDI_BUILD_CLIENT=ON
 		-DINDI_BUILD_QT5_CLIENT=$(usex qt5)
+		-DINDI_BUILD_UNITTESTS=$(usex test)
+		-DINDI_BUILD_INTEGTESTS=$(usex test)
 		-DINDI_BUILD_SHARED=ON
 		-DINDI_BUILD_STATIC=$(usex static-libs)
 		-DINDI_BUILD_XISF=OFF # not packaged
+		-DINDI_BUILD_EXAMPLES=OFF
+		-DINDI_INSTALL_UDEV_RULES=ON
 		-DUDEVRULES_INSTALL_DIR="${EPREFIX}$(get_udevdir)"/rules.d
 		$(cmake_use_find_package ogg OggTheora)
 		$(cmake_use_find_package rtlsdr RTLSDR)
-		-DINDI_BUILD_UNITTESTS=$(usex test)
-		-DINDI_BUILD_INTEGTESTS=$(usex test)
 	)
 
 	cmake_src_configure
