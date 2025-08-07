@@ -32,11 +32,6 @@ RDEPEND="
 	>=dev-python/cryptography-43[${PYTHON_USEDEP}]
 	>=dev-python/certifi-2023.11.17[${PYTHON_USEDEP}]
 "
-BDEPEND="
-	test? (
-		dev-python/unittest-or-fail[${PYTHON_USEDEP}]
-	)
-"
 
 RESTRICT="!test? ( test )"
 
