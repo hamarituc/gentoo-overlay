@@ -28,19 +28,15 @@ IUSE="examples"
 
 RDEPEND="
 	dev-python/asn1crypto[${PYTHON_USEDEP}]
-	dev-python/attrs[${PYTHON_USEDEP}]
-	dev-python/certvalidator[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
 	dev-python/lxml[${PYTHON_USEDEP}]
 	dev-python/paramiko[${PYTHON_USEDEP}]
 	dev-python/pillow[${PYTHON_USEDEP}]
 	dev-python/pykcs11[${PYTHON_USEDEP}]
-	dev-python/pytz[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
 	test?
 	(
 		dev-libs/softhsm:=
-		dev-python/unittest-or-fail[${PYTHON_USEDEP}]
 	)
 "
 
