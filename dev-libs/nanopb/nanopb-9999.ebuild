@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..14} )
+PYTHON_COMPAT=( python3_{11..13} )
 
 inherit cmake flag-o-matic python-single-r1
 
@@ -24,7 +24,9 @@ IUSE="+pb-malloc"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="
-	dev-libs/protobuf
+	$(python_gen_cond_dep '
+		dev-python/protobuf[${PYTHON_USEDEP}]
+	')
 	${PYTHON_DEPS}
 "
 DEPEND="
