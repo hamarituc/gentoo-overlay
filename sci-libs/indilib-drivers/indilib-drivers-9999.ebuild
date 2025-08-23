@@ -66,6 +66,7 @@ IUSE_INDILIB_DRIVERS="
 	svbony
 	sx
 	talon6
+	ticfocuser-ng
 	toupbase
 	webcam
 	weewx-json
@@ -148,6 +149,7 @@ RDEPEND="
 	indilib_drivers_svbony? ( ~sci-libs/indilib-driver-svbony-${PV} )
 	indilib_drivers_sx? ( ~sci-libs/indilib-driver-sx-${PV} )
 	indilib_drivers_talon6? ( ~sci-libs/indilib-driver-talon6-${PV} )
+	indilib_drivers_ticfocuser-ng? ( ~sci-libs/indilib-driver-ticfocuser-ng-${PV} )
 	indilib_drivers_toupbase? (
 		amd64? ( ~sci-libs/indilib-driver-toupbase-${PV} )
 	)
