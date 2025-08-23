@@ -1,0 +1,29 @@
+commit 88788171f8ae82bd7f188cfbe676c8cb984f32be
+Author: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date:   Sat Aug 23 12:33:11 2025 +0200
+Upstream: https://github.com/pololu/libusbp/pull/21
+
+    Use standard install dirs
+    
+    Some Linux distributions decided to install libraries into /usr/lib64
+    instead of /usr/lib. Thus, the `GNUInstallDirs` module should be used.
+
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -112,10 +112,12 @@ configure_file (
+   @ONLY
+ )
+ 
++include(GNUInstallDirs)
++
+ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libusbp-${LIBUSBP_VERSION_MAJOR}.pc"
+-  DESTINATION lib/pkgconfig)
++  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+ 
+ install(TARGETS usbp
+-  RUNTIME DESTINATION bin
+-  LIBRARY DESTINATION lib
+-  ARCHIVE DESTINATION lib)
++  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
