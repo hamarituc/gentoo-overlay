@@ -1,0 +1,61 @@
+commit f70fb07f32115f031115c700f756a437f2b8c42f
+Author: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date:   Sat Aug 23 12:53:34 2025 +0200
+Upstream: https://github.com/pololu/pololu-tic-software/pull/12
+
+    Use standard install dirs
+    
+    Some Linux distributions decided to install libraries into /usr/lib64
+    instead of /usr/lib. Thus, the `GNUInstallDirs` module should be used.
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -103,6 +103,8 @@ if (ENABLE_GUI)
+   add_subdirectory (gui)
+ endif ()
+ 
++include(GNUInstallDirs)
++
+ # Install the header files into include/
+ install(FILES include/tic.h include/tic.hpp include/tic_protocol.h
+-  DESTINATION "include/libpololu-tic-${SOFTWARE_VERSION_MAJOR}")
++  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/libpololu-tic-${SOFTWARE_VERSION_MAJOR}")
+--- a/cli/CMakeLists.txt
++++ b/cli/CMakeLists.txt
+@@ -20,4 +20,6 @@ include_directories (
+ 
+ target_link_libraries (cli lib)
+ 
+-install(TARGETS cli DESTINATION bin)
++include(GNUInstallDirs)
++
++install(TARGETS cli DESTINATION ${CMAKE_INSTALL_BINDIR})
+--- a/gui/CMakeLists.txt
++++ b/gui/CMakeLists.txt
+@@ -52,4 +52,6 @@ endif ()
+ 
+ target_link_libraries (gui Qt5::Widgets lib bootloader)
+ 
+-install(TARGETS gui DESTINATION bin)
++include(GNUInstallDirs)
++
++install(TARGETS gui DESTINATION ${CMAKE_INSTALL_BINDIR})
+--- a/lib/CMakeLists.txt
++++ b/lib/CMakeLists.txt
+@@ -73,10 +73,12 @@ configure_file (
+   @ONLY
+ )
+ 
++include(GNUInstallDirs)
++
+ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libpololu-tic-${SOFTWARE_VERSION_MAJOR}.pc"
+-  DESTINATION lib/pkgconfig)
++  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+ 
+ install(TARGETS lib
+-  RUNTIME DESTINATION bin
+-  LIBRARY DESTINATION lib
+-  ARCHIVE DESTINATION lib)
++  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
