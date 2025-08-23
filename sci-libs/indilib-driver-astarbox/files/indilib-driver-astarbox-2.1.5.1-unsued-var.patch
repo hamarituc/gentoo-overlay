@@ -1,8 +1,13 @@
-diff --git a/PCA9685.cpp b/PCA9685.cpp
-index 17d4b405..b508509a 100644
---- a/PCA9685.cpp
-+++ b/PCA9685.cpp
-@@ -186,12 +186,10 @@ int PCA9685::setOff(uint8_t nPort)
+commit 3f4b04687643dc4def20032d997afa799952b202
+Author: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date:   Sat Aug 23 18:57:07 2025 +0200
+Upstream: https://github.com/indilib/indi-3rdparty/pull/1149
+
+    Fix -Werror=unused-but-set-variable
+
+--- a/indi-astarbox/PCA9685.cpp
++++ b/indi-astarbox/PCA9685.cpp
+@@ -186,11 +186,10 @@ int PCA9685::setOff(uint8_t nPort)
  
  bool PCA9685::isPortOn(uint8_t nPort)
  {
@@ -11,8 +16,7 @@ index 17d4b405..b508509a 100644
      int off_value = 0;
  
 -    nErr = getPWM(nPort, on_value, off_value);
--    return (on_value==4096);
 +    getPWM(nPort, on_value, off_value);
+     return (on_value==4096);
  }
- 
  
