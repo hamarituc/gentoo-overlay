@@ -174,11 +174,6 @@ Citing from https://github.com/Arinerron/heaptrace:
 > (x86_64) binaries. Its purpose is to help visualize heap operations when
 > debugging binaries or doing heap pwn.
 
-### iaito
-
-It's a graphical frontend for radare2, which is available in the main gentoo
-portage tree.
-
 ### ImHex
 
 Citing from https://github.com/WerWolv/ImHex:
@@ -216,12 +211,6 @@ Qiling is an advanced binary emulation framework.
 
 Raccon is a high performance offensive security tool for reconnaissance and
 vulnerability scanning.
-
-### Radare2
-
-Radare2 is a UNIX-like reverse engineering framework and command-line toolset.
-This ebuild is based more recent version than found in the gentoo mainline
-repo.
 
 ### rp++
 
@@ -357,8 +346,8 @@ Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
   Project.
 
 
-Ebuilds made it into `::gentoo` :tada:
-======================================
+Packages made it into `::gentoo` :tada:
+=======================================
 
 The following ebuilds are now in the Gentoo mainline repository.
 
@@ -386,3 +375,11 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `sci-astronomy/siril`
  * `sci-astronomy/sirilic`
  * `sci-electronics/xnecview`
+
+
+Removed Packages :recycle:
+==========================
+
+ * `dev-util/iaito`, `dev-util/r2ghidra`, `dev-util/radare2`: The build system
+   of Radare2 depends on downloading third-party code during the build process.
+   Maintaining the package is thus too time-consuming.
