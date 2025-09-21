@@ -54,6 +54,13 @@ This is a small tool I wrote to configure the Leo Bodnar GPSDO.
 
 Pat is a Winlink 2000 protocol client.
 
+### QLog
+
+QLog is an amateur radio logging program
+
+Acknowledgement: These ebuild are based on the work of
+  [Tomas Fabrizio Orsi](https://github.com/lima-limon-inc/lemon-lime-overlay)
+
 ### SDR++
 
 SDR++ is Software Defined Radio Receiver.
