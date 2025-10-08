@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=hatchling
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..13} )
 
 inherit distutils-r1
 
@@ -34,12 +34,10 @@ BDEPEND="
 	)
 "
 
-RESTRICT="test"
-
 distutils_enable_tests pytest
 
 src_prepare() {
 	default
 
-	sed -e "s|--cov src/beyond --cov-report html ||" -i "${S}/pyproject.toml" || die
+	sed -e "s|--cov src/beyond --cov-report html|--import-mode=importlib|" -i "${S}/pyproject.toml" || die
 }
