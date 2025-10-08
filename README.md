@@ -54,13 +54,6 @@ This is a small tool I wrote to configure the Leo Bodnar GPSDO.
 
 Pat is a Winlink 2000 protocol client.
 
-### QLog
-
-QLog is an amateur radio logging program
-
-Acknowledgement: These ebuild are based on the work of
-  [Tomas Fabrizio Orsi](https://github.com/lima-limon-inc/lemon-lime-overlay)
-
 ### SDR++
 
 SDR++ is Software Defined Radio Receiver.
@@ -373,6 +366,7 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `dev-util/ropper`
  * `dev-util/unicorn`
  * `media-libs/librtprocess`
+ * `media-radio/qlog`
  * `net-analyzer/shodan`
  * `net-analyzer/termshark`
  * `net-analyzer/wtfis`
