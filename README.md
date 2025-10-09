@@ -18,10 +18,6 @@ The Amateur Radio Digital Open Protocol is an ARQ data transmission protocol
 used for the Winlink communication system. This ebuild provides different ARDOP
 software modems. Only `ardopc` is supported by Winlink.
 
-### CQRLOG
-
-A logging program.
-
 ### Fldigi Suite
 
 The Fldigi suite by Dave Freese, W1HKJ is a well known set of handy amateur
