@@ -27,7 +27,7 @@ IUSE="indilib_drivers_ahp-gt"
 
 DEPEND="
 	~sci-libs/indilib-${PV}
-	indilib_drivers_ahp-gt? ( <sci-libs/libahp-gt-2:= )
+	indilib_drivers_ahp-gt? ( sci-libs/libahp-gt:= )
 "
 RDEPEND="${DEPEND}"
 
