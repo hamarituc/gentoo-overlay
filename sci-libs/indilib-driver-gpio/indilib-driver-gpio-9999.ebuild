@@ -26,6 +26,6 @@ SLOT="0/1"
 
 DEPEND="
 	=dev-libs/libgpiod-1*:=[cxx]
-	~sci-libs/indilib-${PV}
+	=sci-libs/indilib-$(ver_cut 1-3)*
 "
 RDEPEND="${DEPEND}"

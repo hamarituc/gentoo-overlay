@@ -25,6 +25,6 @@ SLOT="0/1"
 
 DEPEND="
 	dev-libs/pigpio
-	~sci-libs/indilib-${PV}
+	=sci-libs/indilib-$(ver_cut 1-3)*
 "
 RDEPEND="${DEPEND}"

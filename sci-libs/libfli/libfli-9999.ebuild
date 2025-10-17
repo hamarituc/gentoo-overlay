@@ -23,7 +23,7 @@ LICENSE="BSD"
 SLOT="0/1"
 
 DEPEND="
-	~sci-libs/indilib-${PV}
+	=sci-libs/indilib-$(ver_cut 1-3)*
 	virtual/libusb:1
 	virtual/udev
 "

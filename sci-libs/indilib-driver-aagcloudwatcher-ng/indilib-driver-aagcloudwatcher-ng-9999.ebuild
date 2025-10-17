@@ -24,5 +24,5 @@ S="${MY_S}/indi-${PN##*-driver-}"
 LICENSE="GPL-3"
 SLOT="0/1"
 
-DEPEND="~sci-libs/indilib-${PV}"
+DEPEND="=sci-libs/indilib-$(ver_cut 1-3)*"
 RDEPEND="${DEPEND}"

@@ -27,6 +27,6 @@ SLOT="0/1"
 DEPEND="
 	net-misc/curl
 	dev-cpp/nlohmann_json:=
-	~sci-libs/indilib-${PV}
+	=sci-libs/indilib-$(ver_cut 1-3)*
 "
 RDEPEND="${DEPEND}"

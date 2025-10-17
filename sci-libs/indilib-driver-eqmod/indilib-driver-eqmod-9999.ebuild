@@ -26,8 +26,8 @@ SLOT="0/1"
 IUSE="indilib_drivers_ahp-gt"
 
 DEPEND="
-	~sci-libs/indilib-${PV}
-	indilib_drivers_ahp-gt? ( <sci-libs/libahp-gt-2:= )
+	=sci-libs/indilib-$(ver_cut 1-3)*
+	indilib_drivers_ahp-gt? ( sci-libs/libahp-gt:= )
 "
 RDEPEND="${DEPEND}"
 

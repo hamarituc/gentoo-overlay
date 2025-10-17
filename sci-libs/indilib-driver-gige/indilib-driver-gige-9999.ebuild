@@ -26,6 +26,6 @@ SLOT="0/1"
 
 DEPEND="
 	=media-video/aravis-0.8*
-	~sci-libs/indilib-${PV}
+	=sci-libs/indilib-$(ver_cut 1-3)*
 "
 RDEPEND="${DEPEND}"

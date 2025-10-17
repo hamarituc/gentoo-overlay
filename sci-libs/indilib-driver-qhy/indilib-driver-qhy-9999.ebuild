@@ -27,7 +27,7 @@ SLOT="0/1"
 DEPEND="
 	dev-cpp/nlohmann_json:=
 	sci-libs/cfitsio:0=
-	~sci-libs/indilib-${PV}
+	=sci-libs/indilib-$(ver_cut 1-3)*
 	sci-libs/libnova:=
 	~sci-libs/libqhy-${PV}
 	sys-libs/zlib:=

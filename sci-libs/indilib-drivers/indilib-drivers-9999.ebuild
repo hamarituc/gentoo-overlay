@@ -28,6 +28,7 @@ IUSE_INDILIB_DRIVERS="
 	avalon
 	avalonud
 	beefocus
+	bno-imu
 	bresserexos2
 	celestronaux
 	dsi
@@ -51,6 +52,7 @@ IUSE_INDILIB_DRIVERS="
 	nightscape
 	nut
 	ocs
+	openogma
 	orion-ssg3
 	pentax
 	playerone
@@ -103,6 +105,7 @@ RDEPEND="
 	indilib_drivers_avalon? ( ~sci-libs/indilib-driver-avalon-${PV} )
 	indilib_drivers_avalonud? ( ~sci-libs/indilib-driver-avalonud-${PV} )
 	indilib_drivers_beefocus? ( ~sci-libs/indilib-driver-beefocus-${PV} )
+	indilib_drivers_bno-imu? ( ~sci-libs/indilib-driver-bno-imu-${PV} )
 	indilib_drivers_bresserexos2? ( ~sci-libs/indilib-driver-bresserexos2-${PV} )
 	indilib_drivers_celestronaux? ( ~sci-libs/indilib-driver-celestronaux-${PV} )
 	indilib_drivers_dsi? ( ~sci-libs/indilib-driver-dsi-${PV} )
@@ -126,6 +129,7 @@ RDEPEND="
 	indilib_drivers_nightscape? ( ~sci-libs/indilib-driver-nightscape-${PV} )
 	indilib_drivers_nut? ( ~sci-libs/indilib-driver-nut-${PV} )
 	indilib_drivers_ocs? ( ~sci-libs/indilib-driver-ocs-${PV} )
+	indilib_drivers_openogma? ( ~sci-libs/indilib-driver-openogma-${PV} )
 	indilib_drivers_orion-ssg3? ( ~sci-libs/indilib-driver-orion-ssg3-${PV} )
 	indilib_drivers_pentax? ( ~sci-libs/indilib-driver-pentax-${PV} )
 	indilib_drivers_playerone? ( ~sci-libs/indilib-driver-playerone-${PV} )

@@ -31,7 +31,7 @@ DEPEND="
 	media-libs/libraw:=
 	media-libs/tiff:=[cxx]
 	sci-libs/cfitsio:0=
-	~sci-libs/indilib-${PV}
+	=sci-libs/indilib-$(ver_cut 1-3)*
 	virtual/libusb:1
 	virtual/udev
 "
