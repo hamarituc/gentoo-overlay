@@ -33,8 +33,8 @@ DEPEND="
 	media-gfx/rpicam-apps:=
 	sci-libs/cfitsio:=
 	=sci-libs/indilib-$(ver_cut 1-3)*
-	sys-libs/zlib:=
 	virtual/libusb:1
+	virtual/zlib:=
 	x11-libs/libdrm:=
 "
 RDEPEND="${DEPEND}"

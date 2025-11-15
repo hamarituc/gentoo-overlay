@@ -40,9 +40,9 @@ DEPEND="
 	>=media-libs/tiff-4:=
 	media-video/ffmpeg:=
 	sci-libs/cfitsio:=
-	sys-libs/zlib:=
 	media-libs/libjpeg-turbo:=
 	virtual/libudev:=
+	virtual/zlib:=
 	gphoto2? ( media-libs/libgphoto2:= )
 	indilib_drivers_asi? ( sci-libs/libasi:= )
 	indilib_drivers_atik? ( sci-libs/libatik:= )

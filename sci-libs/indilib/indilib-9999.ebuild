@@ -35,9 +35,9 @@ RDEPEND="
 	sci-libs/fftw:3.0=
 	sci-libs/gsl:=
 	sci-libs/libnova:=
-	sys-libs/zlib:=
 	virtual/libusb:1
 	virtual/udev
+	virtual/zlib:=
 	ogg? (
 		media-libs/libogg
 		media-libs/libtheora

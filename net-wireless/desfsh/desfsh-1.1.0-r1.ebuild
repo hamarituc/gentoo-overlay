@@ -27,7 +27,7 @@ DEPEND="${LUA_DEPS}
 	dev-libs/openssl:=
 	net-wireless/libfreefare:=
 	sys-libs/readline:=
-	sys-libs/zlib:=
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"

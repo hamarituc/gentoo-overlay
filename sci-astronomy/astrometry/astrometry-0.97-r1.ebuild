@@ -34,14 +34,14 @@ RDEPEND="
 		dev-python/fitsio[${PYTHON_USEDEP}]
 		dev-python/numpy[${PYTHON_USEDEP}]
 	')
+	media-libs/libjpeg-turbo:=
 	media-libs/libpng:0
 	media-libs/netpbm
 	sci-astronomy/wcslib:0=
 	sci-libs/cfitsio:0=
 	sci-libs/gsl:0=
-	sys-libs/zlib:0=
-	media-libs/libjpeg-turbo:=
 	x11-libs/cairo
+	virtual/zlib:0=
 	${PYTHON_DEPS}"
 DEPEND="${RDEPEND}
 	dev-lang/swig:0

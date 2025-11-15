@@ -36,8 +36,8 @@ RDEPEND="
 		dev-qt/qtsvg:5=
 		dev-qt/qtwidgets:5=
 	)
-	sys-libs/zlib:=
 	virtual/libusb:1
+	virtual/zlib:=
 "
 DEPEND="${RDEPEND}"
 

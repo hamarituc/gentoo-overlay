@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake
 
-DESCRIPTION="INDI driver for the ZWO Optics ASI cameras"
+DESCRIPTION="INDI driver for libcamera devices"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -25,11 +25,19 @@ LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND="
-	sci-libs/cfitsio:0=
-	=sci-libs/indilib-$(ver_cut 1-3)*
-	~sci-libs/libasi-${PV}
-	sys-libs/zlib:=
-	virtual/libudev
+	dev-libs/boost:=
+	media-libs/libcamera:=
+	media-libs/libexif:=
+	media-libs/libjpeg-turbo:=
+	media-libs/libraw:=
+	media-gfx/rpicam-apps:=
+	sci-libs/cfitsio:=
+	~sci-libs/indilib-${PV}
 	virtual/libusb:1
+	virtual/zlib:=
+	x11-libs/libdrm:=
 "
 RDEPEND="${DEPEND}"
+BDEPEND="
+	virtual/pkgconfig
+"

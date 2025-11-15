@@ -37,8 +37,8 @@ RDEPEND="
 	net-libs/libhackrf:=
 	net-wireless/dsdcc:=
 	sci-libs/fftw:3.0
-	sys-libs/zlib:=
 	virtual/libusb:1
+	virtual/zlib:=
 	qt6? (
 		dev-qt/qtbase:6[widgets]
 		dev-qt/qtcharts:6

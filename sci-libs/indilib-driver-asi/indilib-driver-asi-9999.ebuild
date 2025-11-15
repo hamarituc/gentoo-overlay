@@ -29,8 +29,8 @@ DEPEND="
 	sci-libs/cfitsio:0=
 	=sci-libs/indilib-$(ver_cut 1-3)*
 	~sci-libs/libasi-${PV}
-	sys-libs/zlib:=
 	virtual/libudev
 	virtual/libusb:1
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"

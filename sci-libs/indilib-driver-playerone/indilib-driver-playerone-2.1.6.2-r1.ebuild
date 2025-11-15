@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake
 
-DESCRIPTION="INDI driver for the QHY CCD cameras"
+DESCRIPTION="the INDI driver for the Player One Astronomy's Camera"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -15,7 +15,7 @@ if [[ ${PV} == "9999" ]]; then
 	MY_S="${EGIT_CHECKOUT_DIR}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64"
+	KEYWORDS="~amd64 ~x86"
 	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
 fi
 
@@ -25,12 +25,10 @@ LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND="
-	dev-cpp/nlohmann_json:=
-	sci-libs/cfitsio:0=
+	sci-libs/cfitsio:=
 	=sci-libs/indilib-$(ver_cut 1-3)*
-	sci-libs/libnova:=
-	~sci-libs/libqhy-${PV}
-	sys-libs/zlib:=
+	~sci-libs/libplayerone-${PV}
 	virtual/libusb:1
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"

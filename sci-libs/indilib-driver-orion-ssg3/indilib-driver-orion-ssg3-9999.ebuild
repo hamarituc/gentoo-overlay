@@ -27,9 +27,9 @@ SLOT="0/1"
 DEPEND="
 	sci-libs/cfitsio:=
 	=sci-libs/indilib-$(ver_cut 1-3)*
-	sys-libs/zlib
 	virtual/libusb:1
 	virtual/udev
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"
 

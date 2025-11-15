@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
-DESCRIPTION="the INDI driver for the Player One Astronomy's Camera"
+DESCRIPTION="the INDI driver for the Orion StarShoot G3 and G4 cameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -21,14 +21,22 @@ fi
 
 S="${MY_S}/indi-${PN##*-driver-}"
 
-LICENSE="LGPL-2.1"
+LICENSE="GPL-3"
 SLOT="0/1"
 
 DEPEND="
 	sci-libs/cfitsio:=
 	~sci-libs/indilib-${PV}
-	~sci-libs/libplayerone-${PV}
-	sys-libs/zlib:=
 	virtual/libusb:1
+	virtual/udev
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"
+
+pkg_postinst() {
+	udev_reload
+}
+
+pkg_postrm() {
+	udev_reload
+}

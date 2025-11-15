@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake
 
-DESCRIPTION="INDI driver for the Oasis Focuser"
+DESCRIPTION="the INDI driver for the Player One Astronomy's Camera"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -15,20 +15,20 @@ if [[ ${PV} == "9999" ]]; then
 	MY_S="${EGIT_CHECKOUT_DIR}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64"
+	KEYWORDS="~amd64 ~x86"
 	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
 fi
 
 S="${MY_S}/indi-${PN##*-driver-}"
 
-LICENSE="LGPL-2.1+"
+LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND="
 	sci-libs/cfitsio:=
-	=sci-libs/indilib-$(ver_cut 1-3)*
-	~sci-libs/libastroasis-${PV}
-	sys-libs/zlib:=
+	~sci-libs/indilib-${PV}
+	~sci-libs/libplayerone-${PV}
 	virtual/libusb:1
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"

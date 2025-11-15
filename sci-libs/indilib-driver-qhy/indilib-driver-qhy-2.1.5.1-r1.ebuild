@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake
 
-DESCRIPTION="INDI driver for the Oasis Focuser"
+DESCRIPTION="INDI driver for the QHY CCD cameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -21,14 +21,16 @@ fi
 
 S="${MY_S}/indi-${PN##*-driver-}"
 
-LICENSE="LGPL-2.1+"
+LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND="
-	sci-libs/cfitsio:=
+	dev-cpp/nlohmann_json:=
+	sci-libs/cfitsio:0=
 	~sci-libs/indilib-${PV}
-	~sci-libs/libastroasis-${PV}
-	sys-libs/zlib:=
+	sci-libs/libnova:=
+	~sci-libs/libqhy-${PV}
 	virtual/libusb:1
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"

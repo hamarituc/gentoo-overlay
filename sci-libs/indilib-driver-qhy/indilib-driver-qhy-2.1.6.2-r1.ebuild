@@ -3,9 +3,9 @@
 
 EAPI=8
 
-inherit cmake udev
+inherit cmake
 
-DESCRIPTION="the INDI driver for the Orion StarShoot G3 and G4 cameras"
+DESCRIPTION="INDI driver for the QHY CCD cameras"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -15,28 +15,22 @@ if [[ ${PV} == "9999" ]]; then
 	MY_S="${EGIT_CHECKOUT_DIR}"
 else
 	SRC_URI="https://github.com/indilib/indi-3rdparty/archive/v${PV}.tar.gz -> indilib-3rdparty-${PV}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 	MY_S="${WORKDIR}/indi-3rdparty-${PV}"
 fi
 
 S="${MY_S}/indi-${PN##*-driver-}"
 
-LICENSE="GPL-3"
+LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND="
-	sci-libs/cfitsio:=
+	dev-cpp/nlohmann_json:=
+	sci-libs/cfitsio:0=
 	=sci-libs/indilib-$(ver_cut 1-3)*
-	sys-libs/zlib
+	sci-libs/libnova:=
+	~sci-libs/libqhy-${PV}
 	virtual/libusb:1
-	virtual/udev
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"
-
-pkg_postinst() {
-	udev_reload
-}
-
-pkg_postrm() {
-	udev_reload
-}

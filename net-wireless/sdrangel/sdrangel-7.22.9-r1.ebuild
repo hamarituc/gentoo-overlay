@@ -22,12 +22,15 @@ IUSE="airspy bladerf cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 c
 
 # TODO: perseus, xtrx, mirisdr
 
+# TODO?
+#	bladerf? ( >=net-wireless/bladerf-2024.05:= )
+#	uhd? ( >=net-wireless/uhd-4.9.0.0:= )
 RDEPEND="
 	dev-libs/boost:=
-	dev-libs/cm256cc:=
+	>=dev-libs/cm256cc-1.1.2:=
 	dev-libs/hidapi:=
 	>=dev-libs/serialDV-1.1.5:=
-	>=media-libs/codec2-1.0.5:=
+	>=media-libs/codec2-1.1.1:=
 	media-libs/flac:=
 	media-libs/hamlib:=
 	media-libs/opus:=
@@ -35,10 +38,10 @@ RDEPEND="
 	media-radio/ggmorse:=
 	media-video/ffmpeg:=
 	net-libs/libhackrf:=
-	net-wireless/dsdcc:=
+	>=net-wireless/dsdcc-1.9.6:=
 	sci-libs/fftw:3.0
-	sys-libs/zlib:=
 	virtual/libusb:1
+	virtual/zlib:=
 	qt6? (
 		dev-qt/qtbase:6[widgets]
 		dev-qt/qtcharts:6
@@ -62,7 +65,7 @@ RDEPEND="
 	faad? ( media-libs/faad2:= )
 	hackrf? ( >=net-libs/libhackrf-2024.02.1:= )
 	limesuite? ( net-wireless/limesuite:= )
-	plutosdr? ( net-libs/libiio:= )
+	plutosdr? ( >=net-libs/libiio-0.26:= )
 	rtlsdr? ( >=net-wireless/rtl-sdr-2.0.1:= )
 	sgp4? ( sci-libs/sgp4:= )
 	soapy? ( net-wireless/soapysdr:= )

@@ -5,7 +5,7 @@ EAPI=8
 
 inherit cmake
 
-DESCRIPTION="the INDI driver for the Player One Astronomy's Camera"
+DESCRIPTION="INDI driver for libcamera devices"
 HOMEPAGE="http://indilib.org"
 
 if [[ ${PV} == "9999" ]]; then
@@ -25,10 +25,19 @@ LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND="
+	dev-libs/boost:=
+	media-libs/libcamera:=
+	media-libs/libexif:=
+	media-libs/libjpeg-turbo:=
+	media-libs/libraw:=
+	media-gfx/rpicam-apps:=
 	sci-libs/cfitsio:=
 	=sci-libs/indilib-$(ver_cut 1-3)*
-	~sci-libs/libplayerone-${PV}
-	sys-libs/zlib:=
 	virtual/libusb:1
+	virtual/zlib:=
+	x11-libs/libdrm:=
 "
 RDEPEND="${DEPEND}"
+BDEPEND="
+	virtual/pkgconfig
+"

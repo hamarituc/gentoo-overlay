@@ -30,7 +30,7 @@ DEPEND="
 	=sci-libs/indilib-$(ver_cut 1-3)*
 	sci-libs/libnova:=
 	~sci-libs/libqhy-${PV}
-	sys-libs/zlib:=
 	virtual/libusb:1
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"
