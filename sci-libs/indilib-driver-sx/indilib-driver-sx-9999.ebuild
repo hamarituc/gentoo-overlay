@@ -25,6 +25,7 @@ LICENSE="LGPL-2 cloudmakers"
 SLOT="0/1"
 
 DEPEND="
+	dev-libs/hidapi:=
 	=sci-libs/indilib-$(ver_cut 1-3)*
 	virtual/udev
 "
