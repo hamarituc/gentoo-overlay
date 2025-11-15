@@ -31,6 +31,10 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 
+PATCHES=(
+	"${FILESDIR}/${P}-hidapi.patch"
+)
+
 pkg_postinst() {
 	udev_reload
 }
