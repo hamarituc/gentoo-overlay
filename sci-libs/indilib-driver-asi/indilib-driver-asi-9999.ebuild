@@ -25,6 +25,7 @@ LICENSE="LGPL-2.1"
 SLOT="0/1"
 
 DEPEND="
+	dev-libs/hidapi:=
 	sci-libs/cfitsio:0=
 	=sci-libs/indilib-$(ver_cut 1-3)*
 	~sci-libs/libasi-${PV}
