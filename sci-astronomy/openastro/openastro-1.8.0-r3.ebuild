@@ -34,13 +34,13 @@ DEPEND="
 	dev-qt/qtnetwork:5
 	dev-qt/qtwidgets:5
 	>=media-libs/libdc1394-2.2.4:=
+	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
 	media-libs/libraw:=
 	>=media-libs/libuvc-0.0.5:=
 	>=media-libs/tiff-4:=
 	media-video/ffmpeg:=
 	sci-libs/cfitsio:=
-	media-libs/libjpeg-turbo:=
 	virtual/libudev:=
 	virtual/zlib:=
 	gphoto2? ( media-libs/libgphoto2:= )
@@ -51,9 +51,15 @@ DEPEND="
 	(
 		sci-libs/libtoupcam:=
 		sci-libs/libaltaircam:=
-		sci-libs/libstarshootg:=
-		sci-libs/libnncam:=
+		sci-libs/libbressercam:=
 		sci-libs/libmallincam:=
+		sci-libs/libmeadecam:=
+		sci-libs/libnncam:=
+		sci-libs/libogmacam:=
+		sci-libs/libomegonprocam:=
+		sci-libs/libstarshootg:=
+		sci-libs/libsvbonycam:=
+		sci-libs/libtscam:=
 	)
 	v4l? ( media-libs/libv4l:= )
 "
