@@ -28,6 +28,7 @@ RDEPEND="
 	acct-user/indiserver
 	dev-cpp/cpp-httplib:=
 	dev-cpp/nlohmann_json:=
+	dev-libs/hidapi:=
 	dev-libs/libev:=
 	media-libs/libjpeg-turbo:=
 	net-misc/curl
@@ -63,6 +64,7 @@ src_configure() {
 	filter-lto
 
 	local mycmakeargs=(
+		-DINDI_SYSTEM_HIDAPILIB=ON
 		-DINDI_SYSTEM_HTTPLIB=ON
 		-DINDI_SYSTEM_JSONLIB=ON
 		-DINDI_BUILD_SERVER=ON
