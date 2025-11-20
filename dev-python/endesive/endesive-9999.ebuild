@@ -28,6 +28,7 @@ IUSE="examples"
 
 RDEPEND="
 	dev-python/asn1crypto[${PYTHON_USEDEP}]
+	dev-python/certifi[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
 	dev-python/lxml[${PYTHON_USEDEP}]
 	dev-python/paramiko[${PYTHON_USEDEP}]
