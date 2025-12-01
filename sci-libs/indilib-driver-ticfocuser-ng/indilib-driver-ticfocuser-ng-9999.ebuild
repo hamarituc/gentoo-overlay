@@ -30,6 +30,7 @@ DEPEND="
 	app-misc/pololu-tic-software:=
 	dev-libs/libusbp:=
 	=sci-libs/indilib-$(ver_cut 1-3)*
+	virtual/libudev
 	virtual/libusb:1
 	bluetooth? ( net-wireless/bluez:= )
 "
