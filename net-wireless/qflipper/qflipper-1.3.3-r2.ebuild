@@ -15,27 +15,16 @@ if [[ "${PV}" == *9999 ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/flipperdevices/qFlipper.git"
 else
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="amd64 x86"
 	SRC_URI="https://github.com/flipperdevices/qFlipper/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/qFlipper-${PV}"
 fi
-IUSE="+qt5"
-REQUIRED_USE="^^ ( qt5 )"
 
 RDEPEND="
 	>=dev-libs/nanopb-0.4.5[pb-malloc]
-	qt5? (
-		dev-qt/qtconcurrent:5=
-		dev-qt/qtcore:5=
-		dev-qt/qtdeclarative:5=
-		dev-qt/qtgui:5=
-		dev-qt/qtnetwork:5=
-		dev-qt/qtquickcontrols:5=
-		dev-qt/qtquickcontrols2:5=
-		dev-qt/qtserialport:5=
-		dev-qt/qtsvg:5=
-		dev-qt/qtwidgets:5=
-	)
+	dev-qt/qtbase:6[gui,network,widgets]
+	dev-qt/qtdeclarative:6
+	dev-qt/qtserialport:6
 	virtual/libusb:1
 	virtual/zlib:=
 "
@@ -44,10 +33,11 @@ DEPEND="${RDEPEND}"
 PATCHES=(
 	"${FILESDIR}/${PN}-1.3.0_unbundle.patch"
 	"${FILESDIR}/${PN}-1.3.0_display_version.patch"
+	"${FILESDIR}/${PN}-1.3.3-operator.patch"
 )
 
 src_configure() {
-	eqmake5 qFlipper.pro \
+	eqmake6 qFlipper.pro \
 		PREFIX="${EPREFIX}/usr" \
 		-spec linux-g++ \
 		CONFIG+=qtquickcompiler \
