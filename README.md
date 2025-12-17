@@ -12,6 +12,11 @@ Amateur Radio :radio:
 
 `aioax25` is a pure Python AX.25 library implementing an APRS stack.
 
+### aprsc
+
+`aprsc` is a server for the APRS-IS network. It distributes messages of the
+Automatic Packet Reporting System via network.
+
 ### ARDOP
 
 The Amateur Radio Digital Open Protocol is an ARQ data transmission protocol

@@ -1,0 +1,18 @@
+#!/sbin/openrc-run
+# Copyright 2025 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="aprsc"
+description="APRS-IS daemon"
+command=/opt/aprsc/sbin/aprsc
+command_args="${aprsc_args}"
+command_args_background="-f"
+pidfile=/opt/aprs/logs/aprsc.pid
+capabilities="cap_net_bind_service,cap_setuid,cap_setgid,cap_sys_resource,cap_sys_chroot"
+extra_started_commands="reload"
+
+reload() {
+  ebegin "Reloading ${RC_SVCNAME}"
+  start-stop-daemon --signal HUP --pidfile "${pidfile}"
+  eend $?
+}
