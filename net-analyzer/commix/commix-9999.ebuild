@@ -34,10 +34,6 @@ RDEPEND="
 
 RESTRICT="test"
 
-PATCHES=(
-	"${FILESDIR}/${P}-version.patch"
-)
-
 src_prepare() {
 	default
 
