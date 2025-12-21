@@ -35,6 +35,11 @@ RDEPEND="
 
 RESTRICT="test"
 
+PATCHES=(
+	"${FILESDIR}/${P}-asyncio.patch"
+	"${FILESDIR}/${P}-entry_points.patch"
+)
+
 src_prepare() {
 	default
 

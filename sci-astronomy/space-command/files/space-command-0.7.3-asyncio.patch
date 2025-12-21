@@ -1,0 +1,35 @@
+commit aeb2616895b87fba1125657a317ff59c4aba16b1
+Author: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date:   Sun Dec 21 21:35:25 2025 +0100
+Upstream: https://github.com/galactics/space-command/pull/9
+
+    remove deprecated `async_timeout`-package for Python 3.11 and newer
+
+--- a/space/tle/celestrak.py
++++ b/space/tle/celestrak.py
+@@ -1,10 +1,15 @@
+ import logging
+ import asyncio
+ import aiohttp
+-import async_timeout
+ import re
+ import requests
+ from bs4 import BeautifulSoup
++import sys
++
++if sys.version_info >= (3, 11):
++    from asyncio import timeout
++else:
++    from async_timeout import timeout
+ 
+ from .common import TMP_FOLDER
+ from ..wspace import ws
+@@ -116,7 +121,7 @@ async def _fetch_file(session, filename):
+ 
+     When the page is totally retrieved, the function will call insert
+     """
+-    with async_timeout.timeout(30):
++    async with timeout(30):
+         async with session.get(CELESTRAK_URL.format(filename)) as response:
+             text = await response.text()
+ 
