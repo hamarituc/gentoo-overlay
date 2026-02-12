@@ -19,7 +19,7 @@ fi
 LICENSE="BSD-2"
 SLOT="0"
 
-IUSE="drm egl ffmpeg opencv qt5"
+IUSE="drm egl ffmpeg opencv qt6"
 
 DEPEND="
 	dev-libs/boost:=
@@ -32,10 +32,7 @@ DEPEND="
 	egl? ( media-libs/libepoxy:= )
 	ffmpeg? ( media-video/ffmpeg:= )
 	opencv? ( media-libs/opencv:= )
-	qt5? (
-		dev-qt/qtcore:5
-		dev-qt/qtwidgets:5
-	)
+	qt6? ( dev-qt/qtbase:6[widgets] )
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
@@ -47,15 +44,10 @@ src_configure() {
 		$(meson_feature drm enable_drm)
 		$(meson_feature ffmpeg enable_libav)
 		$(meson_feature opencv enable_opencv)
-		$(meson_feature qt5 enable_qt)
+		$(meson_feature qt6 enable_qt)
 		-Denable_egl=disabled
 		-Denable_tflite=disabled
 		-Denable_hailo=disabled
-		-Ddownload_hailo_models=false
 	)
 	meson_src_configure
 }
-
-PATCHES=(
-	"${FILESDIR}/rpicam-apps-1.5-includedirs.patch"
-)
