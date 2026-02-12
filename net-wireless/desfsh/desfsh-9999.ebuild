@@ -5,7 +5,7 @@ EAPI=8
 
 LUA_COMPAT=( lua5-{1..4} )
 
-inherit lua-single toolchain-funcs
+inherit cmake lua-single
 
 DESCRIPTION="An interactive application for accessing Mifare DESFire NFC tags"
 HOMEPAGE="https://github.com/hamarituc/desfsh"
@@ -31,14 +31,3 @@ DEPEND="${LUA_DEPS}
 "
 RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
-
-src_compile()
-{
-	tc-export CC PKG_CONFIG
-	emake LUAPKG="${ELUA}" all
-}
-
-src_install()
-{
-	dobin desfsh
-}
