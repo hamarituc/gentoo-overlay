@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake udev
 
 DESCRIPTION="SDK and firmware for the AHP Telescope Controller"
 HOMEPAGE="https://github.com/ahp-electronics/libahp-gt"
@@ -18,3 +18,11 @@ fi
 
 LICENSE="MIT"
 SLOT="0"
+
+pkg_postinst() {
+	udev_reload
+}
+
+pkg_postrm() {
+	udev_reload
+}
