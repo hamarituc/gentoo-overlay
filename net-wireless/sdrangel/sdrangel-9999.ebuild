@@ -18,24 +18,28 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="airspy bladerf cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1 cpu_flags_x86_sse4_2 faad fcd debug doc +gui hackrf limesuite plutosdr qt6 rtlsdr server sgp4 soapy uhd"
+IUSE="airspy bladerf cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1 cpu_flags_x86_sse4_2 faad fcd debug doc +gui hackrf limesuite plutosdr qt6 rtlsdr server sgp4 soapy unwind uhd"
 
 # TODO: perseus, xtrx, mirisdr
 
+# TODO?
+#	bladerf? ( >=net-wireless/bladerf-2024.05:= )
+#	uhd? ( >=net-wireless/uhd-4.9.0.1:= )
 RDEPEND="
 	dev-libs/boost:=
-	dev-libs/cm256cc:=
+	>=dev-libs/cm256cc-1.1.2:=
 	dev-libs/hidapi:=
 	>=dev-libs/serialDV-1.1.5:=
-	>=media-libs/codec2-1.0.5:=
+	>=media-libs/codec2-1.1.1:=
 	media-libs/flac:=
 	media-libs/hamlib:=
 	media-libs/opus:=
 	media-libs/opencv:=
+	media-libs/rnnoise:=
 	media-radio/ggmorse:=
 	media-video/ffmpeg:=
 	net-libs/libhackrf:=
-	net-wireless/dsdcc:=
+	>=net-wireless/dsdcc-1.9.6:=
 	sci-libs/fftw:3.0
 	virtual/libusb:1
 	virtual/zlib:=
@@ -62,11 +66,12 @@ RDEPEND="
 	faad? ( media-libs/faad2:= )
 	hackrf? ( >=net-libs/libhackrf-2024.02.1:= )
 	limesuite? ( net-wireless/limesuite:= )
-	plutosdr? ( net-libs/libiio:= )
+	plutosdr? ( >=net-libs/libiio-0.26:= )
 	rtlsdr? ( >=net-wireless/rtl-sdr-2.0.1:= )
 	sgp4? ( sci-libs/sgp4:= )
 	soapy? ( net-wireless/soapysdr:= )
 	uhd? ( net-wireless/uhd:= )
+	unwind? ( sys-libs/libunwind:= )
 "
 
 DEPEND="
@@ -93,6 +98,7 @@ src_configure() {
 		-DENABLE_FUNCUBE="$(usex fcd)" \
 		-DENABLE_HACKRF="$(usex hackrf)" \
 		-DENABLE_IIO="$(usex plutosdr)" \
+		-DENABLE_LIBUNWIND="$(usex unwind)" \
 		-DENABLE_LIMESUITE="$(usex limesuite)" \
 		-DENABLE_MIRISDR=OFF \
 		-DENABLE_PERSEUS=OFF \
