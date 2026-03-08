@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{11..14} )
-inherit python-single-r1
+inherit python-single-r1 udev
 
 DESCRIPTION="Configuration Utility for Leo Bodnar GPSDO"
 HOMEPAGE="https://github.com/hamarituc/lbgpsdo"
@@ -38,8 +38,18 @@ src_install() {
 	default
 	newbin lbgpsdo.py lbgpsdo
 
+	udev_dorules 99-lbgpsdo.rules
+
 	if use examples; then
 		insinto /usr/share/${PN}
 		doins -r examples
 	fi
+}
+
+pkg_postinst() {
+	udev_reload
+}
+
+pkg_postrm() {
+	udev_reload
 }
