@@ -37,6 +37,7 @@ DOCS=( README.md )
 src_install() {
 	default
 	newbin lbgpsdo.py lbgpsdo
+	newbin lbe142x.py lbe142x
 
 	udev_dorules 99-lbgpsdo.rules
 
