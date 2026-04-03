@@ -43,6 +43,7 @@ IUSE_INDILIB_DRIVERS="
 	gpio
 	gpsd
 	gpsnmea
+	icm-imu
 	inovaplx
 	libcamera
 	limesdr
@@ -121,6 +122,7 @@ RDEPEND="
 	indilib_drivers_gpio? ( ~sci-libs/indilib-driver-gpio-${PV} )
 	indilib_drivers_gpsd? ( ~sci-libs/indilib-driver-gpsd-${PV} )
 	indilib_drivers_gpsnmea? ( ~sci-libs/indilib-driver-gpsnmea-${PV} )
+	indilib_drivers_icm-imu? ( ~sci-libs/indilib-driver-icm-imu-${PV} )
 	indilib_drivers_inovaplx? ( ~sci-libs/indilib-driver-inovaplx-${PV} )
 	indilib_drivers_libcamera? ( ~sci-libs/indilib-driver-libcamera-${PV} )
 	indilib_drivers_limesdr? ( ~sci-libs/indilib-driver-limesdr-${PV} )

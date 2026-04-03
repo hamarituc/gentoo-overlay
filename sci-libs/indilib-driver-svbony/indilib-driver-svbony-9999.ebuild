@@ -27,5 +27,6 @@ SLOT="0/1"
 DEPEND="
 	=sci-libs/indilib-$(ver_cut 1-3)*
 	~sci-libs/libsvbony-${PV}
+	virtual/libusb:1
 "
 RDEPEND="${DEPEND}"
