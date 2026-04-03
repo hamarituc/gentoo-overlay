@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>mario@mariohaustein.de</email>
+		<name>Mario Haustein</name>
+	</maintainer>
+	<upstream>
+		<doc lang="en">https://indilib.org/devices/mounts/aok-skywalker.html</doc>
+		<bugs-to>https://github.com/indilib/indi-3rdparty/issues</bugs-to>
+		<remote-id type="github">indilib/indi-3rdparty</remote-id>
+	</upstream>
+</pkgmetadata>
