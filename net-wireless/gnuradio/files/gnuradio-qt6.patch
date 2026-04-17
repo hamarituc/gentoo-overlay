@@ -1,0 +1,4235 @@
+From 8928d83dbb59ecd9454292a1e3443e84ff81cbb1 Mon Sep 17 00:00:00 2001
+From: "A. Maitland Bottoms" <bottoms@debian.org>
+Date: Tue, 4 Feb 2025 06:44:42 -0500
+Subject: [PATCH 01/22] try qt6 build
+
+Add CMake so that -DTRY_QT6_BUILD=ON will try a Qt6 build.
+Otherwise, gnuradio will build using Qt5.
+"Try" because without qwt being Qt6 aware, the build will fail.
+This is a first step towards Qt6 using gnuradio.
+
+Signed-off-by: A. Maitland Bottoms <bottoms@debian.org>
+---
+ gr-qtgui/CMakeLists.txt              | 23 +++++++++--
+ gr-qtgui/examples/c++/CMakeLists.txt |  6 ++-
+ gr-qtgui/lib/CMakeLists.txt          | 59 ++++++++++++++++++++++++++--
+ gr-uhd/CMakeLists.txt                |  5 ++-
+ gr-uhd/examples/grc/CMakeLists.txt   |  4 +-
+ gr-uhd/grc/CMakeLists.txt            |  4 +-
+ gr-uhd/python/uhd/CMakeLists.txt     |  4 +-
+ 7 files changed, 90 insertions(+), 15 deletions(-)
+
+diff --git a/gr-qtgui/CMakeLists.txt b/gr-qtgui/CMakeLists.txt
+index 8e06d320b..bf19b327e 100644
+--- a/gr-qtgui/CMakeLists.txt
++++ b/gr-qtgui/CMakeLists.txt
+@@ -10,8 +10,23 @@
+ ########################################################################
+ include(GrPython)
+ 
+-# Note: gr-qtgui requires Qt5.
+-gr_find_package(Qt5
++# Note: gr-qtgui requires Qt5 or Qt6.
++
++if (TRY_QT6_BUILD)
++gr_find_package(Qt6 QUIET
++    COMPONENTS Widgets
++    OPTIONAL_COMPONENTS OpenGL
++    GLOBAL
++)
++set(QT_FOUND ${Qt6Widgets_FOUND})
++
++gr_python_check_module(
++    DESC "PyQt6"
++    MODULE PyQt6
++    VAR PYQT_FOUND
++)
++else()
++gr_find_package(Qt5 QUIET
+     COMPONENTS Widgets
+     OPTIONAL_COMPONENTS OpenGL
+     GLOBAL
+@@ -28,6 +43,8 @@ gr_python_check_module(
+     MODULE PyQt5
+     VAR PYQT5_FOUND
+ )
++endif()
++
+ if(CONAN_TOOLCHAIN_DETECTED)
+     gr_find_package(qwt GLOBAL)
+ else()
+@@ -43,7 +60,7 @@ endif()
+ ########################################################################
+ include(GrComponent)
+ if(NOT CMAKE_CROSSCOMPILING)
+-    set(qt_gui_python_deps PYQT5_FOUND)
++    set(qt_gui_python_deps PYQT_FOUND)
+ endif(NOT CMAKE_CROSSCOMPILING)
+ 
+ gr_register_component(
+diff --git a/gr-qtgui/examples/c++/CMakeLists.txt b/gr-qtgui/examples/c++/CMakeLists.txt
+index 56ab55c00..47d17ca47 100644
+--- a/gr-qtgui/examples/c++/CMakeLists.txt
++++ b/gr-qtgui/examples/c++/CMakeLists.txt
+@@ -25,7 +25,11 @@ list(
+     gnuradio-runtime
+     ${QT_LIBRARIES})
+ 
+-qt5_wrap_cpp(qtgui_moc_sources display_qt.h)
++if(QT_DEFAULT_MAJOR_VERSION EQUAL 5)
++    qt5_wrap_cpp(qtgui_moc_sources display_qt.h)
++elseif(QT_DEFAULT_MAJOR_VERSION EQUAL 6)
++    qt6_wrap_cpp(qtgui_moc_sources display_qt.h)
++endif()
+ 
+ add_executable(display_qt display_qt.cc ${qtgui_moc_sources})
+ target_link_libraries(display_qt ${QTGUI_LIBRARIES})
+diff --git a/gr-qtgui/lib/CMakeLists.txt b/gr-qtgui/lib/CMakeLists.txt
+index 491258358..f7cdb37d0 100644
+--- a/gr-qtgui/lib/CMakeLists.txt
++++ b/gr-qtgui/lib/CMakeLists.txt
+@@ -69,7 +69,6 @@ set(QTGUI_LIBS
+     gnuradio-filter
+     Volk::volk
+     qwt::qwt
+-    Qt5::Widgets
+ )
+ 
+ if(ENABLE_GR_QTGUI_OPENGL)
+@@ -82,10 +81,17 @@ if(ENABLE_GR_QTGUI_OPENGL)
+         ${RFNOC_F15_RC_SRCS}
+     )
+     gr_find_package(OpenGL)
+-    list(APPEND PRIVATE_LIBS
++    if(QT_DEFAULT_MAJOR_VERSION EQUAL 5)
++      list(APPEND PRIVATE_LIBS
+         Qt5::OpenGL
+         OpenGL::GL
+-    )
++      )
++    elseif(QT_DEFAULT_MAJOR_VERSION EQUAL 6)
++      list(APPEND PRIVATE_LIBS
++        Qt6::OpenGL
++        OpenGL::GL
++      )
++    endif()
+ endif()
+ 
+ add_library(
+@@ -106,6 +112,7 @@ target_link_libraries(gnuradio-qtgui
+ )
+ 
+ set(qtgui_mod_includedir ${CMAKE_CURRENT_SOURCE_DIR}/../include/gnuradio/qtgui)
++if(QT_DEFAULT_MAJOR_VERSION EQUAL 5)
+ qt5_wrap_cpp(
+     qtgui_moc_sources
+     ${qtgui_mod_includedir}/spectrumdisplayform.h
+@@ -144,8 +151,52 @@ if(ENABLE_GR_QTGUI_OPENGL)
+         QRfnocF15ColorMapper.h
+         )
+ endif()
++elseif(QT_DEFAULT_MAJOR_VERSION EQUAL 6)
++qt6_wrap_cpp(
++    qtgui_moc_sources
++    ${qtgui_mod_includedir}/spectrumdisplayform.h
++    ${qtgui_mod_includedir}/displayform.h
++    ${qtgui_mod_includedir}/eyedisplaysform.h
++    ${qtgui_mod_includedir}/eyedisplayform.h
++    ${qtgui_mod_includedir}/timedisplayform.h
++    ${qtgui_mod_includedir}/eyecontrolpanel.h
++    ${qtgui_mod_includedir}/timecontrolpanel.h
++    ${qtgui_mod_includedir}/timerasterdisplayform.h
++    ${qtgui_mod_includedir}/freqdisplayform.h
++    ${qtgui_mod_includedir}/freqcontrolpanel.h
++    ${qtgui_mod_includedir}/constellationdisplayform.h
++    ${qtgui_mod_includedir}/waterfalldisplayform.h
++    ${qtgui_mod_includedir}/histogramdisplayform.h
++    ${qtgui_mod_includedir}/numberdisplayform.h
++    ${qtgui_mod_includedir}/vectordisplayform.h
++    ${qtgui_mod_includedir}/form_menus.h
++    ${qtgui_mod_includedir}/DisplayPlot.h
++    ${qtgui_mod_includedir}/EyeDisplayPlot.h
++    ${qtgui_mod_includedir}/FrequencyDisplayPlot.h
++    ${qtgui_mod_includedir}/TimeDomainDisplayPlot.h
++    ${qtgui_mod_includedir}/TimeRasterDisplayPlot.h
++    ${qtgui_mod_includedir}/WaterfallDisplayPlot.h
++    ${qtgui_mod_includedir}/ConstellationDisplayPlot.h
++    ${qtgui_mod_includedir}/HistogramDisplayPlot.h
++    ${qtgui_mod_includedir}/VectorDisplayPlot.h
++    edit_box_msg_impl.h
++    matrix_display.h
++    matrix_display_signal.h
++    )
++if(ENABLE_GR_QTGUI_OPENGL)
++    qt6_wrap_cpp(
++        qtgui_moc_sources
++        QRfnocF15Surface.h
++        QRfnocF15ColorMapper.h
++        )
++endif()
++endif()
+ target_sources(gnuradio-qtgui PRIVATE ${qtgui_moc_sources})
+-qt5_wrap_ui(qtgui_ui_hdrs spectrumdisplayform.ui)
++if(QT_DEFAULT_MAJOR_VERSION EQUAL 5)
++    qt5_wrap_ui(qtgui_ui_hdrs spectrumdisplayform.ui)
++elseif(QT_DEFAULT_MAJOR_VERSION EQUAL 6)
++    qt6_wrap_ui(qtgui_ui_hdrs spectrumdisplayform.ui)
++endif()
+ target_sources(gnuradio-qtgui PRIVATE ${qtgui_ui_hdrs})
+ 
+ #FIXME the sources expect <foo>.ui.h, but the macros generate ui_foo.h
+diff --git a/gr-uhd/CMakeLists.txt b/gr-uhd/CMakeLists.txt
+index 68b57d87f..51e256728 100644
+--- a/gr-uhd/CMakeLists.txt
++++ b/gr-uhd/CMakeLists.txt
+@@ -24,7 +24,10 @@ else()
+     set(UHD_FOUR_POINT_OH_RFNOC FALSE)
+ endif()
+ 
+-gr_python_check_module("PyQt5" PyQt5 True PYQT5_FOUND)
++gr_python_check_module("PyQt6" PyQt6 True PYQT_FOUND)
++if (NOT ${PYQT_FOUND})
++  gr_python_check_module("PyQt5" PyQt5 True PYQT_FOUND)
++endif()
+ 
+ # Check for plotting dependencies
+ gr_python_check_module(
+diff --git a/gr-uhd/examples/grc/CMakeLists.txt b/gr-uhd/examples/grc/CMakeLists.txt
+index cad41e628..17aed88b0 100644
+--- a/gr-uhd/examples/grc/CMakeLists.txt
++++ b/gr-uhd/examples/grc/CMakeLists.txt
+@@ -30,6 +30,6 @@ install(
+           uhd_wbfm_receive.grc
+     DESTINATION ${GR_PKG_UHD_EXAMPLES_DIR})
+ 
+-if(PYQT5_FOUND)
++if(PYQT_FOUND)
+       install(FILES rfnoc_replay.grc DESTINATION ${GR_PKG_UHD_EXAMPLES_DIR})
+-endif(PYQT5_FOUND)
++endif(PYQT_FOUND)
+diff --git a/gr-uhd/grc/CMakeLists.txt b/gr-uhd/grc/CMakeLists.txt
+index 187cbccad..2243b4661 100644
+--- a/gr-uhd/grc/CMakeLists.txt
++++ b/gr-uhd/grc/CMakeLists.txt
+@@ -90,7 +90,7 @@ if(ENABLE_UHD_RFNOC)
+         # GRC workflow
+         rfnoc_image_builder.workflow.yml
+         DESTINATION ${GRC_BLOCKS_DIR})
+-    if(PYQT5_FOUND)
++    if(PYQT_FOUND)
+         install (FILES uhd_msgpushbutton.block.yml DESTINATION ${GRC_BLOCKS_DIR})
+-    endif(PYQT5_FOUND)
++    endif(PYQT_FOUND)
+ endif(ENABLE_UHD_RFNOC)
+diff --git a/gr-uhd/python/uhd/CMakeLists.txt b/gr-uhd/python/uhd/CMakeLists.txt
+index f6e05f2c8..2d644cf73 100644
+--- a/gr-uhd/python/uhd/CMakeLists.txt
++++ b/gr-uhd/python/uhd/CMakeLists.txt
+@@ -12,9 +12,9 @@ include(GrPython)
+ 
+ gr_python_install(FILES __init__.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/uhd)
+ 
+-if(PYQT5_FOUND)
++if(PYQT_FOUND)
+     gr_python_install(FILES replaymsgpushbutton.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/uhd)
+-endif(PYQT5_FOUND)
++endif(PYQT_FOUND)
+ 
+ if(ENABLE_UHD_RFNOC)
+     gr_python_install(FILES grc_workflows.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/uhd)
+-- 
+2.52.0
+
+From b4daa3bb818cbb4db3a4afdb5ce89e7ab24926bb Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Mon, 3 Feb 2025 20:58:32 +0100
+Subject: [PATCH 02/22] gr-qtgui: Make examples/pyqt_freq_c.py QtPy-compatible
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ gr-qtgui/examples/pyqt_freq_c.py | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/gr-qtgui/examples/pyqt_freq_c.py b/gr-qtgui/examples/pyqt_freq_c.py
+index 5ba641c86..f575d6e00 100644
+--- a/gr-qtgui/examples/pyqt_freq_c.py
++++ b/gr-qtgui/examples/pyqt_freq_c.py
+@@ -15,10 +15,11 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
++    from qtpy import QtWidgets, QtGui
++    from qtpy.QtCore import Qt
+     import sip
+ except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    sys.stderr.write("Error: Program requires PyQt and gr-qtgui.\n")
+     sys.exit(1)
+ 
+ try:
+@@ -53,7 +54,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -163,7 +164,7 @@ class my_top_block(gr.top_block):
+         pyQt = self.snk1.qwidget()
+ 
+         # Wrap the pointer as a PyQt SIP object
+-        # This can now be manipulated as a PyQt5.QtWidgets.QWidget
++        # This can now be manipulated as a QtWidgets.QWidget
+         pyWin = sip.wrapinstance(pyQt, QtWidgets.QWidget)
+ 
+         # pyWin.show()
+-- 
+2.52.0
+
+From 5e44d16c2be701e1729ced0edf4875b398e2ac10 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Wed, 5 Feb 2025 17:59:45 +0100
+Subject: [PATCH 03/22] qtgui: Delete old/unused QRegExpValidator
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ gr-qtgui/include/QtWidgets/QRegExpValidator | 9 ---------
+ 1 file changed, 9 deletions(-)
+ delete mode 100644 gr-qtgui/include/QtWidgets/QRegExpValidator
+
+diff --git a/gr-qtgui/include/QtWidgets/QRegExpValidator b/gr-qtgui/include/QtWidgets/QRegExpValidator
+deleted file mode 100644
+index 17f6ce833..000000000
+--- a/gr-qtgui/include/QtWidgets/QRegExpValidator
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/*
+- * The Qt5 version of the 'uic' compiler generates incorrect code right now.
+- * The bug has been reported (https://bugreports.qt.io/browse/QTBUG-48492) and
+- * is pending review.
+- *
+- * This file will make sure that the build of gr-qtgui will succeed with the
+- * broken version of 'uic'.
+- */
+-#include <QtGui/QRegExpValidator>
+-- 
+2.52.0
+
+From a9429ac72ecbe17655f44ff996040d1aefbc1b08 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Wed, 5 Feb 2025 18:05:05 +0100
+Subject: [PATCH 04/22] cmake: Support the Qt6-version of Qwt
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ cmake/Modules/FindQwt.cmake | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/cmake/Modules/FindQwt.cmake b/cmake/Modules/FindQwt.cmake
+index 84be67ad9..f282059fa 100644
+--- a/cmake/Modules/FindQwt.cmake
++++ b/cmake/Modules/FindQwt.cmake
+@@ -5,8 +5,15 @@
+ # qwt_global.h holds a string with the QWT version;
+ #   test to make sure it's at least 5.2
+ 
++if (TRY_QT6_BUILD)
++pkg_check_modules(PC_QWT "Qt6Qwt6")
++set(QWT_QT_VERSION qt6)
++else()
+ pkg_check_modules(PC_QWT "Qt5Qwt6")
+ set(QWT_QT_VERSION qt5)
++endif()
++
++
+ 
+ find_path(
+     QWT_INCLUDE_DIRS
+-- 
+2.52.0
+
+From 2af6b737086c5a99961bd7dc88a92aa3e1067753 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Wed, 5 Feb 2025 22:14:15 +0100
+Subject: [PATCH 05/22] qtgui: Remove signals/slots from spectrumdisplayform.ui
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ gr-qtgui/lib/spectrumdisplayform.ui | 211 +---------------------------
+ 1 file changed, 1 insertion(+), 210 deletions(-)
+
+diff --git a/gr-qtgui/lib/spectrumdisplayform.ui b/gr-qtgui/lib/spectrumdisplayform.ui
+index 3a5c68fc4..27d0f5f99 100644
+--- a/gr-qtgui/lib/spectrumdisplayform.ui
++++ b/gr-qtgui/lib/spectrumdisplayform.ui
+@@ -546,214 +546,5 @@
+   <include location="local">qwt_slider.h</include>
+  </includes>
+  <resources/>
+- <connections>
+-  <connection>
+-   <sender>MaxHoldCheckBox</sender>
+-   <signal>toggled(bool)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>maxHoldCheckBox_toggled(bool)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>22</x>
+-     <y>324</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>MaxHoldResetBtn</sender>
+-   <signal>clicked()</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>maxHoldResetBtn_clicked()</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>107</x>
+-     <y>324</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>MinHoldCheckBox</sender>
+-   <signal>toggled(bool)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>minHoldCheckBox_toggled(bool)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>22</x>
+-     <y>349</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>MinHoldResetBtn</sender>
+-   <signal>clicked()</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>minHoldResetBtn_clicked()</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>107</x>
+-     <y>349</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>WindowComboBox</sender>
+-   <signal>activated(int)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>windowTypeChanged(int)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>UseRFFrequenciesCheckBox</sender>
+-   <signal>toggled(bool)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>useRFFrequenciesCB(bool)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>WaterfallMaximumIntensitySlider</sender>
+-   <signal>valueChanged(double)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>waterfallMaximumIntensityChangedCB(double)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>217</x>
+-     <y>44</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>WaterfallMinimumIntensitySlider</sender>
+-   <signal>valueChanged(double)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>waterfallMinimumIntensityChangedCB(double)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>217</x>
+-     <y>349</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>FFTSizeComboBox</sender>
+-   <signal>activated(QString)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>fftComboBoxSelectedCB(QString)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>WaterfallAutoScaleBtn</sender>
+-   <signal>clicked()</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>waterfallAutoScaleBtnCB()</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>22</x>
+-     <y>349</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>WaterfallIntensityComboBox</sender>
+-   <signal>activated(int)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>waterfallIntensityColorTypeChanged(int)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>92</x>
+-     <y>44</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>20</x>
+-     <y>20</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>SpectrumTypeTab</sender>
+-   <signal>currentChanged(int)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>tabChanged(int)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>314</x>
+-     <y>189</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>316</x>
+-     <y>217</y>
+-    </hint>
+-   </hints>
+-  </connection>
+-  <connection>
+-   <sender>AvgLineEdit</sender>
+-   <signal>valueChanged(int)</signal>
+-   <receiver>SpectrumDisplayForm</receiver>
+-   <slot>avgLineEdit_valueChanged(int)</slot>
+-   <hints>
+-    <hint type="sourcelabel">
+-     <x>604</x>
+-     <y>421</y>
+-    </hint>
+-    <hint type="destinationlabel">
+-     <x>328</x>
+-     <y>260</y>
+-    </hint>
+-   </hints>
+-  </connection>
+- </connections>
++ <connections/>
+ </ui>
+-- 
+2.52.0
+
+From 5045fc6f58f0dddee4a3b6bd6b603c0fb400227e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Thu, 6 Feb 2025 15:46:13 +0100
+Subject: [PATCH 06/22] qtgui: Use qtpy in Python examples
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ gr-qtgui/examples/pyqt_const_c.py       | 12 ++++++------
+ gr-qtgui/examples/pyqt_example_c.py     | 12 ++++++------
+ gr-qtgui/examples/pyqt_example_f.py     | 12 ++++++------
+ gr-qtgui/examples/pyqt_freq_c.py        |  9 ++++-----
+ gr-qtgui/examples/pyqt_freq_f.py        | 12 ++++++------
+ gr-qtgui/examples/pyqt_histogram_f.py   | 16 ++++++++--------
+ gr-qtgui/examples/pyqt_time_c.py        | 13 +++++++------
+ gr-qtgui/examples/pyqt_time_f.py        | 12 ++++++------
+ gr-qtgui/examples/pyqt_time_raster_b.py |  8 ++++----
+ gr-qtgui/examples/pyqt_time_raster_f.py |  8 ++++----
+ gr-qtgui/examples/pyqt_waterfall_c.py   | 12 ++++++------
+ gr-qtgui/examples/pyqt_waterfall_f.py   | 12 ++++++------
+ 12 files changed, 69 insertions(+), 69 deletions(-)
+
+diff --git a/gr-qtgui/examples/pyqt_const_c.py b/gr-qtgui/examples/pyqt_const_c.py
+index 9442feb54..2128e00d0 100644
+--- a/gr-qtgui/examples/pyqt_const_c.py
++++ b/gr-qtgui/examples/pyqt_const_c.py
+@@ -14,10 +14,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -52,7 +52,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -80,7 +80,7 @@ class control_box(QtWidgets.QWidget):
+ 
+         self.quit = QtWidgets.QPushButton('Close', self)
+         self.quit.setMinimumWidth(100)
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+         self.layout.addWidget(self.quit)
+ 
+     def attach_signal1(self, signal):
+diff --git a/gr-qtgui/examples/pyqt_example_c.py b/gr-qtgui/examples/pyqt_example_c.py
+index 7ccd42f77..c9d6f1d8c 100644
+--- a/gr-qtgui/examples/pyqt_example_c.py
++++ b/gr-qtgui/examples/pyqt_example_c.py
+@@ -15,10 +15,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -53,7 +53,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -83,7 +83,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+diff --git a/gr-qtgui/examples/pyqt_example_f.py b/gr-qtgui/examples/pyqt_example_f.py
+index 172e51c28..117ab59bb 100644
+--- a/gr-qtgui/examples/pyqt_example_f.py
++++ b/gr-qtgui/examples/pyqt_example_f.py
+@@ -15,10 +15,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -47,7 +47,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -77,7 +77,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+diff --git a/gr-qtgui/examples/pyqt_freq_c.py b/gr-qtgui/examples/pyqt_freq_c.py
+index f575d6e00..dae3d81fb 100644
+--- a/gr-qtgui/examples/pyqt_freq_c.py
++++ b/gr-qtgui/examples/pyqt_freq_c.py
+@@ -16,10 +16,9 @@ import sys
+ try:
+     from gnuradio import qtgui
+     from qtpy import QtWidgets, QtGui
+-    from qtpy.QtCore import Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt and gr-qtgui.\n")
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -84,7 +83,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+diff --git a/gr-qtgui/examples/pyqt_freq_f.py b/gr-qtgui/examples/pyqt_freq_f.py
+index 274e45de7..f373093bf 100644
+--- a/gr-qtgui/examples/pyqt_freq_f.py
++++ b/gr-qtgui/examples/pyqt_freq_f.py
+@@ -15,10 +15,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -47,7 +47,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -77,7 +77,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+diff --git a/gr-qtgui/examples/pyqt_histogram_f.py b/gr-qtgui/examples/pyqt_histogram_f.py
+index 8360e5aec..36f079a22 100644
+--- a/gr-qtgui/examples/pyqt_histogram_f.py
++++ b/gr-qtgui/examples/pyqt_histogram_f.py
+@@ -14,10 +14,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -47,7 +47,7 @@ class control_box(QtWidgets.QWidget):
+         self.snk = snk
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -71,14 +71,14 @@ class control_box(QtWidgets.QWidget):
+         # Control the histogram
+         self.hist_npts = QtWidgets.QLineEdit(self)
+         self.hist_npts.setMinimumWidth(100)
+-        self.hist_npts.setValidator(Qt.QIntValidator(0, 8191))
++        self.hist_npts.setValidator(QtGui.QIntValidator(0, 8191))
+         self.hist_npts.setText("{0}".format(self.snk.nsamps()))
+         self.layout.addRow("Number of Points:", self.hist_npts)
+         self.hist_npts.editingFinished.connect(self.set_nsamps)
+ 
+         self.hist_bins = QtWidgets.QLineEdit(self)
+         self.hist_bins.setMinimumWidth(100)
+-        self.hist_bins.setValidator(Qt.QIntValidator(0, 1000))
++        self.hist_bins.setValidator(QtGui.QIntValidator(0, 1000))
+         self.hist_bins.setText("{0}".format(self.snk.bins()))
+         self.layout.addRow("Number of Bins:", self.hist_bins)
+         self.hist_bins.editingFinished.connect(self.set_bins)
+@@ -91,7 +91,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+diff --git a/gr-qtgui/examples/pyqt_time_c.py b/gr-qtgui/examples/pyqt_time_c.py
+index e784b7e4d..459148ca2 100644
+--- a/gr-qtgui/examples/pyqt_time_c.py
++++ b/gr-qtgui/examples/pyqt_time_c.py
+@@ -8,16 +8,17 @@
+ #
+ #
+ 
++
+ from gnuradio import gr
+ from gnuradio import blocks
+ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -52,7 +53,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -82,7 +83,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+diff --git a/gr-qtgui/examples/pyqt_time_f.py b/gr-qtgui/examples/pyqt_time_f.py
+index 2ec181fb5..16ac3b180 100644
+--- a/gr-qtgui/examples/pyqt_time_f.py
++++ b/gr-qtgui/examples/pyqt_time_f.py
+@@ -14,10 +14,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -46,7 +46,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -76,7 +76,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+diff --git a/gr-qtgui/examples/pyqt_time_raster_b.py b/gr-qtgui/examples/pyqt_time_raster_b.py
+index 25c283385..89317b120 100644
+--- a/gr-qtgui/examples/pyqt_time_raster_b.py
++++ b/gr-qtgui/examples/pyqt_time_raster_b.py
+@@ -15,10 +15,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    print("Error: Program requires PyQt5 and gr-qtgui.")
++    from qtpy import QtWidgets
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ 
+diff --git a/gr-qtgui/examples/pyqt_time_raster_f.py b/gr-qtgui/examples/pyqt_time_raster_f.py
+index a86b7c910..030c720da 100644
+--- a/gr-qtgui/examples/pyqt_time_raster_f.py
++++ b/gr-qtgui/examples/pyqt_time_raster_f.py
+@@ -14,10 +14,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    print("Error: Program requires PyQt5 and gr-qtgui.")
++    from qtpy import QtWidgets
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ 
+diff --git a/gr-qtgui/examples/pyqt_waterfall_c.py b/gr-qtgui/examples/pyqt_waterfall_c.py
+index 778a91ead..1a14235c0 100644
+--- a/gr-qtgui/examples/pyqt_waterfall_c.py
++++ b/gr-qtgui/examples/pyqt_waterfall_c.py
+@@ -15,10 +15,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -53,7 +53,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -83,7 +83,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+diff --git a/gr-qtgui/examples/pyqt_waterfall_f.py b/gr-qtgui/examples/pyqt_waterfall_f.py
+index ecbe84dee..8b7bb1626 100644
+--- a/gr-qtgui/examples/pyqt_waterfall_f.py
++++ b/gr-qtgui/examples/pyqt_waterfall_f.py
+@@ -15,10 +15,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtWidgets, Qt
+-    import sip
+-except ImportError:
+-    sys.stderr.write("Error: Program requires PyQt5 and gr-qtgui.\n")
++    from qtpy import QtWidgets, QtGui
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+@@ -47,7 +47,7 @@ class control_box(QtWidgets.QWidget):
+         self.setWindowTitle('Control Panel')
+ 
+         self.setToolTip('Control the signals')
+-        QtWidgets.QToolTip.setFont(Qt.QFont('OldEnglish', 10))
++        QtWidgets.QToolTip.setFont(QtGui.QFont('OldEnglish', 10))
+ 
+         self.layout = QtWidgets.QFormLayout(self)
+ 
+@@ -77,7 +77,7 @@ class control_box(QtWidgets.QWidget):
+         self.quit.setMinimumWidth(100)
+         self.layout.addWidget(self.quit)
+ 
+-        self.quit.clicked.connect(QtWidgets.qApp.quit)
++        self.quit.clicked.connect(QtWidgets.QApplication.quit)
+ 
+     def attach_signal1(self, signal):
+         self.signal1 = signal
+-- 
+2.52.0
+
+From 14ededd63cc9f70f743c91a046408ef061b4376e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Thu, 6 Feb 2025 17:22:00 +0100
+Subject: [PATCH 07/22] qtgui: Use qtpy in python/qtgui/
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ gr-qtgui/python/qtgui/CMakeLists.txt          |  2 +-
+ gr-qtgui/python/qtgui/auto_correlator_sink.py |  8 +++----
+ gr-qtgui/python/qtgui/azelplot.py             |  2 +-
+ gr-qtgui/python/qtgui/compass.py              | 15 ++++--------
+ gr-qtgui/python/qtgui/dialcontrol.py          | 10 ++++----
+ gr-qtgui/python/qtgui/dialgauge.py            |  6 ++---
+ gr-qtgui/python/qtgui/digitalnumbercontrol.py | 13 ++++------
+ gr-qtgui/python/qtgui/distanceradar.py        |  2 +-
+ gr-qtgui/python/qtgui/graphicitem.py          |  6 ++---
+ gr-qtgui/python/qtgui/ledindicator.py         |  7 ++----
+ gr-qtgui/python/qtgui/levelgauge.py           | 12 ++++------
+ gr-qtgui/python/qtgui/msgcheckbox.py          |  9 ++++---
+ gr-qtgui/python/qtgui/msgpushbutton.py        |  6 ++---
+ gr-qtgui/python/qtgui/range.py.cmakein        | 24 +++++++++----------
+ gr-qtgui/python/qtgui/togglebutton.py         |  6 ++---
+ gr-qtgui/python/qtgui/toggleswitch.py         |  6 ++---
+ 16 files changed, 56 insertions(+), 78 deletions(-)
+
+diff --git a/gr-qtgui/python/qtgui/CMakeLists.txt b/gr-qtgui/python/qtgui/CMakeLists.txt
+index 2d4c7f12e..d9333257c 100644
+--- a/gr-qtgui/python/qtgui/CMakeLists.txt
++++ b/gr-qtgui/python/qtgui/CMakeLists.txt
+@@ -8,7 +8,7 @@
+ ########################################################################
+ include(GrPython)
+ 
+-set(PY_QT_IMPORT "from PyQt5 import Qt, QtCore, QtWidgets")
++set(PY_QT_IMPORT "from qtpy import QtCore, QtWidgets, QtGui")
+ 
+ configure_file(range.py.cmakein "${CMAKE_CURRENT_BINARY_DIR}/range.py" @ONLY)
+ configure_file(util.py.cmakein "${CMAKE_CURRENT_BINARY_DIR}/util.py" @ONLY)
+diff --git a/gr-qtgui/python/qtgui/auto_correlator_sink.py b/gr-qtgui/python/qtgui/auto_correlator_sink.py
+index d1aa7728a..a3493dcb3 100644
+--- a/gr-qtgui/python/qtgui/auto_correlator_sink.py
++++ b/gr-qtgui/python/qtgui/auto_correlator_sink.py
+@@ -10,15 +10,15 @@
+ #
+ 
+ import math
+-import sip
++
+ 
+ from gnuradio import gr
+ from gnuradio import qtgui
+ from gnuradio import blocks, fft, filter
+ 
+-from PyQt5 import QtGui
+-from PyQt5.QtWidgets import QWidget
+-
++from qtpy import QtGui
++from qtpy.QtWidgets import QWidget
++import qtpy.sip as sip
+ 
+ class Normalize(gr.hier_block2):
+     def __init__(self, vecsize=1024):
+diff --git a/gr-qtgui/python/qtgui/azelplot.py b/gr-qtgui/python/qtgui/azelplot.py
+index e091f7cc0..aad4d621b 100644
+--- a/gr-qtgui/python/qtgui/azelplot.py
++++ b/gr-qtgui/python/qtgui/azelplot.py
+@@ -9,7 +9,7 @@
+ #
+ #
+ 
+-from PyQt5 import QtWidgets
++from qtpy import QtWidgets
+ import numpy as np
+ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+ from matplotlib.figure import Figure
+diff --git a/gr-qtgui/python/qtgui/compass.py b/gr-qtgui/python/qtgui/compass.py
+index 1d466ff7f..4e919e1c5 100644
+--- a/gr-qtgui/python/qtgui/compass.py
++++ b/gr-qtgui/python/qtgui/compass.py
+@@ -14,14 +14,9 @@ import numpy
+ from gnuradio import gr
+ import pmt
+ 
+-# First Qt and 2nd Qt are different.  You'll get errors if they're both not available,
+-# hence the import-as to avoid name collisions
+-
+-from PyQt5 import Qt
+-from PyQt5.QtCore import Qt as Qtc
+-from PyQt5.QtCore import pyqtSignal, QPoint, pyqtProperty
+-from PyQt5.QtWidgets import QFrame, QWidget, QVBoxLayout, QHBoxLayout, QLabel
+-from PyQt5.QtGui import QPainter, QPalette, QFont, QFontMetricsF, QPen, QPolygon, QColor, QBrush
++from qtpy.QtCore import Signal, Property
++from qtpy.QtWidgets import QFrame, QWidget, QVBoxLayout, QHBoxLayout, QLabel
++from qtpy.QtGui import QPainter, QPalette, QFont, QFontMetricsF, QPen, QPolygon, QColor, QBrush
+ 
+ NeedleFull = 1
+ NeedleIndicator = 0
+@@ -79,7 +74,7 @@ class LabeledCompass(QFrame):
+ 
+ 
+ class Compass(QWidget):
+-    angleChanged = pyqtSignal(float)
++    angleChanged = Signal(float)
+ 
+     def __init__(self, min_size, update_time, setDebug=False, needleType=NeedleFull,
+                  position=1, backgroundColor='default'):
+@@ -237,7 +232,7 @@ class Compass(QWidget):
+             self.angleChanged.emit(angle)
+             self.update()
+ 
+-    angle = pyqtProperty(float, angle, change_angle)
++    angle = Property(float, angle, change_angle)
+ 
+ 
+ class GrCompass(gr.sync_block, LabeledCompass):
+diff --git a/gr-qtgui/python/qtgui/dialcontrol.py b/gr-qtgui/python/qtgui/dialcontrol.py
+index 2e82bfa15..c3f5e9286 100644
+--- a/gr-qtgui/python/qtgui/dialcontrol.py
++++ b/gr-qtgui/python/qtgui/dialcontrol.py
+@@ -9,10 +9,8 @@
+ #
+ #
+ 
+-from PyQt5.QtWidgets import QFrame, QVBoxLayout, QLabel
+-from PyQt5 import Qt
+-from PyQt5.QtCore import Qt as Qtc
+-from PyQt5.QtCore import QSize
++from qtpy import QtWidgets
++from qtpy.QtWidgets import QFrame, QVBoxLayout, QLabel
+ from gnuradio import gr
+ import pmt
+ 
+@@ -75,10 +73,10 @@ class LabeledDialControl(QFrame):
+         self.lblcontrol.setText(textstr)
+ 
+ 
+-class DialControl(Qt.QDial):
++class DialControl(QtWidgets.QDial):
+     def __init__(self, minimum=0, maximum=100, defaultvalue=0, backgroundColor='default',
+                  lablelCallback=None, changedCallback=None, minsize=100):
+-        Qt.QDial.__init__(self)
++        QtWidgets.QDial.__init__(self)
+ 
+         if backgroundColor != "default":
+             self.setStyleSheet("background-color: " + backgroundColor + ";")
+diff --git a/gr-qtgui/python/qtgui/dialgauge.py b/gr-qtgui/python/qtgui/dialgauge.py
+index 136b34852..4136b8177 100644
+--- a/gr-qtgui/python/qtgui/dialgauge.py
++++ b/gr-qtgui/python/qtgui/dialgauge.py
+@@ -10,10 +10,8 @@
+ #
+ 
+ import sys
+-from PyQt5.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+-from PyQt5.QtGui import QPainter, QColor, QPen, QFont, QFontMetricsF
+-from PyQt5 import QtCore
+-from PyQt5.QtCore import Qt as Qtc
++from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
++from qtpy.QtGui import QPainter, QColor, QPen, QFont, QFontMetricsF
+ 
+ from gnuradio import gr
+ import pmt
+diff --git a/gr-qtgui/python/qtgui/digitalnumbercontrol.py b/gr-qtgui/python/qtgui/digitalnumbercontrol.py
+index 87d3eb1ad..2265d46bb 100644
+--- a/gr-qtgui/python/qtgui/digitalnumbercontrol.py
++++ b/gr-qtgui/python/qtgui/digitalnumbercontrol.py
+@@ -9,12 +9,9 @@
+ #
+ #
+ 
+-from PyQt5.QtWidgets import QFrame, QVBoxLayout, QLabel
+-from PyQt5.QtGui import QPainter, QPixmap, QFont, QFontMetrics, QBrush, QColor
+-from PyQt5.QtCore import Qt, QSize
+-from PyQt5 import QtCore
+-from PyQt5.QtCore import Qt as Qtc
+-from PyQt5.QtCore import pyqtSignal
++from qtpy.QtCore import Signal
++from qtpy.QtWidgets import QFrame, QVBoxLayout, QLabel
++from qtpy.QtGui import QPainter, QPixmap, QFont, QFontMetrics, QBrush, QColor
+ 
+ from gnuradio import gr
+ import pmt
+@@ -77,8 +74,8 @@ class LabeledDigitalNumberControl(QFrame):
+ 
+ class DigitalNumberControl(QFrame):
+     # Notifies to avoid thread conflicts on paints
+-    updateInt = pyqtSignal(int)
+-    updateFloat = pyqtSignal(float)
++    updateInt = Signal(int)
++    updateFloat = Signal(float)
+ 
+     def __init__(
+         self,
+diff --git a/gr-qtgui/python/qtgui/distanceradar.py b/gr-qtgui/python/qtgui/distanceradar.py
+index 7184a2dde..00886604a 100644
+--- a/gr-qtgui/python/qtgui/distanceradar.py
++++ b/gr-qtgui/python/qtgui/distanceradar.py
+@@ -10,7 +10,7 @@
+ #
+ 
+ import sys
+-from PyQt5 import QtWidgets
++from qtpy import QtWidgets
+ import numpy as np
+ import matplotlib.pyplot as plt
+ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+diff --git a/gr-qtgui/python/qtgui/graphicitem.py b/gr-qtgui/python/qtgui/graphicitem.py
+index 871aa0949..183dd1898 100644
+--- a/gr-qtgui/python/qtgui/graphicitem.py
++++ b/gr-qtgui/python/qtgui/graphicitem.py
+@@ -9,10 +9,8 @@
+ #
+ #
+ 
+-from PyQt5.QtWidgets import QLabel
+-from PyQt5.QtGui import QPixmap, QPainter
+-from PyQt5.QtCore import Qt as Qtc
+-from PyQt5.QtCore import QSize
++from qtpy.QtWidgets import QLabel
++from qtpy.QtGui import QPixmap, QPainter
+ 
+ import os
+ import sys
+diff --git a/gr-qtgui/python/qtgui/ledindicator.py b/gr-qtgui/python/qtgui/ledindicator.py
+index 89fdc4111..38b9b9935 100644
+--- a/gr-qtgui/python/qtgui/ledindicator.py
++++ b/gr-qtgui/python/qtgui/ledindicator.py
+@@ -9,11 +9,8 @@
+ #
+ #
+ 
+-from PyQt5.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+-from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QFontMetricsF
+-from PyQt5.QtCore import Qt as Qtc
+-from PyQt5.QtCore import QPoint
+-from PyQt5.QtGui import QRadialGradient
++from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
++from qtpy.QtGui import QPainter, QBrush, QColor, QPen, QFontMetricsF, QRadialGradient
+ 
+ from gnuradio import gr
+ import pmt
+diff --git a/gr-qtgui/python/qtgui/levelgauge.py b/gr-qtgui/python/qtgui/levelgauge.py
+index 770340003..b814aa350 100644
+--- a/gr-qtgui/python/qtgui/levelgauge.py
++++ b/gr-qtgui/python/qtgui/levelgauge.py
+@@ -12,11 +12,9 @@
+ from threading import Lock
+ import sys
+ 
+-from PyQt5.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel, QProgressBar
+-from PyQt5.QtGui import QColor
+-from PyQt5.QtCore import Qt as Qtc
+-from PyQt5.QtCore import pyqtSignal
+-from PyQt5.QtGui import QPalette
++from qtpy.QtCore import Signal
++from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel, QProgressBar
++from qtpy.QtGui import QColor, QPalette
+ 
+ from gnuradio import gr
+ import pmt
+@@ -107,8 +105,8 @@ class LabeledLevelGauge(QFrame):
+ 
+ class LevelGauge(QProgressBar):
+     # Notifies to avoid thread conflicts on paints
+-    updateInt = pyqtSignal(int)
+-    updateFloat = pyqtSignal(float)
++    updateInt = Signal(int)
++    updateFloat = Signal(float)
+ 
+     def __init__(self, barColor='blue', backgroundColor='white', minValue=0, maxValue=100,
+                  maxSize=80, isVertical=True, isFloat=False, scaleFactor=1, showValue=False,
+diff --git a/gr-qtgui/python/qtgui/msgcheckbox.py b/gr-qtgui/python/qtgui/msgcheckbox.py
+index 252741884..329adcd02 100644
+--- a/gr-qtgui/python/qtgui/msgcheckbox.py
++++ b/gr-qtgui/python/qtgui/msgcheckbox.py
+@@ -9,17 +9,16 @@
+ #
+ #
+ 
+-from PyQt5 import Qt
+-from PyQt5.QtWidgets import QFrame, QVBoxLayout
+-from PyQt5.QtCore import Qt as Qtc
++from qtpy import QtWidgets
++from qtpy.QtWidgets import QFrame, QVBoxLayout
+ 
+ from gnuradio import gr
+ import pmt
+ 
+ 
+-class CheckBoxEx(Qt.QCheckBox):
++class CheckBoxEx(QtWidgets.QCheckBox):
+     def __init__(self, lbl, callback=None):
+-        Qt.QCheckBox.__init__(self)
++        QtWidgets.QCheckBox.__init__(self)
+         self.setText(lbl)
+         self.callback = callback
+ 
+diff --git a/gr-qtgui/python/qtgui/msgpushbutton.py b/gr-qtgui/python/qtgui/msgpushbutton.py
+index 358bfc428..33ff1849f 100644
+--- a/gr-qtgui/python/qtgui/msgpushbutton.py
++++ b/gr-qtgui/python/qtgui/msgpushbutton.py
+@@ -9,12 +9,12 @@
+ #
+ #
+ 
+-from PyQt5 import Qt
++from qtpy import QtWidgets
+ from gnuradio import gr
+ import pmt
+ 
+ 
+-class MsgPushButton(gr.sync_block, Qt.QPushButton):
++class MsgPushButton(gr.sync_block, QtWidgets.QPushButton):
+     """
+     This block creates a variable push button that creates a message
+     when clicked. Leave the label blank to use the variable id as
+@@ -25,7 +25,7 @@ class MsgPushButton(gr.sync_block, Qt.QPushButton):
+     def __init__(self, lbl, msgName, msgValue, relBackColor, relFontColor):
+         gr.sync_block.__init__(self, name="MsgPushButton",
+                                in_sig=None, out_sig=None)
+-        Qt.QPushButton.__init__(self, lbl)
++        QtWidgets.QPushButton.__init__(self, lbl)
+ 
+         self.lbl = lbl
+         self.msgName = msgName
+diff --git a/gr-qtgui/python/qtgui/range.py.cmakein b/gr-qtgui/python/qtgui/range.py.cmakein
+index 6da89e768..20a8269d0 100755
+--- a/gr-qtgui/python/qtgui/range.py.cmakein
++++ b/gr-qtgui/python/qtgui/range.py.cmakein
+@@ -53,9 +53,9 @@ class Range(object):
+             val = 0
+         return (val * self.step + self.min)
+ 
+-class QEngValidator(Qt.QValidator):
++class QEngValidator(QtGui.QValidator):
+     def __init__(self, minimum, maximum, parent):
+-        Qt.QValidator.__init__(self, parent)
++        QtGui.QValidator.__init__(self, parent)
+         self.min = minimum
+         self.max = maximum
+         self.parent = parent
+@@ -68,9 +68,9 @@ class QEngValidator(Qt.QValidator):
+             if re.match(self.re, s):
+                 self.parent.setStyleSheet("background-color: yellow;"
+                                           "color: black")
+-                return (Qt.QValidator.Intermediate, s, pos)
++                return (QtGui.QValidator.Intermediate, s, pos)
+             else:
+-                return (Qt.QValidator.Invalid, s, pos)
++                return (QtGui.QValidator.Invalid, s, pos)
+ 
+         if self.max is not None and val > self.max:
+             self.parent.setStyleSheet("background-color: yellow;"
+@@ -81,14 +81,14 @@ class QEngValidator(Qt.QValidator):
+         else:
+             self.parent.setStyleSheet("")
+ 
+-        return (Qt.QValidator.Acceptable, s, pos)
++        return (QtGui.QValidator.Acceptable, s, pos)
+ 
+     def fixup(self, s):
+         pass
+ 
+ 
+ class RangeWidget(QtWidgets.QWidget):
+-    def __init__(self, ranges, slot, label, style, rangeType=float, orientation=QtCore.Qt.Horizontal):
++    def __init__(self, ranges, slot, label, style, rangeType=float, orientation=QtCore.Qt.Orientation.Horizontal):
+         """ Creates the QT Range widget """
+         QtWidgets.QWidget.__init__(self)
+ 
+@@ -163,7 +163,7 @@ class RangeWidget(QtWidgets.QWidget):
+     class Slider(QtWidgets.QSlider):
+         """ Creates the range using a slider """
+ 
+-        def __init__(self, parent, ranges, slot, rangeType=float, orientation=QtCore.Qt.Horizontal):
++        def __init__(self, parent, ranges, slot, rangeType=float, orientation=QtCore.Qt.Orientation.Horizontal):
+             QtWidgets.QSlider.__init__(self, orientation, parent)
+ 
+             self.rangeType = rangeType
+@@ -199,7 +199,7 @@ class RangeWidget(QtWidgets.QWidget):
+ 
+         def mousePressEvent(self, event):
+             if((event.button() == QtCore.Qt.LeftButton)):
+-                if self.orientation == QtCore.Qt.Horizontal:
++                if self.orientation == QtCore.Qt.Orientation.Horizontal:
+                     new = self.minimum() + ((self.maximum() - self.minimum()) * event.x()) / self.width()
+                 else:
+                     new = self.minimum() + ((self.maximum() - self.minimum()) * event.y()) / self.height()
+@@ -210,7 +210,7 @@ class RangeWidget(QtWidgets.QWidget):
+             QtWidgets.QSlider.repaint(self)
+ 
+         def mouseMoveEvent(self, event):
+-            if self.orientation == QtCore.Qt.Horizontal:
++            if self.orientation == QtCore.Qt.Orientation.Horizontal:
+                 new = self.minimum() + ((self.maximum() - self.minimum()) * event.x()) / self.width()
+             else:
+                 new = self.minimum() + ((self.maximum() - self.minimum()) * event.y()) / self.height()
+@@ -266,7 +266,7 @@ class RangeWidget(QtWidgets.QWidget):
+     class CounterSlider(QtWidgets.QWidget):
+         """ Creates the range using a counter and slider """
+ 
+-        def __init__(self, parent, ranges, slot, rangeType=float, orientation=QtCore.Qt.Horizontal):
++        def __init__(self, parent, ranges, slot, rangeType=float, orientation=QtCore.Qt.Orientation.Horizontal):
+             QtWidgets.QWidget.__init__(self, parent)
+ 
+             self.rangeType = rangeType
+@@ -326,7 +326,7 @@ class RangeWidget(QtWidgets.QWidget):
+     class EngSlider(QtWidgets.QWidget):
+         """ Creates the range using a counter and slider """
+ 
+-        def __init__(self, parent, ranges, slot, rangeType=float, orientation=QtCore.Qt.Horizontal):
++        def __init__(self, parent, ranges, slot, rangeType=float, orientation=QtCore.Qt.Orientation.Horizontal):
+             QtWidgets.QWidget.__init__(self, parent)
+ 
+             self.first = True
+@@ -392,7 +392,7 @@ class RangeWidget(QtWidgets.QWidget):
+ 
+ 
+ if __name__ == "__main__":
+-    from PyQt5 import Qt
++    from qtpy import Qt
+     import sys
+ 
+     def valueChanged(frequency):
+diff --git a/gr-qtgui/python/qtgui/togglebutton.py b/gr-qtgui/python/qtgui/togglebutton.py
+index cfa0f91d3..041ad0e47 100644
+--- a/gr-qtgui/python/qtgui/togglebutton.py
++++ b/gr-qtgui/python/qtgui/togglebutton.py
+@@ -10,12 +10,12 @@
+ #
+ 
+ 
+-from PyQt5 import Qt
++from qtpy import QtWidgets
+ from gnuradio import gr
+ import pmt
+ 
+ 
+-class ToggleButton(gr.sync_block, Qt.QPushButton):
++class ToggleButton(gr.sync_block, QtWidgets.QPushButton):
+     """
+     This block creates a variable toggle button. Leave the label
+     blank to use the variable id as the label. A toggle button
+@@ -29,7 +29,7 @@ class ToggleButton(gr.sync_block, Qt.QPushButton):
+     def __init__(self, callback, lbl, pressedReleasedDict, initPressed, outputmsgname='value'):
+         gr.sync_block.__init__(self, name="ToggleButton",
+                                in_sig=None, out_sig=None)
+-        Qt.QPushButton.__init__(self, lbl)
++        QtWidgets.QPushButton.__init__(self, lbl)
+         self.setCheckable(True)
+         self.lbl = lbl
+         self.callback = callback
+diff --git a/gr-qtgui/python/qtgui/toggleswitch.py b/gr-qtgui/python/qtgui/toggleswitch.py
+index 4d62f2752..fdb3a00c1 100644
+--- a/gr-qtgui/python/qtgui/toggleswitch.py
++++ b/gr-qtgui/python/qtgui/toggleswitch.py
+@@ -12,10 +12,8 @@
+ from gnuradio import gr
+ import pmt
+ 
+-from PyQt5.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+-from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QFontMetricsF
+-from PyQt5.QtCore import Qt as Qtc
+-from PyQt5.QtCore import QRect
++from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
++from qtpy.QtGui import QPainter, QBrush, QColor, QPen, QFontMetricsF
+ 
+ 
+ class LabeledToggleSwitch(QFrame):
+-- 
+2.52.0
+
+From 0e891e42d5908e59224eb24a074c4f37b6cf46e7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Thu, 6 Feb 2025 17:23:28 +0100
+Subject: [PATCH 08/22] runtime/uhd: Don't use "Qt." for widgets
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ .../python/gnuradio/ctrlport/gr-ctrlport-monitor          | 8 ++++----
+ .../python/gnuradio/ctrlport/gr-perf-monitorx             | 2 +-
+ gr-uhd/apps/uhd_siggen_gui                                | 2 +-
+ gr-uhd/python/uhd/replaymsgpushbutton.py                  | 4 ++--
+ 4 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor b/gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor
+index 01931aee3..2ca8aaef6 100644
+--- a/gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor
++++ b/gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor
+@@ -494,7 +494,7 @@ class UpdaterWindow(Qt.QDialog):
+             has_set = False
+ 
+         if(has_set is False):
+-            self.cancelButton = Qt.QPushButton("Ok")
++            self.cancelButton = QtWidgets.QPushButton("Ok")
+             self.cancelButton.clicked.connect(self.reject)
+ 
+             self.buttonlayout = Qt.QHBoxLayout()
+@@ -505,9 +505,9 @@ class UpdaterWindow(Qt.QDialog):
+             self.textInput = Qt.QLineEdit()
+             self.layout.addWidget(self.textInput)
+ 
+-            self.applyButton = Qt.QPushButton("Apply")
+-            self.setButton = Qt.QPushButton("OK")
+-            self.cancelButton = Qt.QPushButton("Cancel")
++            self.applyButton = QtWidgets.QPushButton("Apply")
++            self.setButton = QtWidgets.QPushButton("OK")
++            self.cancelButton = QtWidgets.QPushButton("Cancel")
+ 
+             rv = radio.getKnobs([key])
+             val = rv[key].value
+diff --git a/gnuradio-runtime/python/gnuradio/ctrlport/gr-perf-monitorx b/gnuradio-runtime/python/gnuradio/ctrlport/gr-perf-monitorx
+index b58603fa4..698329d14 100644
+--- a/gnuradio-runtime/python/gnuradio/ctrlport/gr-perf-monitorx
++++ b/gnuradio-runtime/python/gnuradio/ctrlport/gr-perf-monitorx
+@@ -282,7 +282,7 @@ class DataTable(Qt.QWidget):
+ 
+         # Create a checkbox to toggle sorting of graphs
+         self._sort = False
+-        self.checksort = Qt.QCheckBox("Sort")
++        self.checksort = QtWidgets.QCheckBox("Sort")
+         self.checksort.setCheckState(self._sort)
+         self.hlayout.addWidget(self.checksort)
+         self.checksort.stateChanged.connect(self.checksort_changed)
+diff --git a/gr-uhd/apps/uhd_siggen_gui b/gr-uhd/apps/uhd_siggen_gui
+index 22bb2bf00..6e202fe55 100755
+--- a/gr-uhd/apps/uhd_siggen_gui
++++ b/gr-uhd/apps/uhd_siggen_gui
+@@ -253,7 +253,7 @@ class uhd_siggen_gui(Qt.QWidget):
+                 str(self._samp_rate_line_edit.text())))
+         )
+         self.top_grid_layout.addWidget(self._samp_rate_tool_bar, 7, 0, 1, 2)
+-        _sync_phases_push_button = Qt.QPushButton("Sync LOs")
++        _sync_phases_push_button = QtWidgets.QPushButton("Sync LOs")
+         _sync_phases_push_button.pressed.connect(
+             lambda: self.set_sync_phases(True))
+         _sync_phases_push_button.setEnabled(bool(len(self._sg.channels) > 1))
+diff --git a/gr-uhd/python/uhd/replaymsgpushbutton.py b/gr-uhd/python/uhd/replaymsgpushbutton.py
+index e9ae4549f..069333fd7 100644
+--- a/gr-uhd/python/uhd/replaymsgpushbutton.py
++++ b/gr-uhd/python/uhd/replaymsgpushbutton.py
+@@ -12,7 +12,7 @@ from gnuradio import gr
+ import pmt
+ 
+ 
+-class ReplayMsgPushButton(gr.sync_block, Qt.QPushButton):
++class ReplayMsgPushButton(gr.sync_block, QtWidgets.QPushButton):
+     """
+     This block creates a variable push button that creates a message
+     when clicked. The message will be formatted as a dictionary to pass
+@@ -23,7 +23,7 @@ class ReplayMsgPushButton(gr.sync_block, Qt.QPushButton):
+                  command, port, offset=-1, size=-1, time=-1, repeat=False):
+         gr.sync_block.__init__(self, name="ReplayMsgPushButton",
+                                in_sig=None, out_sig=None)
+-        Qt.QPushButton.__init__(self, lbl)
++        QtWidgets.QPushButton.__init__(self, lbl)
+ 
+         self.lbl = lbl
+ 
+-- 
+2.52.0
+
+From ff3cb70e9b604ef25ae45956ce3ede6b9bbcc606 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Thu, 6 Feb 2025 17:31:07 +0100
+Subject: [PATCH 09/22] qtgui: Use qtpy in uhd_display.py
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ gr-qtgui/apps/uhd_display.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/gr-qtgui/apps/uhd_display.py b/gr-qtgui/apps/uhd_display.py
+index be501a018..1804558f9 100644
+--- a/gr-qtgui/apps/uhd_display.py
++++ b/gr-qtgui/apps/uhd_display.py
+@@ -19,10 +19,10 @@ import sys
+ 
+ try:
+     from gnuradio import qtgui
+-    from PyQt5 import QtGui, QtCore
+-    import sip
+-except ImportError:
+-    print("Error: Program requires PyQt5 and gr-qtgui.")
++    from qtpy import QtWidgets, QtCore
++    import qtpy.sip as sip
++except ImportError as e:
++    sys.stderr.write(f"Error: Program requires PyQt/PySide and gr-qtgui: {str(e)}\n")
+     sys.exit(1)
+ 
+ try:
+-- 
+2.52.0
+
+From 50421ebc8092d93c63f54f2f73c13d653f4f97d1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Thu, 6 Feb 2025 17:41:29 +0100
+Subject: [PATCH 10/22] grc-qt: Prefer PyQt6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ grc/main.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/grc/main.py b/grc/main.py
+index d13048a79..aad065222 100755
+--- a/grc/main.py
++++ b/grc/main.py
+@@ -185,6 +185,10 @@ def run_qt(args, log):
+ 
+ 
+ def main():
++    # Prefer PyQt6, but accept other flavors
++    if os.environ.get("QT_API") is None:
++        os.environ["QT_API"] = "pyqt6"
++
+     grc_version_from_config = ""
+     grc_qt_config_file = paths.get_config_file_path('grc_qt.conf')
+     if os.path.isfile(grc_qt_config_file):
+-- 
+2.52.0
+
+From 5b5a3e11d846dca2eace7548fe72ca32a3e1bf80 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?H=C3=A5kon=20V=C3=A5gsether?= <hakon.vagsether@gmail.com>
+Date: Thu, 6 Feb 2025 18:04:54 +0100
+Subject: [PATCH 11/22] qtgui: Don't use globalPos() (deprecated)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Håkon Vågsether <hakon.vagsether@gmail.com>
+---
+ gr-qtgui/lib/displayform.cc       | 2 +-
+ gr-qtgui/lib/matrix_display.cc    | 2 +-
+ gr-qtgui/lib/numberdisplayform.cc | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/gr-qtgui/lib/displayform.cc b/gr-qtgui/lib/displayform.cc
+index 090c1369d..66302ab6a 100644
+--- a/gr-qtgui/lib/displayform.cc
++++ b/gr-qtgui/lib/displayform.cc
+@@ -153,7 +153,7 @@ void DisplayForm::mousePressEvent(QMouseEvent* e)
+         for (unsigned int i = 0; i < d_nplots; ++i) {
+             d_lines_menu[i]->setTitle(d_display_plot->getLineLabel(i));
+         }
+-        d_menu->exec(e->globalPos());
++        d_menu->exec(e->globalPosition().toPoint());
+     }
+ }
+ 
+diff --git a/gr-qtgui/lib/matrix_display.cc b/gr-qtgui/lib/matrix_display.cc
+index ef1e47b51..8c59efccc 100644
+--- a/gr-qtgui/lib/matrix_display.cc
++++ b/gr-qtgui/lib/matrix_display.cc
+@@ -270,7 +270,7 @@ void matrix_display::mousePressEvent(QMouseEvent* e)
+         else
+             d_stop_act->setText(tr("Start"));
+ 
+-        d_menu->exec(e->globalPos());
++        d_menu->exec(e->globalPosition().toPoint());
+     }
+ }
+ 
+diff --git a/gr-qtgui/lib/numberdisplayform.cc b/gr-qtgui/lib/numberdisplayform.cc
+index ad7931340..46aae33f4 100644
+--- a/gr-qtgui/lib/numberdisplayform.cc
++++ b/gr-qtgui/lib/numberdisplayform.cc
+@@ -157,7 +157,7 @@ void NumberDisplayForm::mousePressEvent(QMouseEvent* e)
+         for (unsigned int i = 0; i < d_nplots; ++i) {
+             d_label_menu[i]->setTitle(label(i).c_str());
+         }
+-        d_menu->exec(e->globalPos());
++        d_menu->exec(e->globalPosition().toPoint());
+     }
+ }
+ 
+-- 
+2.52.0
+
+From 467cce5aad2e365105324a72c6b38d2bb4f287d1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marcus=20M=C3=BCller?= <mmueller@gnuradio.org>
+Date: Tue, 11 Feb 2025 16:13:50 +0100
+Subject: [PATCH 12/22] qtgui: accomodate both Qt5 andf Qt6 when asking for
+ global mouse position
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Marcus Müller <mmueller@gnuradio.org>
+---
+ gr-qtgui/lib/displayform.cc       | 5 +++++
+ gr-qtgui/lib/matrix_display.cc    | 4 ++++
+ gr-qtgui/lib/numberdisplayform.cc | 5 +++++
+ 3 files changed, 14 insertions(+)
+
+diff --git a/gr-qtgui/lib/displayform.cc b/gr-qtgui/lib/displayform.cc
+index 66302ab6a..ddd4315b1 100644
+--- a/gr-qtgui/lib/displayform.cc
++++ b/gr-qtgui/lib/displayform.cc
+@@ -153,7 +153,12 @@ void DisplayForm::mousePressEvent(QMouseEvent* e)
+         for (unsigned int i = 0; i < d_nplots; ++i) {
+             d_lines_menu[i]->setTitle(d_display_plot->getLineLabel(i));
+         }
++#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
++
++        d_menu->exec(e->globalPos());
++#else
+         d_menu->exec(e->globalPosition().toPoint());
++#endif
+     }
+ }
+ 
+diff --git a/gr-qtgui/lib/matrix_display.cc b/gr-qtgui/lib/matrix_display.cc
+index 8c59efccc..850a0b62e 100644
+--- a/gr-qtgui/lib/matrix_display.cc
++++ b/gr-qtgui/lib/matrix_display.cc
+@@ -269,8 +269,12 @@ void matrix_display::mousePressEvent(QMouseEvent* e)
+             d_stop_act->setText(tr("Stop"));
+         else
+             d_stop_act->setText(tr("Start"));
++#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+ 
++        d_menu->exec(e->globalPos());
++#else
+         d_menu->exec(e->globalPosition().toPoint());
++#endif
+     }
+ }
+ 
+diff --git a/gr-qtgui/lib/numberdisplayform.cc b/gr-qtgui/lib/numberdisplayform.cc
+index 46aae33f4..391001c84 100644
+--- a/gr-qtgui/lib/numberdisplayform.cc
++++ b/gr-qtgui/lib/numberdisplayform.cc
+@@ -157,7 +157,12 @@ void NumberDisplayForm::mousePressEvent(QMouseEvent* e)
+         for (unsigned int i = 0; i < d_nplots; ++i) {
+             d_label_menu[i]->setTitle(label(i).c_str());
+         }
++#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
++
++        d_menu->exec(e->globalPos());
++#else
+         d_menu->exec(e->globalPosition().toPoint());
++#endif
+     }
+ }
+ 
+-- 
+2.52.0
+
+From 98b1322251e766613615aadadf0d1f338de5c832 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marcus=20M=C3=BCller?= <mmueller@gnuradio.org>
+Date: Tue, 11 Feb 2025 16:22:55 +0100
+Subject: [PATCH 13/22] qtgui: range: use QtWidget in place of Qt
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Marcus Müller <mmueller@gnuradio.org>
+---
+ gr-qtgui/python/qtgui/range.py.cmakein | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/gr-qtgui/python/qtgui/range.py.cmakein b/gr-qtgui/python/qtgui/range.py.cmakein
+index 20a8269d0..bd29b567c 100755
+--- a/gr-qtgui/python/qtgui/range.py.cmakein
++++ b/gr-qtgui/python/qtgui/range.py.cmakein
+@@ -103,9 +103,9 @@ class RangeWidget(QtWidgets.QWidget):
+         # Others have intermediate functions to map the value into the right range.
+         self.notifyChanged = slot
+ 
+-        layout = Qt.QHBoxLayout()
++        layout = QtWidgets.QHBoxLayout()
+         layout.setContentsMargins(0, 0, 0, 0)
+-        label = Qt.QLabel(label)
++        label = QtWidgets.QLabel(label)
+         layout.addWidget(label)
+ 
+         if style == "dial":
+@@ -280,7 +280,7 @@ class RangeWidget(QtWidgets.QWidget):
+                 parent, ranges, self.counterChanged, rangeType)
+ 
+             # Need another horizontal layout to wrap the other widgets.
+-            layout = Qt.QHBoxLayout()
++            layout = QtWidgets.QHBoxLayout()
+             layout.setContentsMargins(0, 0, 0, 0)
+             layout.setSpacing(10)
+             layout.addWidget(self.slider)
+@@ -341,7 +341,7 @@ class RangeWidget(QtWidgets.QWidget):
+                 parent, ranges, self.counterChanged, rangeType)
+ 
+             # Need another horizontal layout to wrap the other widgets.
+-            layout = Qt.QHBoxLayout()
++            layout = QtWidgets.QHBoxLayout()
+             layout.setContentsMargins(0, 0, 0, 0)
+             layout.addWidget(self.slider)
+             layout.addWidget(self.counter)
+-- 
+2.52.0
+
+From 15f6773095191f43e497a46d118d04d402c79c70 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marcus=20M=C3=BCller?= <mmueller@gnuradio.org>
+Date: Tue, 11 Feb 2025 17:18:33 +0100
+Subject: [PATCH 14/22] qtgui: Fix QtCore./Qt. imports
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Marcus Müller <mmueller@gnuradio.org>
+---
+ gr-qtgui/python/qtgui/compass.py              | 20 +++++++--------
+ gr-qtgui/python/qtgui/dialcontrol.py          |  5 ++--
+ gr-qtgui/python/qtgui/dialgauge.py            |  7 +++---
+ gr-qtgui/python/qtgui/digitalnumbercontrol.py | 16 ++++++------
+ gr-qtgui/python/qtgui/graphicitem.py          | 11 ++++----
+ gr-qtgui/python/qtgui/ledindicator.py         |  5 ++--
+ gr-qtgui/python/qtgui/levelgauge.py           | 14 +++++------
+ gr-qtgui/python/qtgui/msgcheckbox.py          | 25 ++++++++++---------
+ gr-qtgui/python/qtgui/toggleswitch.py         | 14 ++++++-----
+ 9 files changed, 62 insertions(+), 55 deletions(-)
+
+diff --git a/gr-qtgui/python/qtgui/compass.py b/gr-qtgui/python/qtgui/compass.py
+index 4e919e1c5..063434145 100644
+--- a/gr-qtgui/python/qtgui/compass.py
++++ b/gr-qtgui/python/qtgui/compass.py
+@@ -14,9 +14,9 @@ import numpy
+ from gnuradio import gr
+ import pmt
+ 
+-from qtpy.QtCore import Signal, Property
+-from qtpy.QtWidgets import QFrame, QWidget, QVBoxLayout, QHBoxLayout, QLabel
+-from qtpy.QtGui import QPainter, QPalette, QFont, QFontMetricsF, QPen, QPolygon, QColor, QBrush
++from qtpy.QtCore import Signal, Property, Qt
++from qtpy.QtWidgets import QFrame, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy
++from qtpy.QtGui import QPainter, QPalette, QFont, QFontMetricsF, QPen, QPolygon, QColor, QBrush, QPoint
+ 
+ NeedleFull = 1
+ NeedleIndicator = 0
+@@ -38,7 +38,7 @@ class LabeledCompass(QFrame):
+ 
+         self.lbl = lbl
+         self.lblcontrol = QLabel(lbl, self)
+-        self.lblcontrol.setAlignment(Qtc.AlignCenter)
++        self.lblcontrol.setAlignment(Qt.AlignCenter)
+ 
+         # add top or left
+         if lbl:
+@@ -54,7 +54,7 @@ class LabeledCompass(QFrame):
+             if position == 2 or position == 4:
+                 layout.addWidget(self.lblcontrol)
+ 
+-        layout.setAlignment(Qtc.AlignCenter | Qtc.AlignVCenter)
++        layout.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+         self.setLayout(layout)
+ 
+         if lbl:
+@@ -93,7 +93,7 @@ class Compass(QWidget):
+                            225: "225", 270: "270", 315: "315"}
+ 
+         self.setMinimumSize(min_size, min_size)
+-        self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)
++        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+ 
+         self.backgroundColor = backgroundColor
+         self.needleTipColor = 'red'
+@@ -121,7 +121,7 @@ class Compass(QWidget):
+             size = self.size()
+             center_x = size.width() / 2
+             diameter = size.height()
+-            brush = QBrush(QColor(self.backgroundColor), Qtc.SolidPattern)
++            brush = QBrush(QColor(self.backgroundColor), Qt.SolidPattern)
+             painter.setBrush(brush)
+             painter.setPen(QPen(QColor(self.scaleColor), 2))
+             painter.setRenderHint(QPainter.Antialiasing)
+@@ -169,7 +169,7 @@ class Compass(QWidget):
+         scale = min((self.width() - self._margins) / 120.0,
+                     (self.height() - self._margins) / 120.0)
+         painter.scale(scale, scale)
+-        painter.setPen(QPen(Qtc.NoPen))
++        painter.setPen(QPen(Qt.NoPen))
+ 
+         # Rotate surface for painting
+         intAngle = int(round(self._angle))
+@@ -206,7 +206,7 @@ class Compass(QWidget):
+ 
+             # Paint shadowed indicator
+             needleTipBrush = self.palette().brush(QPalette.Highlight)
+-            needleTipColor = Qtc.gray
++            needleTipColor = Qt.gray
+             needleTipBrush.setColor(needleTipColor)
+             painter.setBrush(needleTipBrush)
+ 
+@@ -268,7 +268,7 @@ class GrCompass(gr.sync_block, LabeledCompass):
+         try:
+             new_val = pmt.to_python(pmt.cdr(msg))
+ 
+-            if type(new_val) == float or type(new_val) == int:
++            if type(new_val) is float or type(new_val) is int:
+                 super().change_angle(float(new_val))
+             else:
+                 gr.log.error(
+diff --git a/gr-qtgui/python/qtgui/dialcontrol.py b/gr-qtgui/python/qtgui/dialcontrol.py
+index c3f5e9286..99ef196c3 100644
+--- a/gr-qtgui/python/qtgui/dialcontrol.py
++++ b/gr-qtgui/python/qtgui/dialcontrol.py
+@@ -11,6 +11,7 @@
+ 
+ from qtpy import QtWidgets
+ from qtpy.QtWidgets import QFrame, QVBoxLayout, QLabel
++from qtpy.QtCore import AlignCenter, QSize
+ from gnuradio import gr
+ import pmt
+ 
+@@ -32,7 +33,7 @@ class LabeledDialControl(QFrame):
+         self.scaleFactor = scaleFactor
+         self.lbl = lbl
+         self.lblcontrol = QLabel(lbl, self)
+-        self.lblcontrol.setAlignment(Qtc.AlignCenter)
++        self.lblcontrol.setAlignment(AlignCenter)
+ 
+         if self.showvalue:
+             textstr = self.buildTextStr(defaultvalue)
+@@ -46,7 +47,7 @@ class LabeledDialControl(QFrame):
+ 
+         layout.addWidget(self.numberControl)
+ 
+-        layout.setAlignment(Qtc.AlignCenter)
++        layout.setAlignment(AlignCenter)
+         self.setLayout(layout)
+         self.show()
+ 
+diff --git a/gr-qtgui/python/qtgui/dialgauge.py b/gr-qtgui/python/qtgui/dialgauge.py
+index 4136b8177..8e5f02b00 100644
+--- a/gr-qtgui/python/qtgui/dialgauge.py
++++ b/gr-qtgui/python/qtgui/dialgauge.py
+@@ -10,6 +10,7 @@
+ #
+ 
+ import sys
++from qtpy.QtCore import AlignCenter, AlignVCenter
+ from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+ from qtpy.QtGui import QPainter, QColor, QPen, QFont, QFontMetricsF
+ 
+@@ -36,7 +37,7 @@ class LabeledDialGauge(QFrame):
+         self.isFloat = isFloat
+ 
+         self.lblcontrol = QLabel(lbl, self)
+-        self.lblcontrol.setAlignment(Qtc.AlignCenter)
++        self.lblcontrol.setAlignment(AlignCenter)
+ 
+         # For whatever reason, the progressbar doesn't show the number in the bar if it's
+         # vertical, only if it's horizontal
+@@ -61,7 +62,7 @@ class LabeledDialGauge(QFrame):
+             if position == 2 or position == 4:
+                 layout.addWidget(self.lblcontrol)
+ 
+-        layout.setAlignment(Qtc.AlignCenter | Qtc.AlignVCenter)
++        layout.setAlignment(AlignCenter | AlignVCenter)
+         self.setLayout(layout)
+ 
+         self.show()
+@@ -199,7 +200,7 @@ class GrDialGauge(gr.sync_block, LabeledDialGauge):
+         try:
+             new_val = pmt.to_python(pmt.cdr(msg))
+ 
+-            if type(new_val) == float or type(new_val) == int:
++            if type(new_val) is float or type(new_val) is int:
+                 super().setValue(new_val)
+             else:
+                 gr.log.error("Value received was not an int or a float. "
+diff --git a/gr-qtgui/python/qtgui/digitalnumbercontrol.py b/gr-qtgui/python/qtgui/digitalnumbercontrol.py
+index 2265d46bb..190dfb3e3 100644
+--- a/gr-qtgui/python/qtgui/digitalnumbercontrol.py
++++ b/gr-qtgui/python/qtgui/digitalnumbercontrol.py
+@@ -9,7 +9,7 @@
+ #
+ #
+ 
+-from qtpy.QtCore import Signal
++from qtpy.QtCore import Signal, QSize, QRect, AlignCenter, AlignVCenter, AlignRight, SolidPattern
+ from qtpy.QtWidgets import QFrame, QVBoxLayout, QLabel
+ from qtpy.QtGui import QPainter, QPixmap, QFont, QFontMetrics, QBrush, QColor
+ 
+@@ -52,7 +52,7 @@ class LabeledDigitalNumberControl(QFrame):
+             self.hasLabel = False
+ 
+         layout.addWidget(self.numberControl)
+-        layout.setAlignment(Qtc.AlignCenter | Qtc.AlignVCenter)
++        layout.setAlignment(AlignCenter | AlignVCenter)
+         self.setLayout(layout)
+         self.show()
+ 
+@@ -276,7 +276,7 @@ class DigitalNumberControl(QFrame):
+             self.update()
+ 
+     def setFrequency(self, new_freq):
+-        if type(new_freq) == int:
++        if type(new_freq) is int:
+             self.updateInt.emit(new_freq)
+         else:
+             self.updateFloat.emit(new_freq)
+@@ -298,8 +298,8 @@ class DigitalNumberControl(QFrame):
+         size = self.size()
+         brush = QBrush()
+         brush.setColor(self.background_color)
+-        brush.setStyle(Qt.SolidPattern)
+-        rect = QtCore.QRect(2, 2, size.width() - 4, size.height() - 4)
++        brush.setStyle(SolidPattern)
++        rect = QRect(2, 2, size.width() - 4, size.height() - 4)
+         painter.fillRect(rect, brush)
+ 
+         self.numberFont.setPixelSize(int(0.9 * size.height()))
+@@ -316,9 +316,9 @@ class DigitalNumberControl(QFrame):
+         else:
+             textstr = str(self.getFrequency())
+ 
+-        rect = QtCore.QRect(0, 0, size.width() - 4, size.height())
++        rect = QRect(0, 0, size.width() - 4, size.height())
+ 
+-        painter.drawText(rect, Qt.AlignRight + Qt.AlignVCenter, textstr)
++        painter.drawText(rect, AlignRight + AlignVCenter, textstr)
+ 
+ 
+ class MsgDigitalNumberControl(gr.sync_block, LabeledDigitalNumberControl):
+@@ -364,7 +364,7 @@ class MsgDigitalNumberControl(gr.sync_block, LabeledDigitalNumberControl):
+         try:
+             new_val = pmt.to_python(pmt.cdr(msg))
+ 
+-            if type(new_val) == float or type(new_val) == int:
++            if type(new_val) is float or type(new_val) is int:
+                 self.call_var_callback(new_val)
+ 
+                 self.setValue(new_val)
+diff --git a/gr-qtgui/python/qtgui/graphicitem.py b/gr-qtgui/python/qtgui/graphicitem.py
+index 183dd1898..370231ee8 100644
+--- a/gr-qtgui/python/qtgui/graphicitem.py
++++ b/gr-qtgui/python/qtgui/graphicitem.py
+@@ -9,6 +9,7 @@
+ #
+ #
+ 
++from qtpy.QtCore import KeepAspectRatio, QSize
+ from qtpy.QtWidgets import QLabel
+ from qtpy.QtGui import QPixmap, QPainter
+ 
+@@ -87,7 +88,7 @@ class GrGraphicItem(gr.sync_block, QLabel):
+ 
+             # Check each dict item to make sure it's valid.
+             for curitem in itemlist:
+-                if type(curitem) == dict:
++                if type(curitem) is dict:
+                     if 'filename' not in curitem:
+                         gr.log.error(
+                             "Dictionary item did not contain the 'filename' key.")
+@@ -146,7 +147,7 @@ class GrGraphicItem(gr.sync_block, QLabel):
+                         w = newOverlay.width()
+                         h = newOverlay.height()
+                         newOverlay = newOverlay.scaled(int(w * scale), int(h * scale),
+-                                                       Qtc.KeepAspectRatio)
++                                                       KeepAspectRatio)
+                     painter.drawPixmap(
+                         curOverlay['x'], curOverlay['y'], newOverlay)
+                 except Exception as e:
+@@ -161,7 +162,7 @@ class GrGraphicItem(gr.sync_block, QLabel):
+         try:
+             new_val = pmt.to_python(pmt.cdr(msg))
+             image_file = new_val
+-            if type(new_val) == str:
++            if type(new_val) is str:
+                 if not os.path.isfile(image_file):
+                     gr.log.error("ERROR: Unable to find file " + image_file)
+                     return
+@@ -189,9 +190,9 @@ class GrGraphicItem(gr.sync_block, QLabel):
+             w = super().width()
+             h = super().height()
+ 
+-            self.pixmap = self.originalPixmap.scaled(w, h, Qtc.KeepAspectRatio)
++            self.pixmap = self.originalPixmap.scaled(w, h, KeepAspectRatio)
+         elif self.fixedSize and self.setWidth > 0 and self.setHeight > 0:
+             self.pixmap = self.originalPixmap.scaled(self.setWidth, self.setHeight,
+-                                                     Qtc.KeepAspectRatio)
++                                                     KeepAspectRatio)
+ 
+         self.updateGraphic()
+diff --git a/gr-qtgui/python/qtgui/ledindicator.py b/gr-qtgui/python/qtgui/ledindicator.py
+index 38b9b9935..1e84f3521 100644
+--- a/gr-qtgui/python/qtgui/ledindicator.py
++++ b/gr-qtgui/python/qtgui/ledindicator.py
+@@ -11,6 +11,7 @@
+ 
+ from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+ from qtpy.QtGui import QPainter, QBrush, QColor, QPen, QFontMetricsF, QRadialGradient
++from qtpy.QtCore import Qt as Qtc, QPoint
+ 
+ from gnuradio import gr
+ import pmt
+@@ -180,8 +181,8 @@ class GrLEDIndicator(gr.sync_block, LabeledLEDIndicator):
+         try:
+             new_val = pmt.to_python(pmt.cdr(msg))
+ 
+-            if type(new_val) == bool or type(new_val) == int:
+-                if type(new_val) == bool:
++            if type(new_val) is bool or type(new_val) == int:
++                if type(new_val) is bool:
+                     super().setState(new_val)
+                 else:
+                     if new_val == 1:
+diff --git a/gr-qtgui/python/qtgui/levelgauge.py b/gr-qtgui/python/qtgui/levelgauge.py
+index b814aa350..63fb5314d 100644
+--- a/gr-qtgui/python/qtgui/levelgauge.py
++++ b/gr-qtgui/python/qtgui/levelgauge.py
+@@ -12,7 +12,7 @@
+ from threading import Lock
+ import sys
+ 
+-from qtpy.QtCore import Signal
++from qtpy.QtCore import Signal, AlignCenter, AlignVCenter, Vertical, Horizontal
+ from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel, QProgressBar
+ from qtpy.QtGui import QColor, QPalette
+ 
+@@ -42,7 +42,7 @@ class LabeledLevelGauge(QFrame):
+         self.scaleFactor = scaleFactor
+ 
+         self.lblcontrol = QLabel(lbl, self)
+-        self.lblcontrol.setAlignment(Qtc.AlignCenter)
++        self.lblcontrol.setAlignment(AlignCenter)
+ 
+         # For whatever reason, the progressbar doesn't show the number in the bar if it's
+         # vertical, only if it's horizontal
+@@ -68,7 +68,7 @@ class LabeledLevelGauge(QFrame):
+             if position == 2 or position == 4:
+                 layout.addWidget(self.lblcontrol)
+ 
+-        layout.setAlignment(Qtc.AlignCenter | Qtc.AlignVCenter)
++        layout.setAlignment(AlignCenter | AlignVCenter)
+         self.setLayout(layout)
+ 
+         self.show()
+@@ -141,9 +141,9 @@ class LevelGauge(QProgressBar):
+         super().setMaximum(maxValue)
+ 
+         if isVertical:
+-            super().setOrientation(Qtc.Vertical)
++            super().setOrientation(Vertical)
+         else:
+-            super().setOrientation(Qtc.Horizontal)
++            super().setOrientation(Horizontal)
+ 
+     def onUpdateInt(self, new_value):
+         if new_value > super().maximum():
+@@ -166,7 +166,7 @@ class LevelGauge(QProgressBar):
+         self.lock.release()
+ 
+     def setValue(self, new_value):
+-        if type(new_value) == int:
++        if type(new_value) is int:
+             self.updateInt.emit(new_value)
+         else:
+             self.updateFloat.emit(new_value)
+@@ -206,7 +206,7 @@ class GrLevelGauge(gr.sync_block, LabeledLevelGauge):
+         try:
+             new_val = pmt.to_python(pmt.cdr(msg))
+ 
+-            if type(new_val) == float or type(new_val) == int:
++            if type(new_val) is float or type(new_val) is int:
+                 super().setValue(new_val)
+             else:
+                 gr.log.error(
+diff --git a/gr-qtgui/python/qtgui/msgcheckbox.py b/gr-qtgui/python/qtgui/msgcheckbox.py
+index 329adcd02..9571ef9d8 100644
+--- a/gr-qtgui/python/qtgui/msgcheckbox.py
++++ b/gr-qtgui/python/qtgui/msgcheckbox.py
+@@ -10,6 +10,7 @@
+ #
+ 
+ from qtpy import QtWidgets
++from qtpy.QtCore import AlignTop, AlignLeft, AlignBottom, AlignRight, AlignCenter, AlignVCenter
+ from qtpy.QtWidgets import QFrame, QVBoxLayout
+ 
+ from gnuradio import gr
+@@ -55,18 +56,18 @@ class MsgCheckBox(gr.sync_block, QFrame):
+         layout.addWidget(self.chkBox)
+ 
+         if alignment == 1:
+-            halign = Qtc.AlignCenter
++            halign = AlignCenter
+         elif alignment == 2:
+-            halign = Qtc.AlignLeft
++            halign = AlignLeft
+         else:
+-            halign = Qtc.AlignRight
++            halign = AlignRight
+ 
+         if valignment == 1:
+-            valign = Qtc.AlignVCenter
++            valign = AlignVCenter
+         elif valignment == 2:
+-            valign = Qtc.AlignTop
++            valign = AlignTop
+         else:
+-            valign = Qtc.AlignBottom
++            valign = AlignBottom
+ 
+         layout.setAlignment(halign | valign)
+         self.setLayout(layout)
+@@ -85,15 +86,15 @@ class MsgCheckBox(gr.sync_block, QFrame):
+         if self.chkBox.isChecked():
+             self.callback(self.pressReleasedDict['Pressed'])
+ 
+-            if type(self.pressReleasedDict['Pressed']) == bool:
++            if type(self.pressReleasedDict['Pressed']) is bool:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_bool(self.pressReleasedDict['Pressed'])))
+-            elif type(self.pressReleasedDict['Pressed']) == int:
++            elif type(self.pressReleasedDict['Pressed']) is int:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_long(self.pressReleasedDict['Pressed'])))
+-            elif type(self.pressReleasedDict['Pressed']) == float:
++            elif type(self.pressReleasedDict['Pressed']) is float:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_double(self.pressReleasedDict['Pressed'])))
+@@ -104,15 +105,15 @@ class MsgCheckBox(gr.sync_block, QFrame):
+         else:
+             self.callback(self.pressReleasedDict['Released'])
+ 
+-            if type(self.pressReleasedDict['Released']) == bool:
++            if type(self.pressReleasedDict['Released']) is bool:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_bool(self.pressReleasedDict['Released'])))
+-            elif type(self.pressReleasedDict['Released']) == int:
++            elif type(self.pressReleasedDict['Released']) is int:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_long(self.pressReleasedDict['Released'])))
+-            elif type(self.pressReleasedDict['Released']) == float:
++            elif type(self.pressReleasedDict['Released']) is float:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_double(self.pressReleasedDict['Released'])))
+diff --git a/gr-qtgui/python/qtgui/toggleswitch.py b/gr-qtgui/python/qtgui/toggleswitch.py
+index fdb3a00c1..ea254104e 100644
+--- a/gr-qtgui/python/qtgui/toggleswitch.py
++++ b/gr-qtgui/python/qtgui/toggleswitch.py
+@@ -12,6 +12,8 @@
+ from gnuradio import gr
+ import pmt
+ 
++from qtpy.QtCore import Qt as Qtc
++from qtpy.QtCore import QRect
+ from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+ from qtpy.QtGui import QPainter, QBrush, QColor, QPen, QFontMetricsF
+ 
+@@ -181,15 +183,15 @@ class GrToggleSwitch(gr.sync_block, LabeledToggleSwitch):
+                 self.callback(self.pressReleasedDict['Released'])
+ 
+         if new_val:
+-            if type(self.pressReleasedDict['Pressed']) == bool:
++            if type(self.pressReleasedDict['Pressed']) is bool:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_bool(self.pressReleasedDict['Pressed'])))
+-            elif type(self.pressReleasedDict['Pressed']) == int:
++            elif type(self.pressReleasedDict['Pressed']) is int:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_long(self.pressReleasedDict['Pressed'])))
+-            elif type(self.pressReleasedDict['Pressed']) == float:
++            elif type(self.pressReleasedDict['Pressed']) is float:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_double(self.pressReleasedDict['Pressed'])))
+@@ -198,15 +200,15 @@ class GrToggleSwitch(gr.sync_block, LabeledToggleSwitch):
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.intern(self.pressReleasedDict['Pressed'])))
+         else:
+-            if type(self.pressReleasedDict['Released']) == bool:
++            if type(self.pressReleasedDict['Released']) is bool:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_bool(self.pressReleasedDict['Released'])))
+-            elif type(self.pressReleasedDict['Released']) == int:
++            elif type(self.pressReleasedDict['Released']) is int:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_long(self.pressReleasedDict['Released'])))
+-            elif type(self.pressReleasedDict['Released']) == float:
++            elif type(self.pressReleasedDict['Released']) is float:
+                 self.message_port_pub(pmt.intern("state"),
+                                       pmt.cons(pmt.intern(self.outputmsgname),
+                                                pmt.from_double(self.pressReleasedDict['Released'])))
+-- 
+2.52.0
+
+From 19642a55ab4d62a171c08aec6a942db4edee4dfa Mon Sep 17 00:00:00 2001
+From: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+Date: Thu, 20 Feb 2025 12:14:57 +0100
+Subject: [PATCH 15/22] Fixing some enums that have changed between qt5 qt6
+
+Signed-off-by: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+---
+ gr-qtgui/python/qtgui/compass.py              |  4 ++--
+ gr-qtgui/python/qtgui/dialcontrol.py          |  6 +++---
+ gr-qtgui/python/qtgui/dialgauge.py            |  6 +++---
+ gr-qtgui/python/qtgui/digitalnumbercontrol.py |  8 ++++----
+ gr-qtgui/python/qtgui/graphicitem.py          |  8 ++++----
+ gr-qtgui/python/qtgui/levelgauge.py           | 10 +++++-----
+ gr-qtgui/python/qtgui/msgcheckbox.py          | 14 +++++++-------
+ 7 files changed, 28 insertions(+), 28 deletions(-)
+
+diff --git a/gr-qtgui/python/qtgui/compass.py b/gr-qtgui/python/qtgui/compass.py
+index 063434145..aa25a0d83 100644
+--- a/gr-qtgui/python/qtgui/compass.py
++++ b/gr-qtgui/python/qtgui/compass.py
+@@ -14,9 +14,9 @@ import numpy
+ from gnuradio import gr
+ import pmt
+ 
+-from qtpy.QtCore import Signal, Property, Qt
++from qtpy.QtCore import Signal, Property, Qt, QPoint
+ from qtpy.QtWidgets import QFrame, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy
+-from qtpy.QtGui import QPainter, QPalette, QFont, QFontMetricsF, QPen, QPolygon, QColor, QBrush, QPoint
++from qtpy.QtGui import QPainter, QPalette, QFont, QFontMetricsF, QPen, QPolygon, QColor, QBrush
+ 
+ NeedleFull = 1
+ NeedleIndicator = 0
+diff --git a/gr-qtgui/python/qtgui/dialcontrol.py b/gr-qtgui/python/qtgui/dialcontrol.py
+index 99ef196c3..48e966588 100644
+--- a/gr-qtgui/python/qtgui/dialcontrol.py
++++ b/gr-qtgui/python/qtgui/dialcontrol.py
+@@ -11,7 +11,7 @@
+ 
+ from qtpy import QtWidgets
+ from qtpy.QtWidgets import QFrame, QVBoxLayout, QLabel
+-from qtpy.QtCore import AlignCenter, QSize
++from qtpy.QtCore import Qt, QSize
+ from gnuradio import gr
+ import pmt
+ 
+@@ -33,7 +33,7 @@ class LabeledDialControl(QFrame):
+         self.scaleFactor = scaleFactor
+         self.lbl = lbl
+         self.lblcontrol = QLabel(lbl, self)
+-        self.lblcontrol.setAlignment(AlignCenter)
++        self.lblcontrol.setAlignment(Qt.AlignCenter)
+ 
+         if self.showvalue:
+             textstr = self.buildTextStr(defaultvalue)
+@@ -47,7 +47,7 @@ class LabeledDialControl(QFrame):
+ 
+         layout.addWidget(self.numberControl)
+ 
+-        layout.setAlignment(AlignCenter)
++        layout.setAlignment(Qt.AlignCenter)
+         self.setLayout(layout)
+         self.show()
+ 
+diff --git a/gr-qtgui/python/qtgui/dialgauge.py b/gr-qtgui/python/qtgui/dialgauge.py
+index 8e5f02b00..5cccefa62 100644
+--- a/gr-qtgui/python/qtgui/dialgauge.py
++++ b/gr-qtgui/python/qtgui/dialgauge.py
+@@ -10,7 +10,7 @@
+ #
+ 
+ import sys
+-from qtpy.QtCore import AlignCenter, AlignVCenter
++from qtpy.QtCore import Qt
+ from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+ from qtpy.QtGui import QPainter, QColor, QPen, QFont, QFontMetricsF
+ 
+@@ -37,7 +37,7 @@ class LabeledDialGauge(QFrame):
+         self.isFloat = isFloat
+ 
+         self.lblcontrol = QLabel(lbl, self)
+-        self.lblcontrol.setAlignment(AlignCenter)
++        self.lblcontrol.setAlignment(Qt.AlignCenter)
+ 
+         # For whatever reason, the progressbar doesn't show the number in the bar if it's
+         # vertical, only if it's horizontal
+@@ -62,7 +62,7 @@ class LabeledDialGauge(QFrame):
+             if position == 2 or position == 4:
+                 layout.addWidget(self.lblcontrol)
+ 
+-        layout.setAlignment(AlignCenter | AlignVCenter)
++        layout.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+         self.setLayout(layout)
+ 
+         self.show()
+diff --git a/gr-qtgui/python/qtgui/digitalnumbercontrol.py b/gr-qtgui/python/qtgui/digitalnumbercontrol.py
+index 190dfb3e3..b92834a3f 100644
+--- a/gr-qtgui/python/qtgui/digitalnumbercontrol.py
++++ b/gr-qtgui/python/qtgui/digitalnumbercontrol.py
+@@ -9,7 +9,7 @@
+ #
+ #
+ 
+-from qtpy.QtCore import Signal, QSize, QRect, AlignCenter, AlignVCenter, AlignRight, SolidPattern
++from qtpy.QtCore import Signal, QSize, QRect, Qt
+ from qtpy.QtWidgets import QFrame, QVBoxLayout, QLabel
+ from qtpy.QtGui import QPainter, QPixmap, QFont, QFontMetrics, QBrush, QColor
+ 
+@@ -52,7 +52,7 @@ class LabeledDigitalNumberControl(QFrame):
+             self.hasLabel = False
+ 
+         layout.addWidget(self.numberControl)
+-        layout.setAlignment(AlignCenter | AlignVCenter)
++        layout.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+         self.setLayout(layout)
+         self.show()
+ 
+@@ -298,7 +298,7 @@ class DigitalNumberControl(QFrame):
+         size = self.size()
+         brush = QBrush()
+         brush.setColor(self.background_color)
+-        brush.setStyle(SolidPattern)
++        brush.setStyle(Qt.SolidPattern)
+         rect = QRect(2, 2, size.width() - 4, size.height() - 4)
+         painter.fillRect(rect, brush)
+ 
+@@ -318,7 +318,7 @@ class DigitalNumberControl(QFrame):
+ 
+         rect = QRect(0, 0, size.width() - 4, size.height())
+ 
+-        painter.drawText(rect, AlignRight + AlignVCenter, textstr)
++        painter.drawText(rect, Qt.AlignRight + Qt.AlignVCenter, textstr)
+ 
+ 
+ class MsgDigitalNumberControl(gr.sync_block, LabeledDigitalNumberControl):
+diff --git a/gr-qtgui/python/qtgui/graphicitem.py b/gr-qtgui/python/qtgui/graphicitem.py
+index 370231ee8..5875a2419 100644
+--- a/gr-qtgui/python/qtgui/graphicitem.py
++++ b/gr-qtgui/python/qtgui/graphicitem.py
+@@ -9,7 +9,7 @@
+ #
+ #
+ 
+-from qtpy.QtCore import KeepAspectRatio, QSize
++from qtpy.QtCore import Qt, QSize
+ from qtpy.QtWidgets import QLabel
+ from qtpy.QtGui import QPixmap, QPainter
+ 
+@@ -147,7 +147,7 @@ class GrGraphicItem(gr.sync_block, QLabel):
+                         w = newOverlay.width()
+                         h = newOverlay.height()
+                         newOverlay = newOverlay.scaled(int(w * scale), int(h * scale),
+-                                                       KeepAspectRatio)
++                                                       Qt.AspectRatioMode.KeepAspectRatio)
+                     painter.drawPixmap(
+                         curOverlay['x'], curOverlay['y'], newOverlay)
+                 except Exception as e:
+@@ -190,9 +190,9 @@ class GrGraphicItem(gr.sync_block, QLabel):
+             w = super().width()
+             h = super().height()
+ 
+-            self.pixmap = self.originalPixmap.scaled(w, h, KeepAspectRatio)
++            self.pixmap = self.originalPixmap.scaled(w, h,  Qt.AspectRatioMode.KeepAspectRatio)
+         elif self.fixedSize and self.setWidth > 0 and self.setHeight > 0:
+             self.pixmap = self.originalPixmap.scaled(self.setWidth, self.setHeight,
+-                                                     KeepAspectRatio)
++                                                     Qt.AspectRatioMode.KeepAspectRatio)
+ 
+         self.updateGraphic()
+diff --git a/gr-qtgui/python/qtgui/levelgauge.py b/gr-qtgui/python/qtgui/levelgauge.py
+index 63fb5314d..77a4b798d 100644
+--- a/gr-qtgui/python/qtgui/levelgauge.py
++++ b/gr-qtgui/python/qtgui/levelgauge.py
+@@ -12,7 +12,7 @@
+ from threading import Lock
+ import sys
+ 
+-from qtpy.QtCore import Signal, AlignCenter, AlignVCenter, Vertical, Horizontal
++from qtpy.QtCore import Signal, Qt
+ from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel, QProgressBar
+ from qtpy.QtGui import QColor, QPalette
+ 
+@@ -42,7 +42,7 @@ class LabeledLevelGauge(QFrame):
+         self.scaleFactor = scaleFactor
+ 
+         self.lblcontrol = QLabel(lbl, self)
+-        self.lblcontrol.setAlignment(AlignCenter)
++        self.lblcontrol.setAlignment(Qt.AlignCenter)
+ 
+         # For whatever reason, the progressbar doesn't show the number in the bar if it's
+         # vertical, only if it's horizontal
+@@ -68,7 +68,7 @@ class LabeledLevelGauge(QFrame):
+             if position == 2 or position == 4:
+                 layout.addWidget(self.lblcontrol)
+ 
+-        layout.setAlignment(AlignCenter | AlignVCenter)
++        layout.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+         self.setLayout(layout)
+ 
+         self.show()
+@@ -141,9 +141,9 @@ class LevelGauge(QProgressBar):
+         super().setMaximum(maxValue)
+ 
+         if isVertical:
+-            super().setOrientation(Vertical)
++            super().setOrientation(Qt.Orientation.Vertical)
+         else:
+-            super().setOrientation(Horizontal)
++            super().setOrientation(Qt.Orientation.Horizontal)
+ 
+     def onUpdateInt(self, new_value):
+         if new_value > super().maximum():
+diff --git a/gr-qtgui/python/qtgui/msgcheckbox.py b/gr-qtgui/python/qtgui/msgcheckbox.py
+index 9571ef9d8..9d03ee141 100644
+--- a/gr-qtgui/python/qtgui/msgcheckbox.py
++++ b/gr-qtgui/python/qtgui/msgcheckbox.py
+@@ -10,7 +10,7 @@
+ #
+ 
+ from qtpy import QtWidgets
+-from qtpy.QtCore import AlignTop, AlignLeft, AlignBottom, AlignRight, AlignCenter, AlignVCenter
++from qtpy.QtCore import Qt
+ from qtpy.QtWidgets import QFrame, QVBoxLayout
+ 
+ from gnuradio import gr
+@@ -56,18 +56,18 @@ class MsgCheckBox(gr.sync_block, QFrame):
+         layout.addWidget(self.chkBox)
+ 
+         if alignment == 1:
+-            halign = AlignCenter
++            halign = Qt.AlignCenter
+         elif alignment == 2:
+-            halign = AlignLeft
++            halign = Qt.AlignLeft
+         else:
+-            halign = AlignRight
++            halign = Qt.AlignRight
+ 
+         if valignment == 1:
+-            valign = AlignVCenter
++            valign = Qt.AlignVCenter
+         elif valignment == 2:
+-            valign = AlignTop
++            valign = Qt.AlignTop
+         else:
+-            valign = AlignBottom
++            valign = Qt.AlignBottom
+ 
+         layout.setAlignment(halign | valign)
+         self.setLayout(layout)
+-- 
+2.52.0
+
+From 0c4f80bfa5dc79e685b4b54fc4197b65847971b9 Mon Sep 17 00:00:00 2001
+From: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+Date: Sat, 22 Feb 2025 17:53:29 +0100
+Subject: [PATCH 16/22] Adding signals and slots to spectrumdisplay, valid for
+ qt
+
+Signed-off-by: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+---
+ gr-qtgui/lib/spectrumdisplayform.ui | 258 ++++++++++++++++++++++++++--
+ 1 file changed, 241 insertions(+), 17 deletions(-)
+
+diff --git a/gr-qtgui/lib/spectrumdisplayform.ui b/gr-qtgui/lib/spectrumdisplayform.ui
+index 27d0f5f99..2087ca74c 100644
+--- a/gr-qtgui/lib/spectrumdisplayform.ui
++++ b/gr-qtgui/lib/spectrumdisplayform.ui
+@@ -66,7 +66,7 @@
+       <string>FFT Size:</string>
+      </property>
+      <property name="alignment">
+-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
++      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
+@@ -94,7 +94,7 @@
+         <string>Window:</string>
+        </property>
+        <property name="alignment">
+-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
++        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+@@ -193,10 +193,10 @@
+             </size>
+            </property>
+            <property name="frameShape">
+-            <enum>QFrame::NoFrame</enum>
++            <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+-            <enum>QFrame::Plain</enum>
++            <enum>QFrame::Shadow::Plain</enum>
+            </property>
+           </widget>
+          </item>
+@@ -259,7 +259,7 @@
+               <string>Average</string>
+              </property>
+              <property name="alignment">
+-              <set>Qt::AlignCenter</set>
++              <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+@@ -279,7 +279,7 @@
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+-              <enum>Qt::Horizontal</enum>
++              <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+@@ -328,10 +328,10 @@
+           <bool>true</bool>
+          </property>
+          <property name="focusPolicy">
+-          <enum>Qt::ClickFocus</enum>
++          <enum>Qt::FocusPolicy::ClickFocus</enum>
+          </property>
+          <property name="orientation">
+-          <enum>Qt::Horizontal</enum>
++          <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="valid" stdset="0">
+           <bool>true</bool>
+@@ -363,10 +363,10 @@
+           </size>
+          </property>
+          <property name="frameShape">
+-          <enum>QFrame::NoFrame</enum>
++          <enum>QFrame::Shape::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+-          <enum>QFrame::Plain</enum>
++          <enum>QFrame::Shadow::Plain</enum>
+          </property>
+         </widget>
+        </item>
+@@ -382,10 +382,10 @@
+           <bool>true</bool>
+          </property>
+          <property name="focusPolicy">
+-          <enum>Qt::ClickFocus</enum>
++          <enum>Qt::FocusPolicy::ClickFocus</enum>
+          </property>
+          <property name="orientation">
+-          <enum>Qt::Horizontal</enum>
++          <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="valid" stdset="0">
+           <bool>true</bool>
+@@ -485,10 +485,10 @@
+           </size>
+          </property>
+          <property name="frameShape">
+-          <enum>QFrame::NoFrame</enum>
++          <enum>QFrame::Shape::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+-          <enum>QFrame::Plain</enum>
++          <enum>QFrame::Shadow::Plain</enum>
+          </property>
+         </widget>
+        </item>
+@@ -508,10 +508,10 @@
+           </size>
+          </property>
+          <property name="frameShape">
+-          <enum>QFrame::StyledPanel</enum>
++          <enum>QFrame::Shape::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+-          <enum>QFrame::Raised</enum>
++          <enum>QFrame::Shadow::Raised</enum>
+          </property>
+         </widget>
+        </item>
+@@ -546,5 +546,229 @@
+   <include location="local">qwt_slider.h</include>
+  </includes>
+  <resources/>
+- <connections/>
++ <connections>
++  <connection>
++   <sender>MaxHoldCheckBox</sender>
++   <signal>toggled(bool)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>maxHoldCheckBox_toggled(bool)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>22</x>
++     <y>324</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>MaxHoldResetBtn</sender>
++   <signal>clicked()</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>maxHoldResetBtn_clicked()</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>107</x>
++     <y>324</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>MinHoldCheckBox</sender>
++   <signal>toggled(bool)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>minHoldCheckBox_toggled(bool)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>22</x>
++     <y>349</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>MinHoldResetBtn</sender>
++   <signal>clicked()</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>minHoldResetBtn_clicked()</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>107</x>
++     <y>349</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>WindowComboBox</sender>
++   <signal>activated(int)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>windowTypeChanged(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>UseRFFrequenciesCheckBox</sender>
++   <signal>toggled(bool)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>useRFFrequenciesCB(bool)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>WaterfallMaximumIntensitySlider</sender>
++   <signal>valueChanged(double)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>waterfallMaximumIntensityChangedCB(double)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>217</x>
++     <y>44</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>WaterfallMinimumIntensitySlider</sender>
++   <signal>valueChanged(double)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>waterfallMinimumIntensityChangedCB(double)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>217</x>
++     <y>349</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>FFTSizeComboBox</sender>
++   <signal>currentTextChanged(QString)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>fftComboBoxSelectedCB(QString)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>WaterfallAutoScaleBtn</sender>
++   <signal>clicked()</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>waterfallAutoScaleBtnCB()</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>22</x>
++     <y>349</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>WaterfallIntensityComboBox</sender>
++   <signal>activated(int)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>waterfallIntensityColorTypeChanged(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>92</x>
++     <y>44</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>20</x>
++     <y>20</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>SpectrumTypeTab</sender>
++   <signal>currentChanged(int)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>tabChanged(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>314</x>
++     <y>189</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>316</x>
++     <y>217</y>
++    </hint>
++   </hints>
++  </connection>
++  <connection>
++   <sender>AvgLineEdit</sender>
++   <signal>valueChanged(int)</signal>
++   <receiver>SpectrumDisplayForm</receiver>
++   <slot>avgLineEdit_valueChanged(int)</slot>
++   <hints>
++    <hint type="sourcelabel">
++     <x>604</x>
++     <y>421</y>
++    </hint>
++    <hint type="destinationlabel">
++     <x>328</x>
++     <y>260</y>
++    </hint>
++   </hints>
++  </connection>
++ </connections>
++ <slots>
++  <slot>maxHoldCheckBox_toggled(bool)</slot>
++  <slot>maxHoldResetBtn_clicked()</slot>
++  <slot>minHoldCheckBox_toggled(bool)</slot>
++  <slot>minHoldResetBtn_clicked()</slot>
++  <slot>windowTypeChanged(int)</slot>
++  <slot>useRFFrequenciesCB(bool)</slot>
++  <slot>waterfallMaximumIntensityChangedCB(double)</slot>
++  <slot>waterfallMinimumIntensityChangedCB(double)</slot>
++  <slot>fftComboBoxSelectedCB(QString)</slot>
++  <slot>waterfallAutoScaleBtnCB()</slot>
++  <slot>waterfallIntensityColorTypeChanged(int)</slot>
++  <slot>tabChanged(int)</slot>
++  <slot>avgLineEdit_valueChanged(int)</slot>
++ </slots>
+ </ui>
+-- 
+2.52.0
+
+From e9fef331b529c6883a40a0fce27e46a1305dacff Mon Sep 17 00:00:00 2001
+From: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+Date: Fri, 14 Mar 2025 17:57:10 +0100
+Subject: [PATCH 17/22] Adopt qtgui-*.yml files for Qt6, modify the genrator
+ template
+
+Signed-off-by: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+
+Radar
+
+Signed-off-by: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+---
+ gr-qtgui/grc/qtgui_appbackground.block.yml    |  1 -
+ gr-qtgui/grc/qtgui_ber_sink_b.block.yml       |  2 +-
+ gr-qtgui/grc/qtgui_check_box.block.yml        |  2 +-
+ gr-qtgui/grc/qtgui_chooser.block.yml          |  2 +-
+ gr-qtgui/grc/qtgui_const_sink_x.block.yml     |  2 +-
+ gr-qtgui/grc/qtgui_edit_box_msg.block.yml     |  2 +-
+ gr-qtgui/grc/qtgui_entry.block.yml            |  8 ++---
+ gr-qtgui/grc/qtgui_eye_sink_x.block.yml       |  2 +-
+ gr-qtgui/grc/qtgui_freq_sink_x.block.yml      |  2 +-
+ gr-qtgui/grc/qtgui_histogram_sink_x.block.yml |  2 +-
+ gr-qtgui/grc/qtgui_label.block.yml            |  2 +-
+ gr-qtgui/grc/qtgui_matrix_sink.block.yml      |  2 +-
+ gr-qtgui/grc/qtgui_number_sink.block.yml      |  2 +-
+ gr-qtgui/grc/qtgui_range.block.yml            |  2 +-
+ .../grc/qtgui_rfnoc_f15_display.block.yml     |  2 +-
+ gr-qtgui/grc/qtgui_sink_x.block.yml           |  2 +-
+ gr-qtgui/grc/qtgui_time_raster_x.block.yml    |  2 +-
+ gr-qtgui/grc/qtgui_time_sink_x.block.yml      |  2 +-
+ gr-qtgui/grc/qtgui_vector_sink_f.block.yml    |  2 +-
+ gr-qtgui/grc/qtgui_waterfall_sink_x.block.yml |  2 +-
+ gr-qtgui/lib/CMakeLists.txt                   |  8 +++--
+ gr-qtgui/lib/eyedisplaysform.cc               |  2 +-
+ gr-qtgui/python/qtgui/dialgauge.py            |  4 +--
+ gr-qtgui/python/qtgui/distanceradar.py        |  2 +-
+ gr-qtgui/python/qtgui/ledindicator.py         |  4 +--
+ gr-qtgui/python/qtgui/range.py.cmakein        |  8 ++---
+ gr-qtgui/python/qtgui/util.py.cmakein         |  2 +-
+ .../python_qt_gui/flow_graph_qt_gui.py.mako   | 34 +++++++++++--------
+ 28 files changed, 58 insertions(+), 51 deletions(-)
+
+diff --git a/gr-qtgui/grc/qtgui_appbackground.block.yml b/gr-qtgui/grc/qtgui_appbackground.block.yml
+index 639c7693e..d065c5032 100644
+--- a/gr-qtgui/grc/qtgui_appbackground.block.yml
++++ b/gr-qtgui/grc/qtgui_appbackground.block.yml
+@@ -23,7 +23,6 @@ parameters:
+     hide: 'part'
+ 
+ templates:
+-    imports: import PyQt5
+     make: |-
+         None
+         if "${relBackgroundColor}" != 'default':
+diff --git a/gr-qtgui/grc/qtgui_ber_sink_b.block.yml b/gr-qtgui/grc/qtgui_ber_sink_b.block.yml
+index 03f641957..37c12b92b 100644
+--- a/gr-qtgui/grc/qtgui_ber_sink_b.block.yml
++++ b/gr-qtgui/grc/qtgui_ber_sink_b.block.yml
+@@ -323,7 +323,7 @@ inputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+         import numpy
+     make: |-
+         <%
+diff --git a/gr-qtgui/grc/qtgui_check_box.block.yml b/gr-qtgui/grc/qtgui_check_box.block.yml
+index 20ed2a3e3..bedd78252 100644
+--- a/gr-qtgui/grc/qtgui_check_box.block.yml
++++ b/gr-qtgui/grc/qtgui_check_box.block.yml
+@@ -50,7 +50,7 @@ templates:
+         ${win} = Qt.QCheckBox("${no_quotes(label,repr(id))}")
+         self._${id}_choices = {True: ${true}, False: ${false}}
+         self._${id}_choices_inv = dict((v,k) for k,v in self._${id}_choices.items())
+-        self._${id}_callback = lambda i: Qt.QMetaObject.invokeMethod(${win}, "setChecked", Qt.Q_ARG("bool", self._${id}_choices_inv[i]))
++        self._${id}_callback = lambda i: QtCore.QMetaObject.invokeMethod(${win}, "setChecked", QtCore.Q_ARG("bool", self._${id}_choices_inv[i]))
+         self._${id}_callback(self.${id})
+         ${win}.stateChanged.connect(lambda i: self.set_${id}(self._${id}_choices[bool(i)]))
+         ${gui_hint() % win}
+diff --git a/gr-qtgui/grc/qtgui_chooser.block.yml b/gr-qtgui/grc/qtgui_chooser.block.yml
+index ebc08189b..3bbdb21b5 100644
+--- a/gr-qtgui/grc/qtgui_chooser.block.yml
++++ b/gr-qtgui/grc/qtgui_chooser.block.yml
+@@ -177,7 +177,7 @@ templates:
+             radio_button = Qt.QRadioButton(_label)
+             self._${id}_box.addWidget(radio_button)
+             self._${id}_button_group.addButton(radio_button, i)
+-        self._${id}_callback = lambda i: Qt.QMetaObject.invokeMethod(self._${id}_button_group, "updateButtonChecked", Qt.Q_ARG("int", self._${id}_options.index(i)))
++        self._${id}_callback = lambda i: QtCore.QMetaObject.invokeMethod(self._${id}_button_group, "updateButtonChecked", QtCore.Q_ARG("int", self._${id}_options.index(i)))
+         self._${id}_callback(self.${id})
+         self._${id}_button_group.buttonClicked[int].connect(
+             lambda i: self.set_${id}(self._${id}_options[i]))
+diff --git a/gr-qtgui/grc/qtgui_const_sink_x.block.yml b/gr-qtgui/grc/qtgui_const_sink_x.block.yml
+index 8c3bb8c8a..c57409614 100644
+--- a/gr-qtgui/grc/qtgui_const_sink_x.block.yml
++++ b/gr-qtgui/grc/qtgui_const_sink_x.block.yml
+@@ -395,7 +395,7 @@ inputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+     callbacks:
+     - set_update_time(${update_time})
+     - self.${id}.set_trigger_mode(${tr_mode}, ${tr_slope}, ${tr_level}, ${tr_chan},
+diff --git a/gr-qtgui/grc/qtgui_edit_box_msg.block.yml b/gr-qtgui/grc/qtgui_edit_box_msg.block.yml
+index 51554e668..19f35c502 100644
+--- a/gr-qtgui/grc/qtgui_edit_box_msg.block.yml
++++ b/gr-qtgui/grc/qtgui_edit_box_msg.block.yml
+@@ -53,7 +53,7 @@ outputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+     make: |-
+         <%
+             win = 'self._%s_win'%id
+diff --git a/gr-qtgui/grc/qtgui_entry.block.yml b/gr-qtgui/grc/qtgui_entry.block.yml
+index b700e529d..525021da9 100644
+--- a/gr-qtgui/grc/qtgui_entry.block.yml
++++ b/gr-qtgui/grc/qtgui_entry.block.yml
+@@ -40,15 +40,15 @@ templates:
+     var_make: self.${id} = ${id} = ${value}
+     callbacks:
+     - self.set_${id}(${value})
+-    - Qt.QMetaObject.invokeMethod(self._${id}_line_edit, "setText", Qt.Q_ARG("QString",
++    - QtCore.QMetaObject.invokeMethod(self._${id}_line_edit, "setText", QtCore.Q_ARG("QString",
+         ${type.str}(${id})))
+     make: |-
+         <%
+             win = 'self._%s_tool_bar'%id
+         %>
+-        ${win} = Qt.QToolBar(self)
+-        ${win}.addWidget(Qt.QLabel("${no_quotes(label,repr(id))}" + ": "))
+-        self._${id}_line_edit = Qt.QLineEdit(str(self.${id}))
++        ${win} = QtWidgets.QToolBar(self)
++        ${win}.addWidget(QtWidgets.QLabel("${no_quotes(label,repr(id))}" + ": "))
++        self._${id}_line_edit = QtWidgets.QLineEdit(str(self.${id}))
+         self._${id}_tool_bar.addWidget(self._${id}_line_edit)
+         self._${id}_line_edit.${entry_signal}.connect(
+             lambda: self.set_${id}(${type.conv}(str(self._${id}_line_edit.text()))))
+diff --git a/gr-qtgui/grc/qtgui_eye_sink_x.block.yml b/gr-qtgui/grc/qtgui_eye_sink_x.block.yml
+index b1e726142..8a4f6e5a9 100644
+--- a/gr-qtgui/grc/qtgui_eye_sink_x.block.yml
++++ b/gr-qtgui/grc/qtgui_eye_sink_x.block.yml
+@@ -928,7 +928,7 @@ inputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+ 
+     callbacks:
+     - set_time_domain_axis(${min}, ${max})
+diff --git a/gr-qtgui/grc/qtgui_freq_sink_x.block.yml b/gr-qtgui/grc/qtgui_freq_sink_x.block.yml
+index 9ca1b5e03..e64e28aaa 100644
+--- a/gr-qtgui/grc/qtgui_freq_sink_x.block.yml
++++ b/gr-qtgui/grc/qtgui_freq_sink_x.block.yml
+@@ -405,7 +405,7 @@ asserts:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+ 
+     callbacks:
+     - set_frequency_range(${fc}, ${bw})
+diff --git a/gr-qtgui/grc/qtgui_histogram_sink_x.block.yml b/gr-qtgui/grc/qtgui_histogram_sink_x.block.yml
+index 18bec6f01..6c4337c52 100644
+--- a/gr-qtgui/grc/qtgui_histogram_sink_x.block.yml
++++ b/gr-qtgui/grc/qtgui_histogram_sink_x.block.yml
+@@ -359,7 +359,7 @@ inputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+     callbacks:
+     - set_update_time(${update_time})
+     - set_bins(${bins})
+diff --git a/gr-qtgui/grc/qtgui_label.block.yml b/gr-qtgui/grc/qtgui_label.block.yml
+index 1105a3bfc..683aafdb8 100644
+--- a/gr-qtgui/grc/qtgui_label.block.yml
++++ b/gr-qtgui/grc/qtgui_label.block.yml
+@@ -38,7 +38,7 @@ templates:
+     var_make: self.${id} = ${id} = ${value}
+     callbacks:
+     - self.set_${id}(${value})
+-    - Qt.QMetaObject.invokeMethod(self._${id}_label, "setText", Qt.Q_ARG("QString",
++    - QtCore.QMetaObject.invokeMethod(self._${id}_label, "setText", QtCore.Q_ARG("QString",
+         str(self._${id}_formatter(${id}))))
+     make: |-
+         <%
+diff --git a/gr-qtgui/grc/qtgui_matrix_sink.block.yml b/gr-qtgui/grc/qtgui_matrix_sink.block.yml
+index 272386f9e..eb069cdb0 100644
+--- a/gr-qtgui/grc/qtgui_matrix_sink.block.yml
++++ b/gr-qtgui/grc/qtgui_matrix_sink.block.yml
+@@ -3,7 +3,7 @@ label: QT GUI Matrix Sink
+ 
+ templates:
+   imports: |-
+-    import sip
++    from qtpy import sip
+ 
+   make: |-
+     <%
+diff --git a/gr-qtgui/grc/qtgui_number_sink.block.yml b/gr-qtgui/grc/qtgui_number_sink.block.yml
+index c83f4b1b8..86a8cbc5f 100644
+--- a/gr-qtgui/grc/qtgui_number_sink.block.yml
++++ b/gr-qtgui/grc/qtgui_number_sink.block.yml
+@@ -238,7 +238,7 @@ inputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+     callbacks:
+     - set_update_time(${update_time})
+     - set_average(${avg})
+diff --git a/gr-qtgui/grc/qtgui_range.block.yml b/gr-qtgui/grc/qtgui_range.block.yml
+index 1e7890235..8e303d7ec 100644
+--- a/gr-qtgui/grc/qtgui_range.block.yml
++++ b/gr-qtgui/grc/qtgui_range.block.yml
+@@ -64,7 +64,7 @@ asserts:
+ - ${start <= stop}
+ 
+ templates:
+-    imports: from PyQt5 import QtCore
++    imports: from qtpy import QtCore
+     var_make: self.${id} = ${id} = ${value}
+     callbacks:
+     - self.set_${id}(${value})
+diff --git a/gr-qtgui/grc/qtgui_rfnoc_f15_display.block.yml b/gr-qtgui/grc/qtgui_rfnoc_f15_display.block.yml
+index a500b93a7..1f1a8e64c 100644
+--- a/gr-qtgui/grc/qtgui_rfnoc_f15_display.block.yml
++++ b/gr-qtgui/grc/qtgui_rfnoc_f15_display.block.yml
+@@ -69,7 +69,7 @@ outputs:
+ 
+ 
+ templates:
+-  imports: import sip
++  imports: from qtpy import sip
+   make: |-
+     <%
+         win = 'self._%s_win' % id
+diff --git a/gr-qtgui/grc/qtgui_sink_x.block.yml b/gr-qtgui/grc/qtgui_sink_x.block.yml
+index e9bf9ee62..eecc5f5c6 100644
+--- a/gr-qtgui/grc/qtgui_sink_x.block.yml
++++ b/gr-qtgui/grc/qtgui_sink_x.block.yml
+@@ -110,7 +110,7 @@ asserts:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+     callbacks:
+     - set_frequency_range(${fc}, ${bw})
+     make: |-
+diff --git a/gr-qtgui/grc/qtgui_time_raster_x.block.yml b/gr-qtgui/grc/qtgui_time_raster_x.block.yml
+index d46303363..8d452490b 100644
+--- a/gr-qtgui/grc/qtgui_time_raster_x.block.yml
++++ b/gr-qtgui/grc/qtgui_time_raster_x.block.yml
+@@ -245,7 +245,7 @@ inputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+     callbacks:
+     - set_num_rows(${nrows})
+     - set_num_cols(${ncols})
+diff --git a/gr-qtgui/grc/qtgui_time_sink_x.block.yml b/gr-qtgui/grc/qtgui_time_sink_x.block.yml
+index 143f0a5e0..bfca60951 100644
+--- a/gr-qtgui/grc/qtgui_time_sink_x.block.yml
++++ b/gr-qtgui/grc/qtgui_time_sink_x.block.yml
+@@ -998,7 +998,7 @@ inputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+     
+     callbacks:
+     - set_update_time(${update_time})
+diff --git a/gr-qtgui/grc/qtgui_vector_sink_f.block.yml b/gr-qtgui/grc/qtgui_vector_sink_f.block.yml
+index 42f8d4337..c047a2b85 100644
+--- a/gr-qtgui/grc/qtgui_vector_sink_f.block.yml
++++ b/gr-qtgui/grc/qtgui_vector_sink_f.block.yml
+@@ -301,7 +301,7 @@ outputs:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+     callbacks:
+     - set_update_time(${update_time})
+     - set_x_axis(${x_start}, ${x_step})
+diff --git a/gr-qtgui/grc/qtgui_waterfall_sink_x.block.yml b/gr-qtgui/grc/qtgui_waterfall_sink_x.block.yml
+index 195ac42c7..63f3911d0 100644
+--- a/gr-qtgui/grc/qtgui_waterfall_sink_x.block.yml
++++ b/gr-qtgui/grc/qtgui_waterfall_sink_x.block.yml
+@@ -258,7 +258,7 @@ asserts:
+ 
+ templates:
+     imports: |-
+-        import sip
++        from qtpy import sip
+         
+     callbacks:
+     - set_frequency_range(${fc}, ${bw})
+diff --git a/gr-qtgui/lib/CMakeLists.txt b/gr-qtgui/lib/CMakeLists.txt
+index f7cdb37d0..2536edfad 100644
+--- a/gr-qtgui/lib/CMakeLists.txt
++++ b/gr-qtgui/lib/CMakeLists.txt
+@@ -8,7 +8,7 @@
+ ########################################################################
+ # Setup the QT file generations stuff
+ ########################################################################
+-
++message(STATUS "QT_DEFAULT_VERSION " ${QT_DEFAULT_MAJOR_VERSION})
+ set(QTGUI_SOURCES
+     DisplayPlot.cc
+     FrequencyDisplayPlot.cc
+@@ -217,5 +217,9 @@ if(MSVC)
+ endif(MSVC)
+ 
+ if(BUILD_SHARED_LIBS)
+-    gr_library_foo(gnuradio-qtgui qwt::qwt Qt5::Widgets)
++    if(QT_DEFAULT_MAJOR_VERSION EQUAL 5)
++        gr_library_foo(gnuradio-qtgui qwt::qwt Qt5Widgets)
++    elseif(QT_DEFAULT_MAJOR_VERSION EQUAL 6)
++        gr_library_foo(gnuradio-qtgui qwt::qwt Qt6Widgets)
++    endif() 
+ endif()
+diff --git a/gr-qtgui/lib/eyedisplaysform.cc b/gr-qtgui/lib/eyedisplaysform.cc
+index 66b5c4393..72f62b004 100644
+--- a/gr-qtgui/lib/eyedisplaysform.cc
++++ b/gr-qtgui/lib/eyedisplaysform.cc
+@@ -161,7 +161,7 @@ void EyeDisplaysForm::mousePressEvent(QMouseEvent* e)
+         for (unsigned int i = 0; i < d_nplots; ++i) {
+             d_lines_menu[i]->setTitle(d_displays_plot[i]->title().text());
+         }
+-        d_menu->exec(e->globalPos());
++        d_menu->exec(e->globalPosition().toPoint());
+     }
+ }
+ 
+diff --git a/gr-qtgui/python/qtgui/dialgauge.py b/gr-qtgui/python/qtgui/dialgauge.py
+index 5cccefa62..ee937b139 100644
+--- a/gr-qtgui/python/qtgui/dialgauge.py
++++ b/gr-qtgui/python/qtgui/dialgauge.py
+@@ -10,7 +10,7 @@
+ #
+ 
+ import sys
+-from qtpy.QtCore import Qt
++from qtpy.QtCore import Qt, QRect
+ from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+ from qtpy.QtGui import QPainter, QColor, QPen, QFont, QFontMetricsF
+ 
+@@ -133,7 +133,7 @@ class DialGauge(QFrame):
+         startAngle = int(round(self.startAngle * self.degScaler, 0))
+         endAngle = int(round(endAngle * self.degScaler, 0))
+ 
+-        rect = QtCore.QRect(self.halfPenWidth, self.halfPenWidth, size.width() - self.penWidth,
++        rect = QRect(self.halfPenWidth, self.halfPenWidth, size.width() - self.penWidth,
+                             size.height() - self.penWidth)
+ 
+         # Set up the painting canvass
+diff --git a/gr-qtgui/python/qtgui/distanceradar.py b/gr-qtgui/python/qtgui/distanceradar.py
+index 00886604a..bdadd3390 100644
+--- a/gr-qtgui/python/qtgui/distanceradar.py
++++ b/gr-qtgui/python/qtgui/distanceradar.py
+@@ -13,7 +13,7 @@ import sys
+ from qtpy import QtWidgets
+ import numpy as np
+ import matplotlib.pyplot as plt
+-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
++from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+ from matplotlib.figure import Figure
+ 
+ from gnuradio import gr
+diff --git a/gr-qtgui/python/qtgui/ledindicator.py b/gr-qtgui/python/qtgui/ledindicator.py
+index 1e84f3521..139c038ce 100644
+--- a/gr-qtgui/python/qtgui/ledindicator.py
++++ b/gr-qtgui/python/qtgui/ledindicator.py
+@@ -11,7 +11,7 @@
+ 
+ from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QLabel
+ from qtpy.QtGui import QPainter, QBrush, QColor, QPen, QFontMetricsF, QRadialGradient
+-from qtpy.QtCore import Qt as Qtc, QPoint
++from qtpy.QtCore import Qt as Qtc, QPointF
+ 
+ from gnuradio import gr
+ import pmt
+@@ -118,7 +118,7 @@ class LEDIndicator(QFrame):
+ 
+         center_x = int(size.width() / 2)
+         center_y = int(size.height() / 2)
+-        centerpoint = QPoint(center_x, center_y)
++        centerpoint = QPointF(center_x, center_y)
+ 
+         radius = smallest_dim
+ 
+diff --git a/gr-qtgui/python/qtgui/range.py.cmakein b/gr-qtgui/python/qtgui/range.py.cmakein
+index bd29b567c..4c8724c87 100755
+--- a/gr-qtgui/python/qtgui/range.py.cmakein
++++ b/gr-qtgui/python/qtgui/range.py.cmakein
+@@ -68,9 +68,9 @@ class QEngValidator(QtGui.QValidator):
+             if re.match(self.re, s):
+                 self.parent.setStyleSheet("background-color: yellow;"
+                                           "color: black")
+-                return (QtGui.QValidator.Intermediate, s, pos)
++                return (QtGui.QValidator.State.Intermediate, s, pos)
+             else:
+-                return (QtGui.QValidator.Invalid, s, pos)
++                return (QtGui.QValidator.State.Invalid, s, pos)
+ 
+         if self.max is not None and val > self.max:
+             self.parent.setStyleSheet("background-color: yellow;"
+@@ -81,7 +81,7 @@ class QEngValidator(QtGui.QValidator):
+         else:
+             self.parent.setStyleSheet("")
+ 
+-        return (QtGui.QValidator.Acceptable, s, pos)
++        return (QtGui.QValidator.State.Acceptable, s, pos)
+ 
+     def fixup(self, s):
+         pass
+@@ -171,7 +171,7 @@ class RangeWidget(QtWidgets.QWidget):
+             # Setup the slider
+             # self.setFocusPolicy(QtCore.Qt.NoFocus)
+             self.setRange(0, int(ranges.nsteps - 1))
+-            self.setTickPosition(2)
++            self.setTickPosition(QtWidgets.QSlider.TickPosition.TicksAbove)
+             self.setSingleStep(1)
+             self.range = ranges
+             self.orientation = orientation
+diff --git a/gr-qtgui/python/qtgui/util.py.cmakein b/gr-qtgui/python/qtgui/util.py.cmakein
+index cdf90608d..df58c790a 100644
+--- a/gr-qtgui/python/qtgui/util.py.cmakein
++++ b/gr-qtgui/python/qtgui/util.py.cmakein
+@@ -14,7 +14,7 @@
+ from gnuradio import gr
+ 
+ def check_set_qss():
+-    app = QtWidgets.qApp
++    app = QtWidgets.QApplication
+     qssfile = gr.prefs().get_string("qtgui", "qss", "")
+     if(len(qssfile) > 0):
+         try:
+diff --git a/grc/workflows/python_qt_gui/flow_graph_qt_gui.py.mako b/grc/workflows/python_qt_gui/flow_graph_qt_gui.py.mako
+index 305f7c03c..34138e157 100644
+--- a/grc/workflows/python_qt_gui/flow_graph_qt_gui.py.mako
++++ b/grc/workflows/python_qt_gui/flow_graph_qt_gui.py.mako
+@@ -22,8 +22,12 @@
+ ########################################################
+ ##Create Imports
+ ########################################################
++from qtpy import QtWidgets
++from qtpy import QtWidgets as Qt
++from qtpy import QtGui
++from qtpy import QtCore
+ from gnuradio import qtgui
+-from PyQt5 import Qt
++
+ % for imp in imports:
+ ##${imp.replace("  # grc-generated hier_block", "")}
+ ${imp}
+@@ -76,30 +80,30 @@ def snippets_${section}(tb):
+     class_name = flow_graph.get_option('id')
+     param_str = ', '.join(['self'] + ['%s=%s'%(param.name, param.templates.render('make')) for param in parameters])
+ %>\
+-class ${class_name}(gr.top_block, Qt.QWidget):
++class ${class_name}(gr.top_block, QtWidgets.QWidget):
+ 
+     def __init__(${param_str}):
+         gr.top_block.__init__(self, "${title}", catch_exceptions=${catch_exceptions})
+-        Qt.QWidget.__init__(self)
++        QtWidgets.QWidget.__init__(self)
+         self.setWindowTitle("${title}")
+         qtgui.util.check_set_qss()
+         try:
+-            self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
++            self.setWindowIcon(QtGui.QIcon.fromTheme('gnuradio-grc'))
+         except BaseException as exc:
+             print(f"Qt GUI: Could not set Icon: {str(exc)}", file=sys.stderr)
+-        self.top_scroll_layout = Qt.QVBoxLayout()
++        self.top_scroll_layout = QtWidgets.QVBoxLayout()
+         self.setLayout(self.top_scroll_layout)
+-        self.top_scroll = Qt.QScrollArea()
+-        self.top_scroll.setFrameStyle(Qt.QFrame.NoFrame)
++        self.top_scroll = QtWidgets.QScrollArea()
++        self.top_scroll.setFrameStyle(QtWidgets.QFrame.NoFrame)
+         self.top_scroll_layout.addWidget(self.top_scroll)
+         self.top_scroll.setWidgetResizable(True)
+-        self.top_widget = Qt.QWidget()
++        self.top_widget = QtWidgets.QWidget()
+         self.top_scroll.setWidget(self.top_widget)
+-        self.top_layout = Qt.QVBoxLayout(self.top_widget)
+-        self.top_grid_layout = Qt.QGridLayout()
++        self.top_layout = QtWidgets.QVBoxLayout(self.top_widget)
++        self.top_grid_layout = QtWidgets.QGridLayout()
+         self.top_layout.addLayout(self.top_grid_layout)
+ 
+-        self.settings = Qt.QSettings("gnuradio/flowgraphs", "${class_name}")
++        self.settings = QtCore.QSettings("gnuradio/flowgraphs", "${class_name}")
+ 
+         try:
+             geometry = self.settings.value("geometry")
+@@ -177,7 +181,7 @@ class ${class_name}(gr.top_block, Qt.QWidget):
+ ########################################################
+ 
+     def closeEvent(self, event):
+-        self.settings = Qt.QSettings("gnuradio/flowgraphs", "${class_name}")
++        self.settings = QtCore.QSettings("gnuradio/flowgraphs", "${class_name}")
+         self.settings.setValue("geometry", self.saveGeometry())
+         self.stop()
+         self.wait()
+@@ -276,7 +280,7 @@ def main(top_block_cls=${class_name}, options=None):
+         gr.logger("realtime").warn("Error: failed to enable real-time scheduling.")
+     % endif
+ 
+-    qapp = Qt.QApplication(sys.argv)
++    qapp = QtWidgets.QApplication(sys.argv)
+ 
+     tb = top_block_cls(${ ', '.join(params_eq_list) })
+     ${'snippets_main_after_init(tb)' if snippets['main_after_init'] else ''}
+@@ -294,12 +298,12 @@ def main(top_block_cls=${class_name}, options=None):
+         tb.stop()
+         tb.wait()
+         ${'snippets_main_after_stop(tb)' if snippets['main_after_stop'] else ''}
+-        Qt.QApplication.quit()
++        QtWidgets.QApplication.quit()
+ 
+     signal.signal(signal.SIGINT, sig_handler)
+     signal.signal(signal.SIGTERM, sig_handler)
+ 
+-    timer = Qt.QTimer()
++    timer = QtCore.QTimer()
+     timer.start(500)
+     timer.timeout.connect(lambda: None)
+ 
+-- 
+2.52.0
+
+From 780cc8cca74c121f41323ffebb645eed4579f821 Mon Sep 17 00:00:00 2001
+From: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+Date: Tue, 18 Mar 2025 11:27:52 +0100
+Subject: [PATCH 18/22] CPP code generation for qt6
+
+Signed-off-by: Volker Schroer <3470424+dl1ksv@users.noreply.github.com>
+---
+ gr-qtgui/grc/qtgui_check_box.block.yml       | 2 +-
+ grc/workflows/cpp_qt_gui/CMakeLists.txt.mako | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/gr-qtgui/grc/qtgui_check_box.block.yml b/gr-qtgui/grc/qtgui_check_box.block.yml
+index bedd78252..5d77e41ba 100644
+--- a/gr-qtgui/grc/qtgui_check_box.block.yml
++++ b/gr-qtgui/grc/qtgui_check_box.block.yml
+@@ -73,7 +73,7 @@ cpp_templates:
+           ${win}->setCheckState(Qt::Checked);
+       }
+ 
+-      QObject::connect(${win},&QCheckBox::stateChanged, this, [this] () {this->set_${id}(_${id}_values[${win}->checkState()/2]);});
++      QObject::connect(${win},&QCheckBox::checkStateChanged, this, [this] () {this->set_${id}(_${id}_values[${win}->checkState()/2]);});
+ 
+       ${gui_hint() % win}
+ documentation: |-
+diff --git a/grc/workflows/cpp_qt_gui/CMakeLists.txt.mako b/grc/workflows/cpp_qt_gui/CMakeLists.txt.mako
+index 495a77eaf..512076df9 100644
+--- a/grc/workflows/cpp_qt_gui/CMakeLists.txt.mako
++++ b/grc/workflows/cpp_qt_gui/CMakeLists.txt.mako
+@@ -19,7 +19,7 @@ short_version = '.'.join(version_list[0:2])
+ 
+ cmake_minimum_required(VERSION 3.16)
+ set(CMAKE_CXX_STANDARD 17)
+-
++set(TRY_QT6_BUILD True) # At the moment this setting is required to get the correct QtQwt ( Qt6Qwt6) version
+ project(${class_name})
+ 
+ find_package(Gnuradio "${short_version}" COMPONENTS
+@@ -32,7 +32,7 @@ find_package(Gnuradio "${short_version}" COMPONENTS
+     % endfor
+ )
+ 
+-find_package(Qt5Widgets REQUIRED)
++find_package(Qt6Widgets REQUIRED)
+ set(CMAKE_AUTOMOC TRUE)
+ 
+ % if cmake_tuples:
+-- 
+2.52.0
+
+From 898134f29a5c31f27512cdab23c719aad87aaa9b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marcus=20M=C3=BCller?= <mmueller@gnuradio.org>
+Date: Tue, 10 Jun 2025 14:41:18 +0200
+Subject: [PATCH 19/22] CI: don't make Python formatting fails a blocker to
+ unit tests
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+We don't offer any tooling to do exactly the right formatting in the
+IDE.
+Having to wait for CI just to see it not even run because your IDE and
+pycodestyle (of an old version) disagree on something is not conductive
+to code quality, overall.
+
+I'm leaving the check in, and we'll see failures and need people to fix
+them. But let's not gate ourselves from progress this much.
+
+Proposal would probably be to actually pick a tool that integrates with
+IDEs well, or at least is foolsafe to run manually, and base the check
+on that.
+
+Signed-off-by: Marcus Müller <mmueller@gnuradio.org>
+---
+ .github/workflows/make-test.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/.github/workflows/make-test.yml b/.github/workflows/make-test.yml
+index 89de5e573..b9c660c38 100644
+--- a/.github/workflows/make-test.yml
++++ b/.github/workflows/make-test.yml
+@@ -60,7 +60,7 @@ jobs:
+         # -----------------------------------
+   linux-docker:
+   # All of these shall depend on the formatting check (needs: check-formatting)
+-    needs: [check-hashes, check-formatting, check-python-formatting]
++    needs: [check-hashes, check-formatting]
+     runs-on: ubuntu-24.04
+     # The GH default is 360 minutes (it's also the max as of Feb-2021). However
+     # we should fail sooner. The only reason to exceed this time is if a test
+-- 
+2.52.0
+
+From d1bca688e2c00d0fc07eb779e1e12785dd392eb1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marcus=20M=C3=BCller?= <mmueller@gnuradio.org>
+Date: Tue, 10 Jun 2025 15:14:31 +0200
+Subject: [PATCH 20/22] qtgui/eyedisplaysform: keep mouse event qt5/6
+ compatible
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Marcus Müller <mmueller@gnuradio.org>
+---
+ gr-qtgui/lib/eyedisplaysform.cc | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/gr-qtgui/lib/eyedisplaysform.cc b/gr-qtgui/lib/eyedisplaysform.cc
+index 72f62b004..bbe6acbc5 100644
+--- a/gr-qtgui/lib/eyedisplaysform.cc
++++ b/gr-qtgui/lib/eyedisplaysform.cc
+@@ -161,7 +161,11 @@ void EyeDisplaysForm::mousePressEvent(QMouseEvent* e)
+         for (unsigned int i = 0; i < d_nplots; ++i) {
+             d_lines_menu[i]->setTitle(d_displays_plot[i]->title().text());
+         }
++#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
++        d_menu->exec(e->globalPos());
++#else
+         d_menu->exec(e->globalPosition().toPoint());
++#endif
+     }
+ }
+ 
+-- 
+2.52.0
+
+From fcbec9995ad2f5430c9012c04857e9f89138e82f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marcus=20M=C3=BCller?= <mmueller@gnuradio.org>
+Date: Tue, 10 Jun 2025 15:17:46 +0200
+Subject: [PATCH 21/22] qtgui: Python formatting with black
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Marcus Müller <mmueller@gnuradio.org>
+---
+ gr-qtgui/python/qtgui/auto_correlator_sink.py |  90 +++++++----
+ gr-qtgui/python/qtgui/dialgauge.py            | 142 +++++++++++++-----
+ gr-qtgui/python/qtgui/graphicitem.py          |  95 ++++++------
+ 3 files changed, 222 insertions(+), 105 deletions(-)
+
+diff --git a/gr-qtgui/python/qtgui/auto_correlator_sink.py b/gr-qtgui/python/qtgui/auto_correlator_sink.py
+index a3493dcb3..4f74ab1dc 100644
+--- a/gr-qtgui/python/qtgui/auto_correlator_sink.py
++++ b/gr-qtgui/python/qtgui/auto_correlator_sink.py
+@@ -20,10 +20,12 @@ from qtpy import QtGui
+ from qtpy.QtWidgets import QWidget
+ import qtpy.sip as sip
+ 
++
+ class Normalize(gr.hier_block2):
+     def __init__(self, vecsize=1024):
+         gr.hier_block2.__init__(
+-            self, "Normalize",
++            self,
++            "Normalize",
+             gr.io_signature(1, 1, gr.sizeof_float * vecsize),
+             gr.io_signature(1, 1, gr.sizeof_float * vecsize),
+         )
+@@ -37,7 +39,8 @@ class Normalize(gr.hier_block2):
+         # Blocks
+         ##################################################
+         self.blocks_stream_to_vector_0 = blocks.stream_to_vector(
+-            gr.sizeof_float, vecsize)
++            gr.sizeof_float, vecsize
++        )
+         self.blocks_repeat_0 = blocks.repeat(gr.sizeof_float, vecsize)
+         self.blocks_max_xx_0 = blocks.max_ff(vecsize)
+         self.blocks_divide_xx_0 = blocks.divide_ff(vecsize)
+@@ -46,11 +49,9 @@ class Normalize(gr.hier_block2):
+         # Connections
+         ##################################################
+         self.connect((self.blocks_divide_xx_0, 0), (self, 0))
+-        self.connect((self.blocks_stream_to_vector_0, 0),
+-                     (self.blocks_divide_xx_0, 1))
++        self.connect((self.blocks_stream_to_vector_0, 0), (self.blocks_divide_xx_0, 1))
+         self.connect((self, 0), (self.blocks_max_xx_0, 0))
+-        self.connect((self.blocks_repeat_0, 0),
+-                     (self.blocks_stream_to_vector_0, 0))
++        self.connect((self.blocks_repeat_0, 0), (self.blocks_stream_to_vector_0, 0))
+         self.connect((self.blocks_max_xx_0, 0), (self.blocks_repeat_0, 0))
+         self.connect((self, 0), (self.blocks_divide_xx_0, 0))
+ 
+@@ -70,22 +71,23 @@ class AutoCorrelator(gr.hier_block2):
+     """
+ 
+     def __init__(self, sample_rate, fac_size, fac_decimation, use_db):
+-        gr.hier_block2.__init__(self, "AutoCorrelator",
+-                                gr.io_signature(
+-                                    1, 1, gr.sizeof_gr_complex),  # Input sig
+-                                gr.io_signature(1, 1, gr.sizeof_float * fac_size))  # Output sig
++        gr.hier_block2.__init__(
++            self,
++            "AutoCorrelator",
++            gr.io_signature(1, 1, gr.sizeof_gr_complex),  # Input sig
++            gr.io_signature(1, 1, gr.sizeof_float * fac_size),
++        )  # Output sig
+ 
+         self.fac_size = fac_size
+         self.fac_decimation = fac_decimation
+         self.sample_rate = sample_rate
+ 
+-        streamToVec = blocks.stream_to_vector(
+-            gr.sizeof_gr_complex, self.fac_size)
++        streamToVec = blocks.stream_to_vector(gr.sizeof_gr_complex, self.fac_size)
+         # Make sure N is at least 1
+-        decimation = int(self.sample_rate /
+-                         self.fac_size / self.fac_decimation)
++        decimation = int(self.sample_rate / self.fac_size / self.fac_decimation)
+         self.one_in_n = blocks.keep_one_in_n(
+-            gr.sizeof_gr_complex * self.fac_size, max(1, decimation))
++            gr.sizeof_gr_complex * self.fac_size, max(1, decimation)
++        )
+ 
+         # FFT Note: No windowing.
+         fac = fft.fft_vcc(self.fac_size, True, ())
+@@ -102,11 +104,30 @@ class AutoCorrelator(gr.hier_block2):
+         log = blocks.nlog10_ff(n, self.fac_size, k)
+ 
+         if use_db:
+-            self.connect(self, streamToVec, self.one_in_n, fac,
+-                         complex2Mag, fac_fac, fac_c2mag, self.avg, log, self)
++            self.connect(
++                self,
++                streamToVec,
++                self.one_in_n,
++                fac,
++                complex2Mag,
++                fac_fac,
++                fac_c2mag,
++                self.avg,
++                log,
++                self,
++            )
+         else:
+-            self.connect(self, streamToVec, self.one_in_n, fac,
+-                         complex2Mag, fac_fac, fac_c2mag, self.avg, self)
++            self.connect(
++                self,
++                streamToVec,
++                self.one_in_n,
++                fac,
++                complex2Mag,
++                fac_fac,
++                fac_c2mag,
++                self.avg,
++                self,
++            )
+ 
+ 
+ class AutoCorrelatorSink(gr.hier_block2):
+@@ -114,23 +135,36 @@ class AutoCorrelatorSink(gr.hier_block2):
+     docstring for block AutoCorrelatorSink
+     """
+ 
+-    def __init__(self, sample_rate, fac_size, fac_decimation, title, autoScale, grid, yMin, yMax, use_db):
+-        gr.hier_block2.__init__(self,
+-                                "AutoCorrelatorSink",
+-                                # Input signature
+-                                gr.io_signature(1, 1, gr.sizeof_gr_complex),
+-                                gr.io_signature(0, 0, 0))  # Output signature
++    def __init__(
++        self,
++        sample_rate,
++        fac_size,
++        fac_decimation,
++        title,
++        autoScale,
++        grid,
++        yMin,
++        yMax,
++        use_db,
++    ):
++        gr.hier_block2.__init__(
++            self,
++            "AutoCorrelatorSink",
++            # Input signature
++            gr.io_signature(1, 1, gr.sizeof_gr_complex),
++            gr.io_signature(0, 0, 0),
++        )  # Output signature
+ 
+         self.fac_size = fac_size
+         self.fac_decimation = fac_decimation
+         self.sample_rate = sample_rate
+ 
+-        autoCorr = AutoCorrelator(
+-            sample_rate, fac_size, fac_decimation, use_db)
++        autoCorr = AutoCorrelator(sample_rate, fac_size, fac_decimation, use_db)
+         vecToStream = blocks.vector_to_stream(gr.sizeof_float, self.fac_size)
+ 
+         self.timeSink = qtgui.time_sink_f(
+-            self.fac_size // 2, sample_rate, title, 1, None)
++            self.fac_size // 2, sample_rate, title, 1, None
++        )
+         self.timeSink.enable_grid(grid)
+         self.timeSink.set_y_axis(yMin, yMax)
+         self.timeSink.enable_autoscale(autoScale)
+diff --git a/gr-qtgui/python/qtgui/dialgauge.py b/gr-qtgui/python/qtgui/dialgauge.py
+index ee937b139..2a395e63c 100644
+--- a/gr-qtgui/python/qtgui/dialgauge.py
++++ b/gr-qtgui/python/qtgui/dialgauge.py
+@@ -20,12 +20,34 @@ import pmt
+ 
+ class LabeledDialGauge(QFrame):
+     # Positions: 1 = above, 2=below, 3=left, 4=right
+-    def __init__(self, lbl='', barColor='blue', backgroundColor='white', fontColor='black',
+-                 minValue=0, maxValue=100, maxSize=80, position=1,
+-                 isFloat=False, showValue=False, fixedOrMin=True, parent=None):
++    def __init__(
++        self,
++        lbl="",
++        barColor="blue",
++        backgroundColor="white",
++        fontColor="black",
++        minValue=0,
++        maxValue=100,
++        maxSize=80,
++        position=1,
++        isFloat=False,
++        showValue=False,
++        fixedOrMin=True,
++        parent=None,
++    ):
+         QFrame.__init__(self, parent)
+-        self.numberControl = DialGauge(barColor, backgroundColor, fontColor, minValue,
+-                                       maxValue, maxSize, isFloat, showValue, fixedOrMin, parent)
++        self.numberControl = DialGauge(
++            barColor,
++            backgroundColor,
++            fontColor,
++            minValue,
++            maxValue,
++            maxSize,
++            isFloat,
++            showValue,
++            fixedOrMin,
++            parent,
++        )
+ 
+         if position < 3:
+             layout = QVBoxLayout()
+@@ -44,9 +66,8 @@ class LabeledDialGauge(QFrame):
+         if len:
+             self.lblcontrol.setText(lbl)
+ 
+-        if fontColor != 'default':
+-            self.lblcontrol.setStyleSheet(
+-                "QLabel { color : " + fontColor + "; }")
++        if fontColor != "default":
++            self.lblcontrol.setStyleSheet("QLabel { color : " + fontColor + "; }")
+ 
+         # add top or left
+         if len:
+@@ -72,9 +93,19 @@ class LabeledDialGauge(QFrame):
+ 
+ 
+ class DialGauge(QFrame):
+-    def __init__(self, barColor='blue', backgroundColor='white', fontColor='black',
+-                 minValue=0, maxValue=100, maxSize=80,
+-                 isFloat=False, showValue=False, fixedOrMin=True, parent=None):
++    def __init__(
++        self,
++        barColor="blue",
++        backgroundColor="white",
++        fontColor="black",
++        minValue=0,
++        maxValue=100,
++        maxSize=80,
++        isFloat=False,
++        showValue=False,
++        fixedOrMin=True,
++        parent=None,
++    ):
+         QFrame.__init__(self, parent)
+ 
+         self.maxSize = maxSize
+@@ -99,7 +130,9 @@ class DialGauge(QFrame):
+ 
+         self.startAngle = 0.0
+         self.endAngle = 360.0
+-        self.degScaler = 16.0  # The span angle must be specified in 1/16 of a degree units
++        self.degScaler = (
++            16.0  # The span angle must be specified in 1/16 of a degree units
++        )
+         self.penWidth = max(int(0.1 * maxSize), 6)
+         self.halfPenWidth = int(self.penWidth / 2)
+ 
+@@ -124,17 +157,23 @@ class DialGauge(QFrame):
+ 
+         size = self.size()
+ 
+-        percentRange = float(self.value - self.minValue) / \
+-            float(self.maxValue - self.minValue)
+-        endAngle = self.startAngle + \
+-            round(percentRange * float(self.endAngle - self.startAngle), 0)
++        percentRange = float(self.value - self.minValue) / float(
++            self.maxValue - self.minValue
++        )
++        endAngle = self.startAngle + round(
++            percentRange * float(self.endAngle - self.startAngle), 0
++        )
+ 
+         # Now convert angles to 1/16 scale
+         startAngle = int(round(self.startAngle * self.degScaler, 0))
+         endAngle = int(round(endAngle * self.degScaler, 0))
+ 
+-        rect = QRect(self.halfPenWidth, self.halfPenWidth, size.width() - self.penWidth,
+-                            size.height() - self.penWidth)
++        rect = QRect(
++            self.halfPenWidth,
++            self.halfPenWidth,
++            size.width() - self.penWidth,
++            size.height() - self.penWidth,
++        )
+ 
+         # Set up the painting canvass
+         painter = QPainter()
+@@ -150,8 +189,11 @@ class DialGauge(QFrame):
+             else:
+                 printText = str(int(self.value))
+ 
+-            painter.drawText(int(size.width() / 2 - self.metrics.width(printText) / 2), size.height() // 2,
+-                             printText)
++            painter.drawText(
++                int(size.width() / 2 - self.metrics.width(printText) / 2),
++                size.height() // 2,
++                printText,
++            )
+ 
+         painter.save()
+         painter.translate(self.width(), 0)
+@@ -163,11 +205,16 @@ class DialGauge(QFrame):
+         # First draw complete circle
+         painter.setPen(QPen(QColor(self.barColor), self.penWidth))
+         painter.drawArc(rect, startAngle, -endAngle)
+-        painter.setPen(QPen(QColor('darkgray'), 2))
+-        painter.drawEllipse(1, 1, rect.width() + self.penWidth -
+-                            2, rect.width() + self.penWidth - 2)
+-        painter.drawEllipse(1 + self.penWidth, 1 + self.penWidth, rect.width() - self.penWidth - 2,
+-                            rect.width() - self.penWidth - 2)
++        painter.setPen(QPen(QColor("darkgray"), 2))
++        painter.drawEllipse(
++            1, 1, rect.width() + self.penWidth - 2, rect.width() + self.penWidth - 2
++        )
++        painter.drawEllipse(
++            1 + self.penWidth,
++            1 + self.penWidth,
++            rect.width() - self.penWidth - 2,
++            rect.width() - self.penWidth - 2,
++        )
+         painter.restore()
+ 
+         painter.end()
+@@ -179,14 +226,37 @@ class GrDialGauge(gr.sync_block, LabeledDialGauge):
+     either with a variable or an input message.
+     """
+ 
+-    def __init__(self, lbl='', barColor='blue', backgroundColor='white', fontColor='black',
+-                 minValue=0, maxValue=100, maxSize=80,
+-                 position=1, isFloat=False, showValue=False, fixedOrMin=True, parent=None):
+-        gr.sync_block.__init__(self, name="DialGauge",
+-                               in_sig=None, out_sig=None)
+-        LabeledDialGauge.__init__(self, lbl, barColor, backgroundColor, fontColor, minValue,
+-                                  maxValue, maxSize, position, isFloat, showValue, fixedOrMin,
+-                                  parent)
++    def __init__(
++        self,
++        lbl="",
++        barColor="blue",
++        backgroundColor="white",
++        fontColor="black",
++        minValue=0,
++        maxValue=100,
++        maxSize=80,
++        position=1,
++        isFloat=False,
++        showValue=False,
++        fixedOrMin=True,
++        parent=None,
++    ):
++        gr.sync_block.__init__(self, name="DialGauge", in_sig=None, out_sig=None)
++        LabeledDialGauge.__init__(
++            self,
++            lbl,
++            barColor,
++            backgroundColor,
++            fontColor,
++            minValue,
++            maxValue,
++            maxSize,
++            position,
++            isFloat,
++            showValue,
++            fixedOrMin,
++            parent,
++        )
+         self.lbl = lbl
+ 
+         if minValue > maxValue:
+@@ -203,8 +273,10 @@ class GrDialGauge(gr.sync_block, LabeledDialGauge):
+             if type(new_val) is float or type(new_val) is int:
+                 super().setValue(new_val)
+             else:
+-                gr.log.error("Value received was not an int or a float. "
+-                             "Received %s" % str(type(new_val)))
++                gr.log.error(
++                    "Value received was not an int or a float. "
++                    "Received %s" % str(type(new_val))
++                )
+ 
+         except Exception as e:
+             gr.log.error("Error with message conversion: %s" % str(e))
+diff --git a/gr-qtgui/python/qtgui/graphicitem.py b/gr-qtgui/python/qtgui/graphicitem.py
+index 5875a2419..9c2bd42fd 100644
+--- a/gr-qtgui/python/qtgui/graphicitem.py
++++ b/gr-qtgui/python/qtgui/graphicitem.py
+@@ -33,9 +33,10 @@ class GrGraphicItem(gr.sync_block, QLabel):
+     throughout the background image.
+     """
+ 
+-    def __init__(self, image_file, scaleImage=True, fixedSize=False, setWidth=0, setHeight=0):
+-        gr.sync_block.__init__(self, name="GrGraphicsItem",
+-                               in_sig=None, out_sig=None)
++    def __init__(
++        self, image_file, scaleImage=True, fixedSize=False, setWidth=0, setHeight=0
++    ):
++        gr.sync_block.__init__(self, name="GrGraphicsItem", in_sig=None, out_sig=None)
+         QLabel.__init__(self)
+ 
+         if not os.path.isfile(image_file):
+@@ -68,10 +69,12 @@ class GrGraphicItem(gr.sync_block, QLabel):
+         try:
+             overlayitem = pmt.to_python(pmt.car(msg))
+             if overlayitem is None:
+-                gr.log.error('Overlay message contains None in the car portion '
+-                             'of the message.  Please pass in a dictionary or list of dictionaries in this '
+-                             'portion of the message.  Each dictionary should have the following keys: '
+-                             'filename,x,y.  Use x=y=-1 to remove an overlay item.')
++                gr.log.error(
++                    "Overlay message contains None in the car portion "
++                    "of the message.  Please pass in a dictionary or list of dictionaries in this "
++                    "portion of the message.  Each dictionary should have the following keys: "
++                    "filename,x,y.  Use x=y=-1 to remove an overlay item."
++                )
+                 return
+ 
+             if type(overlayitem) is dict:
+@@ -80,55 +83,56 @@ class GrGraphicItem(gr.sync_block, QLabel):
+             elif type(overlayitem) is list:
+                 itemlist = overlayitem
+             else:
+-                gr.log.error("Overlay message type is not correct.  Please pass in "
+-                             "a dictionary or list of dictionaries in this portion of the message.  Each "
+-                             "dictionary should have the following keys: filename,x,y.  Use x=y=-1 to "
+-                             "remove an overlay item.")
++                gr.log.error(
++                    "Overlay message type is not correct.  Please pass in "
++                    "a dictionary or list of dictionaries in this portion of the message.  Each "
++                    "dictionary should have the following keys: filename,x,y.  Use x=y=-1 to "
++                    "remove an overlay item."
++                )
+                 return
+ 
+             # Check each dict item to make sure it's valid.
+             for curitem in itemlist:
+                 if type(curitem) is dict:
+-                    if 'filename' not in curitem:
++                    if "filename" not in curitem:
+                         gr.log.error(
+-                            "Dictionary item did not contain the 'filename' key.")
++                            "Dictionary item did not contain the 'filename' key."
++                        )
+                         gr.log.error("Received " + str(curitem))
+                         continue
+ 
+-                    if 'x' not in curitem:
+-                        gr.log.error("The dictionary for filename " +
+-                                     curitem['filename'] + " did not contain an 'x' key.")
+-                        gr.log.error("Received " + str(curitem))
+-                        continue
+-
+-                    if 'y' not in curitem:
+-                        gr.log.error("The dictionary for filename " +
+-                                     curitem['filename'] + " did not contain an 'y' key.")
+-                        gr.log.error("Received " + str(curitem))
++                    failed_keys = [key for key in "xy" if key not in curitem]
++                    if failed_keys:
++                        gr.log.error(
++                            "The dictionary for filename "
++                            f"{curitem['filename']}  did not contain '{', '.join(failed_keys)}' key.\n"
++                            f"Received {curitem:s}"
++                        )
+                         continue
+ 
+-                    if not os.path.isfile(curitem['filename']):
+-                        gr.log.error("Unable to find overlay file " +
+-                                     curitem['filename'])
++                    if not os.path.isfile(curitem["filename"]):
++                        gr.log.error(
++                            "Unable to find overlay file " + curitem["filename"]
++                        )
+                         gr.log.error("Received " + str(curitem))
+                         continue
+ 
+                     # Now either add/update our list or remove the item.
+-                    if curitem['x'] == -1 and curitem['y'] == -1:
++                    if curitem["x"] == -1 and curitem["y"] == -1:
+                         try:
+                             # remove item
+-                            del self.overlays[curitem['filename']]
+-                        except:
++                            del self.overlays[curitem["filename"]]
++                        except KeyError:
+                             pass
+                     else:
+-                        self.overlays[curitem['filename']] = curitem
++                        self.overlays[curitem["filename"]] = curitem
+ 
+                 self.updateGraphic()
+         except Exception as e:
+             gr.log.error("Error with overlay message conversion: %s" % str(e))
+ 
+     def updateGraphic(self):
+-        if (len(self.overlays.keys()) == 0):
++        if len(self.overlays.keys()) == 0:
+             try:
+                 super().setPixmap(self.pixmap)
+             except Exception as e:
+@@ -142,14 +146,16 @@ class GrGraphicItem(gr.sync_block, QLabel):
+                 curOverlay = self.overlays[curkey]
+                 try:
+                     newOverlay = QPixmap(curkey)
+-                    if 'scalefactor' in curOverlay:
+-                        scale = curOverlay['scalefactor']
++                    if "scalefactor" in curOverlay:
++                        scale = curOverlay["scalefactor"]
+                         w = newOverlay.width()
+                         h = newOverlay.height()
+-                        newOverlay = newOverlay.scaled(int(w * scale), int(h * scale),
+-                                                       Qt.AspectRatioMode.KeepAspectRatio)
+-                    painter.drawPixmap(
+-                        curOverlay['x'], curOverlay['y'], newOverlay)
++                        newOverlay = newOverlay.scaled(
++                            int(w * scale),
++                            int(h * scale),
++                            Qt.AspectRatioMode.KeepAspectRatio,
++                        )
++                    painter.drawPixmap(curOverlay["x"], curOverlay["y"], newOverlay)
+                 except Exception as e:
+                     gr.log.error("Error adding overlay: %s" % str(e))
+                     return
+@@ -176,8 +182,10 @@ class GrGraphicItem(gr.sync_block, QLabel):
+ 
+                 self.updateGraphic()
+             else:
+-                gr.log.error("Value received was not an int or "
+-                             "a bool: %s" % str(type(new_val)))
++                gr.log.error(
++                    "Value received was not an int or "
++                    "a bool: %s" % str(type(new_val))
++                )
+ 
+         except Exception as e:
+             gr.log.error("Error with message conversion: %s" % str(e))
+@@ -190,9 +198,12 @@ class GrGraphicItem(gr.sync_block, QLabel):
+             w = super().width()
+             h = super().height()
+ 
+-            self.pixmap = self.originalPixmap.scaled(w, h,  Qt.AspectRatioMode.KeepAspectRatio)
++            self.pixmap = self.originalPixmap.scaled(
++                w, h, Qt.AspectRatioMode.KeepAspectRatio
++            )
+         elif self.fixedSize and self.setWidth > 0 and self.setHeight > 0:
+-            self.pixmap = self.originalPixmap.scaled(self.setWidth, self.setHeight,
+-                                                     Qt.AspectRatioMode.KeepAspectRatio)
++            self.pixmap = self.originalPixmap.scaled(
++                self.setWidth, self.setHeight, Qt.AspectRatioMode.KeepAspectRatio
++            )
+ 
+         self.updateGraphic()
+-- 
+2.52.0
+
+From e273a6ed8973b9460f828d46f90da1104f02b87e Mon Sep 17 00:00:00 2001
+From: Mario Haustein <mario.haustein@hrz.tu-chemnitz.de>
+Date: Thu, 16 Apr 2026 22:24:26 +0200
+Subject: [PATCH 22/22] qtgui: set include directories and libraries for CMake
+
+---
+ gr-qtgui/CMakeLists.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/gr-qtgui/CMakeLists.txt b/gr-qtgui/CMakeLists.txt
+index bf19b327e..44770882d 100644
+--- a/gr-qtgui/CMakeLists.txt
++++ b/gr-qtgui/CMakeLists.txt
+@@ -14,12 +14,17 @@ include(GrPython)
+ 
+ if (TRY_QT6_BUILD)
+ gr_find_package(Qt6 QUIET
+-    COMPONENTS Widgets
++    COMPONENTS Gui Widgets
+     OPTIONAL_COMPONENTS OpenGL
+     GLOBAL
+ )
+ set(QT_FOUND ${Qt6Widgets_FOUND})
+ 
++set(QT_LIBRARIES ${Qt6Gui_LIBRARIES} ${Qt6Widgets_LIBRARIES})
++set(QT_INCLUDE_DIRS ${Qt6Gui_INCLUDE_DIRS} ${Qt6Widgets_INCLUDE_DIRS})
++
++include_directories(SYSTEM ${Qt6Gui_INCLUDE_DIRS} ${Qt6Widgets_INCLUDE_DIRS})
++
+ gr_python_check_module(
+     DESC "PyQt6"
+     MODULE PyQt6
+-- 
+2.52.0
+
