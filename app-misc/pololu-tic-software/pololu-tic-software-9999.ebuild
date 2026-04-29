@@ -19,18 +19,12 @@ fi
 LICENSE="MIT"
 SLOT="0"
 
-IUSE="qt5 qt6"
+IUSE="qt6"
 
 DEPEND="
 	dev-libs/libusbp:=
 	dev-libs/libyaml:=
 	dev-libs/tinyxml2:=
-	qt5?
-	(
-		dev-qt/qtcore:5
-		dev-qt/qtgui:5
-		dev-qt/qtwidgets:5
-	)
 	qt6?
 	(
 		dev-qt/qtbase:6[gui,widgets]
@@ -43,7 +37,7 @@ src_configure() {
 		-DUSE_SYSTEM_LIBTINYXML2="yes"
 		-DUSE_SYSTEM_LIBYAML="yes"
 	)
-	if use qt5 || use qt6; then
+	if use qt6; then
 		mycmakeargs+=( -DENABLE_GUI="yes" )
 	else
 		mycmakeargs+=( -DENABLE_GUI="no" )
