@@ -34,8 +34,9 @@ RDEPEND="
 		>=dev-python/dpapi-ng-0.2.0[${PYTHON_USEDEP}]
 		dev-python/gssapi[${PYTHON_USEDEP}]
 		>=dev-python/ldap3-2.9.1[${PYTHON_USEDEP}]
+		dev-python/passlib[${PYTHON_USEDEP}]
 		dev-python/pycryptodome[${PYTHON_USEDEP}]
-		dev-python/pyqt5[${PYTHON_USEDEP}]
+		>=dev-python/pyqt6-6.7.1[${PYTHON_USEDEP}]
 	')
 "
 DEPEND="${RDEPEND}"
