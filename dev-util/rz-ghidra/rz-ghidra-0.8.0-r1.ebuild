@@ -32,7 +32,7 @@ DEPEND="
 	dev-libs/pugixml
 	=dev-util/rizin-$(ver_cut 1-2)*:=
 	cutter? (
-		dev-qt/qtwidgets:5
+		dev-qt/qtbase:6[gui,widgets]
 		dev-util/cutter
 	)
 "
