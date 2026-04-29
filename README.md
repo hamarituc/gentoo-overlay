@@ -328,13 +328,6 @@ Citing from https://github.com/openvenues/libpostal:
 > libpostal is a C library for parsing/normalizing street addresses around the
 > world using statistical NLP and open data.
 
-### net-wireless/proxmark3
-
-Proxmark3 is a RFID/NFC reader, writer, sniffer and emulator.
-
-Acknowledgement: The ebuild is based on the [Pentoo](https://www.pentoo.ch/)
-  Project.
-
 ### net-wireless/qflipper
 
 Citing https://docs.flipperzero.one/qflipper:
