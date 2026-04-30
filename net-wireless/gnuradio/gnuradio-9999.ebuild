@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{12..13} )
 inherit cmake desktop python-single-r1 virtualx xdg-utils
 
 DESCRIPTION="Toolkit that provides signal processing blocks to implement software radios"
@@ -87,7 +87,7 @@ RDEPEND="${PYTHON_DEPS}
 		$(python_gen_cond_dep 'dev-python/pyqt6[opengl,${PYTHON_USEDEP}]')
 		$(python_gen_cond_dep 'dev-python/qtpy[pyqt6,${PYTHON_USEDEP}]')
 		dev-qt/qtbase:6[gui,widgets]
-		x11-libs/qwt:6=[qt6(-)]
+		x11-libs/qwt:6=
 	)
 	soapy? (
 		net-wireless/soapysdr:=[${PYTHON_SINGLE_USEDEP}]
