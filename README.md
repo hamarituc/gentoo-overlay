@@ -104,6 +104,10 @@ repo disappeared unfortunately.
 This package containts a capture utility for astronomical cameras mainly used
 for planetary imaging.
 
+### SER Player
+
+Player for astronnomical SER video capture files.
+
 ### Skyfield
 
 Skyfield is a python library for various astronomical calculation problems.
