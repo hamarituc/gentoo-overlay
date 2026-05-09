@@ -1,0 +1,35 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 64a5cef..a8a7e6d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -41,11 +41,12 @@ option(CSPICE_BUILD_STATIC_LIBRARY "Build sofa as a static library, instead of d
+ # INSTALL TREE CONFIGURATION (Project name independent)
+ #  Offer the user the choice of overriding the installation directories.
+ # +============================================================================
+-set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib/" CACHE PATH "Installation directory for libraries")
+-set(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin/" CACHE PATH "Installation directory for executables")
+-set(INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/" CACHE PATH "Installation directory for header files")
+-set(INSTALL_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data/" CACHE PATH "Installation directory for data files")
+-set(INSTALL_MAN_DIR "${CMAKE_INSTALL_PREFIX}/" CACHE PATH "Installation directory for man documentation")
++include(GNUInstallDirs)
++set(INSTALL_LIB_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE PATH "Installation directory for libraries")
++set(INSTALL_BIN_DIR "${CMAKE_INSTALL_BINDIR}" CACHE PATH "Installation directory for executables")
++set(INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_INCLUDEDIR}" CACHE PATH "Installation directory for header files")
++set(INSTALL_DATA_DIR "${CMAKE_INSTALL_DATAROOTDIR}" CACHE PATH "Installation directory for data files")
++set(INSTALL_MAN_DIR "${CMAKE_INSTALL_MANDIR}/" CACHE PATH "Installation directory for man documentation")
+ set(INSTALL_TESTS_DIR "${CMAKE_BINARY_DIR}/tests/" CACHE PATH "Installation directory for tests (default=OFF)")
+ set(INSTALL_CMAKE_DIR "${INSTALL_LIB_DIR}/cmake/${PROJECT_NAME_LOWER}" CACHE PATH "Installation directory for cmake config files")
+ 
+@@ -131,9 +132,9 @@ set_target_properties(cspice
+ # Installation of the library.
+ install(TARGETS cspice
+         EXPORT cspice_export
+-        LIBRARY DESTINATION lib
+-        ARCHIVE DESTINATION lib
+-        RUNTIME DESTINATION bin
++        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+         )
+ 
+ # Set <project>_LIBRARIES for <project>-config.cmake.

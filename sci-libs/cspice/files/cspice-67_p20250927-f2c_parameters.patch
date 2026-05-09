@@ -1,0 +1,432 @@
+diff --git a/include/SpiceZfc.h b/include/SpiceZfc.h
+index a6a9989..780f1ff 100644
+--- a/include/SpiceZfc.h
++++ b/include/SpiceZfc.h
+@@ -187,13 +187,13 @@
+    Type S_fp is used for subroutines.
+    Type U_fp is used for functions of unknown type.
+    */
+-   typedef VOID       (*H_fp)();
+-   typedef doublereal (*D_fp)();
+-   typedef doublereal (*E_fp)();
+-   typedef int        (*S_fp)();
+-   typedef int        (*U_fp)();
+-   typedef integer    (*I_fp)();
+-   typedef logical    (*L_fp)();
++   typedef VOID       (*H_fp)(...);
++   typedef doublereal (*D_fp)(...);
++   typedef doublereal (*E_fp)(...);
++   typedef int        (*S_fp)(...);
++   typedef int        (*U_fp)(...);
++   typedef integer    (*I_fp)(...);
++   typedef logical    (*L_fp)(...);
+ 
+ #else
+ 
+@@ -210,13 +210,13 @@
+    Type S_fp is used for subroutines.
+    Type U_fp is used for functions of unknown type.
+    */
+-   typedef VOID       (*H_fp)();
+-   typedef doublereal (*D_fp)();
+-   typedef doublereal (*E_fp)();
+-   typedef int        (*S_fp)();
+-   typedef int        (*U_fp)();
+-   typedef integer    (*I_fp)();
+-   typedef logical    (*L_fp)();
++   typedef VOID       (*H_fp)(...);
++   typedef doublereal (*D_fp)(...);
++   typedef doublereal (*E_fp)(...);
++   typedef int        (*S_fp)(...);
++   typedef int        (*U_fp)(...);
++   typedef integer    (*I_fp)(...);
++   typedef logical    (*L_fp)(...);
+ 
+ #endif
+ 
+diff --git a/include/cspice/SpiceZfc.h b/include/cspice/SpiceZfc.h
+index a6a9989..780f1ff 100644
+--- a/include/cspice/SpiceZfc.h
++++ b/include/cspice/SpiceZfc.h
+@@ -187,13 +187,13 @@
+    Type S_fp is used for subroutines.
+    Type U_fp is used for functions of unknown type.
+    */
+-   typedef VOID       (*H_fp)();
+-   typedef doublereal (*D_fp)();
+-   typedef doublereal (*E_fp)();
+-   typedef int        (*S_fp)();
+-   typedef int        (*U_fp)();
+-   typedef integer    (*I_fp)();
+-   typedef logical    (*L_fp)();
++   typedef VOID       (*H_fp)(...);
++   typedef doublereal (*D_fp)(...);
++   typedef doublereal (*E_fp)(...);
++   typedef int        (*S_fp)(...);
++   typedef int        (*U_fp)(...);
++   typedef integer    (*I_fp)(...);
++   typedef logical    (*L_fp)(...);
+ 
+ #else
+ 
+@@ -210,13 +210,13 @@
+    Type S_fp is used for subroutines.
+    Type U_fp is used for functions of unknown type.
+    */
+-   typedef VOID       (*H_fp)();
+-   typedef doublereal (*D_fp)();
+-   typedef doublereal (*E_fp)();
+-   typedef int        (*S_fp)();
+-   typedef int        (*U_fp)();
+-   typedef integer    (*I_fp)();
+-   typedef logical    (*L_fp)();
++   typedef VOID       (*H_fp)(...);
++   typedef doublereal (*D_fp)(...);
++   typedef doublereal (*E_fp)(...);
++   typedef int        (*S_fp)(...);
++   typedef int        (*U_fp)(...);
++   typedef integer    (*I_fp)(...);
++   typedef logical    (*L_fp)(...);
+ 
+ #endif
+ 
+diff --git a/include/cspice/f2c.h b/include/cspice/f2c.h
+index 6b99950..3037c45 100644
+--- a/include/cspice/f2c.h
++++ b/include/cspice/f2c.h
+@@ -412,17 +412,17 @@ typedef shortlogical (*K_fp)(...);
+ typedef /* Character */ VOID (*H_fp)(...);
+ typedef /* Subroutine */ int (*S_fp)(...);
+ #else
+-typedef int /* Unknown procedure type */ (*U_fp)();
+-typedef shortint (*J_fp)();
+-typedef integer (*I_fp)();
+-typedef real (*R_fp)();
+-typedef doublereal (*D_fp)(), (*E_fp)();
+-typedef /* Complex */ VOID (*C_fp)();
+-typedef /* Double Complex */ VOID (*Z_fp)();
+-typedef logical (*L_fp)();
+-typedef shortlogical (*K_fp)();
+-typedef /* Character */ VOID (*H_fp)();
+-typedef /* Subroutine */ int (*S_fp)();
++typedef int /* Unknown procedure type */ (*U_fp)(...);
++typedef shortint (*J_fp)(...);
++typedef integer (*I_fp)(...);
++typedef real (*R_fp)(...);
++typedef doublereal (*D_fp)(...), (*E_fp)(...);
++typedef /* Complex */ VOID (*C_fp)(...);
++typedef /* Double Complex */ VOID (*Z_fp)(...);
++typedef logical (*L_fp)(...);
++typedef shortlogical (*K_fp)(...);
++typedef /* Character */ VOID (*H_fp)(...);
++typedef /* Subroutine */ int (*S_fp)(...);
+ #endif
+ /* E_fp is for real functions when -R is not specified */
+ typedef VOID C_f; /* complex function */
+@@ -649,17 +649,17 @@ typedef shortlogical (*K_fp)(...);
+ typedef /* Character */ VOID (*H_fp)(...);
+ typedef /* Subroutine */ int (*S_fp)(...);
+ #else
+-typedef int /* Unknown procedure type */ (*U_fp)();
+-typedef shortint (*J_fp)();
+-typedef integer (*I_fp)();
+-typedef real (*R_fp)();
+-typedef doublereal (*D_fp)(), (*E_fp)();
+-typedef /* Complex */ VOID (*C_fp)();
+-typedef /* Double Complex */ VOID (*Z_fp)();
+-typedef logical (*L_fp)();
+-typedef shortlogical (*K_fp)();
+-typedef /* Character */ VOID (*H_fp)();
+-typedef /* Subroutine */ int (*S_fp)();
++typedef int /* Unknown procedure type */ (*U_fp)(...);
++typedef shortint (*J_fp)(...);
++typedef integer (*I_fp)(...);
++typedef real (*R_fp)(...);
++typedef doublereal (*D_fp)(...), (*E_fp)(...);
++typedef /* Complex */ VOID (*C_fp)(...);
++typedef /* Double Complex */ VOID (*Z_fp)(...);
++typedef logical (*L_fp)(...);
++typedef shortlogical (*K_fp)(...);
++typedef /* Character */ VOID (*H_fp)(...);
++typedef /* Subroutine */ int (*S_fp)(...);
+ #endif
+ /* E_fp is for real functions when -R is not specified */
+ typedef VOID C_f; /* complex function */
+diff --git a/include/f2c.h b/include/f2c.h
+index 6b99950..3037c45 100644
+--- a/include/f2c.h
++++ b/include/f2c.h
+@@ -412,17 +412,17 @@ typedef shortlogical (*K_fp)(...);
+ typedef /* Character */ VOID (*H_fp)(...);
+ typedef /* Subroutine */ int (*S_fp)(...);
+ #else
+-typedef int /* Unknown procedure type */ (*U_fp)();
+-typedef shortint (*J_fp)();
+-typedef integer (*I_fp)();
+-typedef real (*R_fp)();
+-typedef doublereal (*D_fp)(), (*E_fp)();
+-typedef /* Complex */ VOID (*C_fp)();
+-typedef /* Double Complex */ VOID (*Z_fp)();
+-typedef logical (*L_fp)();
+-typedef shortlogical (*K_fp)();
+-typedef /* Character */ VOID (*H_fp)();
+-typedef /* Subroutine */ int (*S_fp)();
++typedef int /* Unknown procedure type */ (*U_fp)(...);
++typedef shortint (*J_fp)(...);
++typedef integer (*I_fp)(...);
++typedef real (*R_fp)(...);
++typedef doublereal (*D_fp)(...), (*E_fp)(...);
++typedef /* Complex */ VOID (*C_fp)(...);
++typedef /* Double Complex */ VOID (*Z_fp)(...);
++typedef logical (*L_fp)(...);
++typedef shortlogical (*K_fp)(...);
++typedef /* Character */ VOID (*H_fp)(...);
++typedef /* Subroutine */ int (*S_fp)(...);
+ #endif
+ /* E_fp is for real functions when -R is not specified */
+ typedef VOID C_f; /* complex function */
+@@ -649,17 +649,17 @@ typedef shortlogical (*K_fp)(...);
+ typedef /* Character */ VOID (*H_fp)(...);
+ typedef /* Subroutine */ int (*S_fp)(...);
+ #else
+-typedef int /* Unknown procedure type */ (*U_fp)();
+-typedef shortint (*J_fp)();
+-typedef integer (*I_fp)();
+-typedef real (*R_fp)();
+-typedef doublereal (*D_fp)(), (*E_fp)();
+-typedef /* Complex */ VOID (*C_fp)();
+-typedef /* Double Complex */ VOID (*Z_fp)();
+-typedef logical (*L_fp)();
+-typedef shortlogical (*K_fp)();
+-typedef /* Character */ VOID (*H_fp)();
+-typedef /* Subroutine */ int (*S_fp)();
++typedef int /* Unknown procedure type */ (*U_fp)(...);
++typedef shortint (*J_fp)(...);
++typedef integer (*I_fp)(...);
++typedef real (*R_fp)(...);
++typedef doublereal (*D_fp)(...), (*E_fp)(...);
++typedef /* Complex */ VOID (*C_fp)(...);
++typedef /* Double Complex */ VOID (*Z_fp)(...);
++typedef logical (*L_fp)(...);
++typedef shortlogical (*K_fp)(...);
++typedef /* Character */ VOID (*H_fp)(...);
++typedef /* Subroutine */ int (*S_fp)(...);
+ #endif
+ /* E_fp is for real functions when -R is not specified */
+ typedef VOID C_f; /* complex function */
+diff --git a/src/cspice/SpiceZfc.h b/src/cspice/SpiceZfc.h
+index a6a9989..780f1ff 100644
+--- a/src/cspice/SpiceZfc.h
++++ b/src/cspice/SpiceZfc.h
+@@ -187,13 +187,13 @@
+    Type S_fp is used for subroutines.
+    Type U_fp is used for functions of unknown type.
+    */
+-   typedef VOID       (*H_fp)();
+-   typedef doublereal (*D_fp)();
+-   typedef doublereal (*E_fp)();
+-   typedef int        (*S_fp)();
+-   typedef int        (*U_fp)();
+-   typedef integer    (*I_fp)();
+-   typedef logical    (*L_fp)();
++   typedef VOID       (*H_fp)(...);
++   typedef doublereal (*D_fp)(...);
++   typedef doublereal (*E_fp)(...);
++   typedef int        (*S_fp)(...);
++   typedef int        (*U_fp)(...);
++   typedef integer    (*I_fp)(...);
++   typedef logical    (*L_fp)(...);
+ 
+ #else
+ 
+@@ -210,13 +210,13 @@
+    Type S_fp is used for subroutines.
+    Type U_fp is used for functions of unknown type.
+    */
+-   typedef VOID       (*H_fp)();
+-   typedef doublereal (*D_fp)();
+-   typedef doublereal (*E_fp)();
+-   typedef int        (*S_fp)();
+-   typedef int        (*U_fp)();
+-   typedef integer    (*I_fp)();
+-   typedef logical    (*L_fp)();
++   typedef VOID       (*H_fp)(...);
++   typedef doublereal (*D_fp)(...);
++   typedef doublereal (*E_fp)(...);
++   typedef int        (*S_fp)(...);
++   typedef int        (*U_fp)(...);
++   typedef integer    (*I_fp)(...);
++   typedef logical    (*L_fp)(...);
+ 
+ #endif
+ 
+diff --git a/src/cspice/f2c.h b/src/cspice/f2c.h
+index 6b99950..c31dda1 100644
+--- a/src/cspice/f2c.h
++++ b/src/cspice/f2c.h
+@@ -412,17 +412,17 @@ typedef shortlogical (*K_fp)(...);
+ typedef /* Character */ VOID (*H_fp)(...);
+ typedef /* Subroutine */ int (*S_fp)(...);
+ #else
+-typedef int /* Unknown procedure type */ (*U_fp)();
+-typedef shortint (*J_fp)();
+-typedef integer (*I_fp)();
+-typedef real (*R_fp)();
+-typedef doublereal (*D_fp)(), (*E_fp)();
+-typedef /* Complex */ VOID (*C_fp)();
+-typedef /* Double Complex */ VOID (*Z_fp)();
+-typedef logical (*L_fp)();
+-typedef shortlogical (*K_fp)();
+-typedef /* Character */ VOID (*H_fp)();
+-typedef /* Subroutine */ int (*S_fp)();
++typedef int /* Unknown procedure type */ (*U_fp)(...);
++typedef shortint (*J_fp)(...);
++typedef integer (*I_fp)(...);
++typedef real (*R_fp)(...);
++typedef doublereal (*D_fp)(...), (*E_fp)(...);
++typedef /* Complex */ VOID (*C_fp)(...);
++typedef /* Double Complex */ VOID (*Z_fp)(...);
++typedef logical (*L_fp)(...);
++typedef shortlogical (*K_fp)(...);
++typedef /* Character */ VOID (*H_fp)(...);
++typedef /* Subroutine */ int (*S_fp)(...);
+ #endif
+ /* E_fp is for real functions when -R is not specified */
+ typedef VOID C_f; /* complex function */
+@@ -649,17 +649,17 @@ typedef shortlogical (*K_fp)(...);
+ typedef /* Character */ VOID (*H_fp)(...);
+ typedef /* Subroutine */ int (*S_fp)(...);
+ #else
+-typedef int /* Unknown procedure type */ (*U_fp)();
+-typedef shortint (*J_fp)();
+-typedef integer (*I_fp)();
+-typedef real (*R_fp)();
+-typedef doublereal (*D_fp)(), (*E_fp)();
+-typedef /* Complex */ VOID (*C_fp)();
+-typedef /* Double Complex */ VOID (*Z_fp)();
+-typedef logical (*L_fp)();
+-typedef shortlogical (*K_fp)();
+-typedef /* Character */ VOID (*H_fp)();
+-typedef /* Subroutine */ int (*S_fp)();
++typedef int /* Unknown procedure type */ (*U_fp)(...);
++typedef shortint (*J_fp)(...);
++typedef integer (*I_fp)(...);
++typedef real (*R_fp)(...);
++typedef doublereal (*D_fp)(), (*E_fp)(...);
++typedef /* Complex */ VOID (*C_fp)(...);
++typedef /* Double Complex */ VOID (*Z_fp)(...);
++typedef logical (*L_fp)(...);
++typedef shortlogical (*K_fp)(...);
++typedef /* Character */ VOID (*H_fp)(...);
++typedef /* Subroutine */ int (*S_fp)(...);
+ #endif
+ /* E_fp is for real functions when -R is not specified */
+ typedef VOID C_f; /* complex function */
+diff --git a/src/csupport/SpiceZfc.h b/src/csupport/SpiceZfc.h
+index a6a9989..780f1ff 100644
+--- a/src/csupport/SpiceZfc.h
++++ b/src/csupport/SpiceZfc.h
+@@ -187,13 +187,13 @@
+    Type S_fp is used for subroutines.
+    Type U_fp is used for functions of unknown type.
+    */
+-   typedef VOID       (*H_fp)();
+-   typedef doublereal (*D_fp)();
+-   typedef doublereal (*E_fp)();
+-   typedef int        (*S_fp)();
+-   typedef int        (*U_fp)();
+-   typedef integer    (*I_fp)();
+-   typedef logical    (*L_fp)();
++   typedef VOID       (*H_fp)(...);
++   typedef doublereal (*D_fp)(...);
++   typedef doublereal (*E_fp)(...);
++   typedef int        (*S_fp)(...);
++   typedef int        (*U_fp)(...);
++   typedef integer    (*I_fp)(...);
++   typedef logical    (*L_fp)(...);
+ 
+ #else
+ 
+@@ -210,13 +210,13 @@
+    Type S_fp is used for subroutines.
+    Type U_fp is used for functions of unknown type.
+    */
+-   typedef VOID       (*H_fp)();
+-   typedef doublereal (*D_fp)();
+-   typedef doublereal (*E_fp)();
+-   typedef int        (*S_fp)();
+-   typedef int        (*U_fp)();
+-   typedef integer    (*I_fp)();
+-   typedef logical    (*L_fp)();
++   typedef VOID       (*H_fp)(...);
++   typedef doublereal (*D_fp)(...);
++   typedef doublereal (*E_fp)(...);
++   typedef int        (*S_fp)(...);
++   typedef int        (*U_fp)(...);
++   typedef integer    (*I_fp)(...);
++   typedef logical    (*L_fp)(...);
+ 
+ #endif
+ 
+diff --git a/src/csupport/f2c.h b/src/csupport/f2c.h
+index 6b99950..3037c45 100644
+--- a/src/csupport/f2c.h
++++ b/src/csupport/f2c.h
+@@ -412,17 +412,17 @@ typedef shortlogical (*K_fp)(...);
+ typedef /* Character */ VOID (*H_fp)(...);
+ typedef /* Subroutine */ int (*S_fp)(...);
+ #else
+-typedef int /* Unknown procedure type */ (*U_fp)();
+-typedef shortint (*J_fp)();
+-typedef integer (*I_fp)();
+-typedef real (*R_fp)();
+-typedef doublereal (*D_fp)(), (*E_fp)();
+-typedef /* Complex */ VOID (*C_fp)();
+-typedef /* Double Complex */ VOID (*Z_fp)();
+-typedef logical (*L_fp)();
+-typedef shortlogical (*K_fp)();
+-typedef /* Character */ VOID (*H_fp)();
+-typedef /* Subroutine */ int (*S_fp)();
++typedef int /* Unknown procedure type */ (*U_fp)(...);
++typedef shortint (*J_fp)(...);
++typedef integer (*I_fp)(...);
++typedef real (*R_fp)(...);
++typedef doublereal (*D_fp)(...), (*E_fp)(...);
++typedef /* Complex */ VOID (*C_fp)(...);
++typedef /* Double Complex */ VOID (*Z_fp)(...);
++typedef logical (*L_fp)(...);
++typedef shortlogical (*K_fp)(...);
++typedef /* Character */ VOID (*H_fp)(...);
++typedef /* Subroutine */ int (*S_fp)(...);
+ #endif
+ /* E_fp is for real functions when -R is not specified */
+ typedef VOID C_f; /* complex function */
+@@ -649,17 +649,17 @@ typedef shortlogical (*K_fp)(...);
+ typedef /* Character */ VOID (*H_fp)(...);
+ typedef /* Subroutine */ int (*S_fp)(...);
+ #else
+-typedef int /* Unknown procedure type */ (*U_fp)();
+-typedef shortint (*J_fp)();
+-typedef integer (*I_fp)();
+-typedef real (*R_fp)();
+-typedef doublereal (*D_fp)(), (*E_fp)();
+-typedef /* Complex */ VOID (*C_fp)();
+-typedef /* Double Complex */ VOID (*Z_fp)();
+-typedef logical (*L_fp)();
+-typedef shortlogical (*K_fp)();
+-typedef /* Character */ VOID (*H_fp)();
+-typedef /* Subroutine */ int (*S_fp)();
++typedef int /* Unknown procedure type */ (*U_fp)(...);
++typedef shortint (*J_fp)(...);
++typedef integer (*I_fp)(...);
++typedef real (*R_fp)(...);
++typedef doublereal (*D_fp)(...), (*E_fp)(...);
++typedef /* Complex */ VOID (*C_fp)(...);
++typedef /* Double Complex */ VOID (*Z_fp)(...);
++typedef logical (*L_fp)(...);
++typedef shortlogical (*K_fp)(...);
++typedef /* Character */ VOID (*H_fp)(...);
++typedef /* Subroutine */ int (*S_fp)(...);
+ #endif
+ /* E_fp is for real functions when -R is not specified */
+ typedef VOID C_f; /* complex function */
