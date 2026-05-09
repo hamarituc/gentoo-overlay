@@ -25,10 +25,10 @@ IUSE="examples"
 RESTRICT="test"
 
 RDEPEND="
-	>=dev-libs/capstone-4.0.1[python,${PYTHON_USEDEP}]
+	>=dev-libs/capstone-5[python,${PYTHON_USEDEP}]
 	>=dev-libs/keystone-0.9.2[python,${PYTHON_USEDEP}]
 	>=dev-util/unicorn-2.1.2[python,${PYTHON_USEDEP}]
-	>=dev-python/gevent-20.9.0[${PYTHON_USEDEP}]
+	>=dev-python/gevent-24.10[${PYTHON_USEDEP}]
 	>=dev-python/multiprocess-0.70.12.2[${PYTHON_USEDEP}]
 	>=dev-python/pefile-2022.5.30[${PYTHON_USEDEP}]
 	>=dev-python/pyelftools-0.28[${PYTHON_USEDEP}]
