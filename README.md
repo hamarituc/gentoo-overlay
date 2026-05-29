@@ -99,10 +99,6 @@ The repo contains a recent version of INDI including all 3rd-party drivers.
 Acknowledgement: These ebuilds are based on the work of Ctibor Brančík whose
 repo disappeared unfortunately.
 
-### SER Player
-
-Player for astronnomical SER video capture files.
-
 ### Skyfield
 
 Skyfield is a python library for various astronomical calculation problems.
@@ -365,9 +361,10 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `net-analyzer/wtfis`
  * `net-vpn/eduvpn-client`
  * `net-vpn/eduvpn-common`
- * `sci-astronomy/pysiril`
+ * `sci-astronomy/ser-player`
  * `sci-astronomy/siril`
  * `sci-astronomy/sirilic`
+ * `sci-astronomy/pysiril`
  * `sci-electronics/xnecview`
 
 
