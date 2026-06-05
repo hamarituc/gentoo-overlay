@@ -1,0 +1,50 @@
+From 5cf9cb01b6ba528cd4423fa807b2d6f9f2c0f99d Mon Sep 17 00:00:00 2001
+From: Ferdinand Thiessen <opensource@fthiessen.de>
+Date: Fri, 28 Apr 2023 13:57:02 +0200
+Subject: [PATCH] Migrate to use QT6
+
+Signed-off-by: Ferdinand Thiessen <opensource@fthiessen.de>
+--- a/gui/CMakeLists.txt
++++ b/gui/CMakeLists.txt
+@@ -10,17 +10,20 @@ include_directories (
+ # Run Qt's moc automatically.
+ set (CMAKE_AUTOMOC ON)
+ 
+-find_package (Qt5Widgets)
++find_package(Qt6 COMPONENTS Core Widgets)
++if (NOT Qt6_FOUND)
++    find_package(Qt5 5.15 REQUIRED COMPONENTS Core Widgets)
++endif()
+ 
+ configure_file (gui_info.rc.in gui_info.rc)
+ 
+ if (POLOLU_BUILD)
+   if (APPLE)
+     # Embed app.icns in the executable.
+-    qt5_add_resources(ICON_QRC qt/app_icns.qrc)
++    qt_add_resources(ICON_QRC qt/app_icns.qrc)
+   else ()
+     # Embed app.ico in the executable.
+-    qt5_add_resources(ICON_QRC qt/app_ico.qrc)
++    qt_add_resources(ICON_QRC qt/app_ico.qrc)
+   endif ()
+ endif ()
+ 
+@@ -50,6 +53,6 @@ if (WIN32)
+   )
+ endif ()
+ 
+-target_link_libraries (gui Qt5::Widgets lib bootloader)
++target_link_libraries (gui Qt::Widgets lib bootloader)
+ 
+ install(TARGETS gui DESTINATION bin)
+--- a/gui/qt/main_window.cpp
++++ b/gui/qt/main_window.cpp
+@@ -13,7 +13,6 @@
+ #include <QCloseEvent>
+ #include <QComboBox>
+ #include <QDesktopServices>
+-#include <QDesktopWidget>
+ #include <QDoubleSpinBox>
+ #include <QFileDialog>
+ #include <QGridLayout>

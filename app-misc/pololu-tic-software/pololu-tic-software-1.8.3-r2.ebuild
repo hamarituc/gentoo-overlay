@@ -36,6 +36,7 @@ PATCHES=(
 	"${FILESDIR}/${P}-installdirs.patch"
 	"${FILESDIR}/${P}-libyaml.patch"
 	"${FILESDIR}/${P}-tinyxml2.patch"
+	"${FILESDIR}/${P}-qt6.patch"
 )
 
 src_configure() {
