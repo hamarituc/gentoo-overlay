@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake xdg
 
 DESCRIPTION="SDR Rx/Tx software"
 HOMEPAGE="https://github.com/f4exb/sdrangel"
@@ -40,6 +40,7 @@ RDEPEND="
 	media-video/ffmpeg:=
 	net-libs/libhackrf:=
 	>=net-wireless/dsdcc-1.9.6:=
+	sci-libs/cspice:=
 	sci-libs/fftw:3.0
 	virtual/libusb:1
 	virtual/zlib:=
