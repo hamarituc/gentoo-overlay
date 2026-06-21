@@ -34,11 +34,3 @@ RDEPEND="
 	app-admin/sudo
 	sys-libs/libcap[tools]
 "
-
-src_configure() {
-	local mycmakeargs=(
-		-DSKIP_SETCAP="yes"
-	)
-
-	cmake_src_configure
-}
