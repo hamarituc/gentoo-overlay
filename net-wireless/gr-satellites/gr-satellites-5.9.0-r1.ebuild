@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 
 if [[ ${PV} == 9999* ]]; then
 	inherit git-r3
@@ -30,7 +30,7 @@ RDEPEND="
 	>=dev-lang/orc-0.4:=
 	dev-libs/spdlog:=
 	media-libs/libsndfile:=
-	=net-wireless/gnuradio-3.10*:=[${PYTHON_SINGLE_USEDEP}]
+	>=net-wireless/gnuradio-3.10:=[${PYTHON_SINGLE_USEDEP}]
 	$(python_gen_cond_dep '
 		>=dev-python/construct-2.9[${PYTHON_USEDEP}]
 		dev-python/pybind11[${PYTHON_USEDEP}]
