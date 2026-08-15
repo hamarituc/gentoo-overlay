@@ -81,10 +81,6 @@ DEPEND="
 "
 
 src_configure() {
-	# error: invalid conversion from ‘long int’ to ‘QDebug::Stream*’ [-fpermissive]
-	export CFLAGS='-fpermissive'
-	export CXXFLAGS='-fpermissive'
-
 	local mycmakeargs=(
 		-DDEBUG_OUTPUT="$(usex debug)" \
 		-DBUILD_SHARED_LIBS=ON \
