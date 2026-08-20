@@ -23,7 +23,7 @@ IUSE="airspy bladerf cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 c
 # TODO: perseus, xtrx, mirisdr
 
 # TODO?
-#	bladerf? ( >=net-wireless/bladerf-2024.05:= )
+#	bladerf? ( >=net-wireless/bladerf-2025.10:= )
 #	uhd? ( >=net-wireless/uhd-4.9.0.1:= )
 RDEPEND="
 	dev-libs/boost:=
