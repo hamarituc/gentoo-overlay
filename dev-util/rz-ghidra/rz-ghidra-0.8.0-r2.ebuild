@@ -13,14 +13,10 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/rizinorg/rz-ghidra.git"
 	EGIT_SUBMODULES=( '*' '-third-party/pugixml' )
 else
-	# From git submodule
-	GHIDRA_COMMIT="b82c65ac80271e45dd78c24fe9d06730052c77ff"
-
-	SRC_URI="
-		https://github.com/rizinorg/rz-ghidra/archive/v${PV}.tar.gz -> ${P}.tar.gz
-		https://github.com/rizinorg/ghidra/archive/${GHIDRA_COMMIT}.tar.gz -> ghidra-${PN}-${GHIDRA_COMMIT}.tar.gz
-	"
+	SRC_URI="https://github.com/rizinorg/rz-ghidra/releases/download/v${PV}/${PN}-src-v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64"
+
+	S="${WORKDIR}/${PN}"
 fi
 
 LICENSE="LGPL-3+"
@@ -37,15 +33,6 @@ DEPEND="
 	)
 "
 RDEPEND="${DEPEND}"
-
-src_prepare() {
-	if [[ ${PV} != "9999" ]]; then
-		rmdir "${S}/ghidra/ghidra" || die
-		mv "${WORKDIR}/ghidra-${GHIDRA_COMMIT}" "${S}/ghidra/ghidra" || die
-	fi
-
-	cmake_src_prepare
-}
 
 src_configure() {
 	append-flags "-mno-crc32"
