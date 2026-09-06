@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=poetry
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 inherit distutils-r1
 
 DESCRIPTION="Advanced binary emulation framework"
@@ -14,7 +14,7 @@ if [[ ${PV} == "9999" ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/qilingframework/${PN}.git"
 else
-	SRC_URI="https://github.com/qilingframework/qiling/archive/refs/tags/${PV}.tar.gz -> ${P}.gh.tar.gz"
+	SRC_URI="https://github.com/qilingframework/qiling/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
 	KEYWORDS="~amd64"
 fi
 
