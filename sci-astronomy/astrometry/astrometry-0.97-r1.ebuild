@@ -6,7 +6,7 @@ EAPI=8
 # this could be a multiple python package
 # but the way it is packaged makes it very time consuming.
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 
 inherit toolchain-funcs python-single-r1
 
@@ -19,7 +19,7 @@ if [[ ${PV} = "9999" ]]; then
 else
 	MYP=${PN}.net-${PV}
 	SRC_URI="https://github.com/dstndstn/astrometry.net/releases/download/${PV}/${MYP}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 	S="${WORKDIR}/${MYP}"
 fi
 

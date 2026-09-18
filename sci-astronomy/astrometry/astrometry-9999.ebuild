@@ -19,7 +19,7 @@ if [[ ${PV} = "9999" ]]; then
 else
 	MYP=${PN}.net-${PV}
 	SRC_URI="https://github.com/dstndstn/astrometry.net/releases/download/${PV}/${MYP}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 	S="${WORKDIR}/${MYP}"
 fi
 
