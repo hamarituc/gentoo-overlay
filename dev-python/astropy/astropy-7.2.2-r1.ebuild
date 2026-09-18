@@ -5,7 +5,7 @@ EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
 DISTUTILS_EXT=1
-PYTHON_COMPAT=( python3_{12..13} )
+PYTHON_COMPAT=( python3_{12..14} )
 
 inherit distutils-r1 pypi
 
@@ -22,7 +22,6 @@ IUSE="hdf5 parquet test"
 RDEPEND="
 	>=dev-python/astropy-iers-data-0.2026.6.22.1.23.34[${PYTHON_USEDEP}]
 	>=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
-	>=dev-python/bleach-3.2.1[${PYTHON_USEDEP}]
 	>=dev-python/bottleneck-1.3.3[${PYTHON_USEDEP}]
 	>=dev-python/certifi-2022.6.15.1[${PYTHON_USEDEP}]
 	>=dev-python/html5lib-1.1[${PYTHON_USEDEP}]
