@@ -52,6 +52,7 @@ PATCHES=(
 	"${FILESDIR}/${P}-python3_11.patch"
 	"${FILESDIR}/${P}-longintrepr.patch"
 	"${FILESDIR}/${P}-python3_12.patch"
+	"${FILESDIR}/${P}-cstdint.patch"
 )
 
 pkg_setup() {
