@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 DISTUTILS_USE_PEP517=setuptools
 DISTUTILS_SINGLE_IMPL=1
 
@@ -34,7 +34,7 @@ RDEPEND="
 		>=dev-python/dpapi-ng-0.2.0[${PYTHON_USEDEP}]
 		dev-python/gssapi[${PYTHON_USEDEP}]
 		>=dev-python/ldap3-2.9.1[${PYTHON_USEDEP}]
-		dev-python/passlib[${PYTHON_USEDEP}]
+		dev-python/libpass[${PYTHON_USEDEP}]
 		dev-python/pycryptodome[${PYTHON_USEDEP}]
 		>=dev-python/pyqt6-6.7.1[${PYTHON_USEDEP}]
 	')
