@@ -7,7 +7,7 @@ DISTUTILS_OPTIONAL=1
 #DISTUTILS_USE_PEP517=scikit-build-core
 DISTUTILS_USE_PEP517=standalone
 DISTUTILS_EXT=1
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 inherit distutils-r1 cmake
 
 DESCRIPTION="Library to instrument executable formats"
@@ -54,9 +54,7 @@ wrap_python() {
 }
 
 src_prepare() {
-	#fix multilib
-	sed -i "s|CMAKE_INSTALL_LIBDIR \"lib\"|CMAKE_INSTALL_LIBDIR \"$(get_libdir)\"|" CMakeLists.txt || die
-#	sed -i '/COMMAND ${CMAKE_STRIP}/d' CMakeLists.txt || die
+	sed -i "s|libdir=\"\${prefix}/lib\"|libdir=\${prefix}/\"@CMAKE_INSTALL_LIBDIR@\"|" cmake/LIEF.pc.in || die
 #	sed -i "s|\"setup\"|\"scikit_build_core.build\"|" api/python/pyproject.toml || die
 
 	cmake_src_prepare
