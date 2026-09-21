@@ -1,0 +1,14 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 1bf1d39..c49091a 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -61,9 +61,6 @@ packages = ["src/cemu"]
+ [project.scripts]
+ cemu = "cemu.__main__:main"
+ 
+-[project.gui-scripts]
+-cemu = "cemu.__main__:main"
+-
+ [project.urls]
+ "Homepage" = "https://github.com/hugsy/cemu"
+ "Bug Tracker" = "https://github.com/hugsy/cemu/issues"
