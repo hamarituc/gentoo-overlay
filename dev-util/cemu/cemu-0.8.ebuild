@@ -16,7 +16,7 @@ if [[ ${PV} == "9999" ]]; then
 	EGIT_REPO_URI="https://github.com/hugsy/${PN}.git"
 else
 	SRC_URI="https://github.com/hugsy/cemu/archive/refs/tags/${PV}.tar.gz -> ${P}.gz.tar.gz"
-	KEYWORDS="~amd64"
+	KEYWORDS="amd64"
 fi
 
 LICENSE="MIT"
