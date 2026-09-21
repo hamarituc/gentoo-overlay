@@ -3,8 +3,8 @@
 
 EAPI=8
 
-DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..13} )
+DISTUTILS_USE_PEP517=hatchling
+PYTHON_COMPAT=( python3_{11..14} )
 
 inherit distutils-r1
 
@@ -23,17 +23,13 @@ LICENSE="MIT"
 SLOT="0"
 
 RDEPEND="
-	>=dev-libs/capstone-5:=[python,${PYTHON_USEDEP}]
-	dev-libs/keystone:=[python,${PYTHON_USEDEP}]
-	dev-python/prompt-toolkit[${PYTHON_USEDEP}]
-	dev-python/pygments[${PYTHON_USEDEP}]
-	dev-python/pyqt6[${PYTHON_USEDEP}]
-	dev-util/lief:=[python,${PYTHON_USEDEP}]
-	dev-util/unicorn:=[python,${PYTHON_USEDEP}]
+	>=dev-libs/capstone-5.0.1:=[python,${PYTHON_USEDEP}]
+	>=dev-libs/keystone-0.9.2:=[python,${PYTHON_USEDEP}]
+	>=dev-python/prompt-toolkit-3.0.47[${PYTHON_USEDEP}]
+	>=dev-python/pygments-2.18.0[${PYTHON_USEDEP}]
+	>=dev-python/pyqt6-6.7.1[${PYTHON_USEDEP}]
+	>=dev-util/lief-0.15.1:=[python,${PYTHON_USEDEP}]
+	>=dev-util/unicorn-2.0.1:=[python,${PYTHON_USEDEP}]
 "
-
-PATCHES=(
-	"${FILESDIR}/${PN}-entrypoints.patch"
-)
 
 distutils_enable_tests pytest
