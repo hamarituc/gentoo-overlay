@@ -65,6 +65,7 @@ IUSE_INDILIB_DRIVERS="
 	rpi-gpio
 	rtklib
 	sbig
+	scopelink
 	shelyak
 	starbook
 	starbook-ten
@@ -153,6 +154,7 @@ RDEPEND="
 	(
 		amd64? ( ~sci-libs/indilib-driver-sbig-${PV} )
 	)
+	indilib_drivers_scopelink? ( ~sci-libs/indilib-driver-scopelink-${PV} )
 	indilib_drivers_shelyak? ( ~sci-libs/indilib-driver-shelyak-${PV} )
 	indilib_drivers_starbook? ( ~sci-libs/indilib-driver-starbook-${PV} )
 	indilib_drivers_starbook-ten? ( ~sci-libs/indilib-driver-starbook-ten-${PV} )
