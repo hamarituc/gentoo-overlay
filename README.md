@@ -247,10 +247,6 @@ Terminal User Interface for GnuPG
 Acknowledgement: The ebuild is based on the
   [dm9pZCAq](https://notabug.org/dm9pZCAq/dm9pZCAq-overlay) overlay.
 
-### signxml
-
-Python XML Signature and XAdES library
-
 
 Electronic Engineering :electric_plug:
 --------------------------------------
@@ -347,6 +343,7 @@ The following ebuilds are now in the Gentoo mainline repository.
  * `dev-embedded/minipro`
  * `dev-python/filebytes`
  * `dev-python/nextinspace`
+ * `dev-python/signxml`
  * `dev-python/yara-python`
  * `dev-util/gef`
  * `dev-util/peda`
