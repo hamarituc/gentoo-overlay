@@ -1,0 +1,104 @@
+--- a/Makefile
++++ b/Makefile
+@@ -128,7 +128,7 @@ OBJS += $(OBJS_WIN)
+ LDLIBS += -lwsock32 -lwinmm -lsetupapi -lws2_32
+ else
+ OBJS += $(OBJS_LIN)
+-LDLIBS += -lrt -lasound
++LDLIBS += -lrt -lasound -lhidapi-hidraw
+ endif
+ 
+ all: ardopcf
+--- a/lib/rawhid/rawhid.c
++++ b/lib/rawhid/rawhid.c
+@@ -358,7 +358,7 @@ int HID_Read_Block()
+ #ifdef WIN32
+ 	Len = rawhid_recv(0, Msg, 64, 100);
+ #else
+-	Len = read(CM108Handle, Msg, 64);
++	Len = hid_read(CM108Handle, Msg, 64);
+ #endif
+ 
+ 	if (Len <= 0)
+@@ -411,12 +411,12 @@ int HID_Write_Block()
+ 			return 0;
+ 		}
+ #else
+-		ret = write(CM108Handle, Msg, 64);
++		ret = hid_write(CM108Handle, Msg, 64);
+ 
+ 		if (ret != 64)
+ 		{
+ 			printf ("Write to %s failed, n=%d, errno=%d\n", HIDDevice, ret, errno);
+-			close (CM108Handle);
++			hid_close (CM108Handle);
+ 			CM108Handle = 0;
+ 			return 0;
+ 		}
+--- a/lib/ws_server/ws_server.c
++++ b/lib/ws_server/ws_server.c
+@@ -908,7 +908,7 @@ int sendHttpErr(const char *errstr, const char *uri, int s_cnum) {
+ //  sent that will be retried.
+ // Return -1 for a bad or unexpected request.
+ // Return -2 for an unexpected failure while processing a request.
+-int process_http_req(){
++int process_http_req(int cnum){
+ 	const int BUFLEN = 1024;
+ 	char http_buf[BUFLEN];
+ 	char uri[WS_URILEN];
+--- a/src/common/ARDOPC.c
++++ b/src/common/ARDOPC.c
+@@ -56,7 +56,7 @@ BOOL SerialHostInit();
+ void SerialHostPoll();
+ void TCPHostPoll();
+ BOOL MainPoll();
+-void PlatformSleep();
++void PlatformSleep(int mS);
+ const char* PlatformSignalAbbreviation(int signal);
+ BOOL BusyDetect2(float * dblMag, int intStart, int intStop);
+ BOOL IsPingToMe(const StationId* caller, const StationId* target);
+--- a/src/common/ARQ.c
++++ b/src/common/ARQ.c
+@@ -1772,7 +1772,7 @@ void ProcessRcvdARQFrame(UCHAR intFrameType, UCHAR * bytData, int DataLen, BOOL
+ 
+ 				SetARDOPProtocolState(ISS);
+ 				ARQState = ISSData;
+-				SendData(FALSE);
++				SendData();
+ 				return;
+ 			}
+ 			// In an active ARQ Connection, only send an IDFrame when ProtocolState
+--- a/src/common/log.h
++++ b/src/common/log.h
+@@ -28,8 +28,6 @@
+ #include <stdio.h>
+ #include <stddef.h>
+ 
+-// for gmtime_r()
+-#define _POSIX_C_SOURCE 200809L
+ #include <time.h>
+ 
+ /* Size of the log line buffer. The buffer is allocated on stack. It limits
+--- a/src/common/log_file.h
++++ b/src/common/log_file.h
+@@ -6,9 +6,6 @@
+ #ifndef ARDOP_COMMON_LOG_FILE_H_
+ #define ARDOP_COMMON_LOG_FILE_H_
+ 
+- // for gmtime_r()
+-#define _POSIX_C_SOURCE 200809L
+-
+ #include <stdbool.h>
+ #include <stddef.h>
+ #include <stdint.h>
+--- a/src/linux/ALSASound.c
++++ b/src/linux/ALSASound.c
+@@ -1606,7 +1606,7 @@ short loopbuff[1200];  // Temp for testing - loop sent samples to decoder
+ 
+ 
+ 
+-int InitSound(BOOL Quiet)
++int InitSound()
+ {
+ 	if (strcmp(PlaybackDevice, "NOSOUND") == 0)
+ 		return (1);
