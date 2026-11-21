@@ -35,8 +35,6 @@ DEPEND="
 "
 BDEPEND="${PYTHON_DEPS}"
 
-#S="${WORKDIR}/${PN}-${PV}"
-
 src_configure() {
 	use pb-malloc && append-cppflags "-DPB_ENABLE_MALLOC"
 	cmake_src_configure
